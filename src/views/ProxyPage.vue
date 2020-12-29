@@ -1,0 +1,203 @@
+<template>
+    <div class="section">
+        <div class="columns">
+            <div class="column col-3 col-sm-12">
+                <div class="form-group">
+                    <textarea id="deck-input" class="form-input" v-model="config.decklist" rows="20" autofocus
+                        placeholder="4 Wild Nacatl&#10;4 Steppe Lynx&#10;4x Lightning Bolt&#10;3x Price of Progress&#10;&#10;// Sideboard&#10;1 Orim's Chant&#10;3x Rough // Tumble"></textarea>
+                </div>
+
+                <div class="btn-group btn-group-block">
+                    <button id="submit-decklist" class="btn btn-primary" @click="loadCardList()">{{ cards.length ? 'Update' : 'Submit' }}</button>
+                    <button id="print" class="btn btn-block" @click="printList" :disabled="cards.length == 0">🖶 Print</button>
+                </div>
+
+                <div class="spacer" style="height:1.6rem;"></div>
+                <div class="divider text-center" data-content="CONFIGURATION"></div>
+
+                <div class="columns">
+                    <div class="column col-12">
+                        <label class="form-switch">
+                            <input type="checkbox" v-model="config.includeDigital">
+                            <i class="form-icon"></i> Show Digital Printings
+                        </label>
+                    </div>
+
+                    <div class="column col-12">
+                        <label class="form-switch">
+                            <input type="checkbox" v-model="config.includeBasics">
+                            <i class="form-icon"></i> Include Basic Lands
+                        </label>
+                    </div>
+
+                    <!-- <div class="column">
+                        <label class="form-switch">
+                            <input type="checkbox" v-model="config.dfcBacks">
+                            <i class="form-icon"></i> DFC Backs
+                        </label>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="column col-9 col-sm-12">
+                <div class="cards columns">
+                    <div v-for="(card, index) in cards" :key="index" class="card-select column col-3 col-sm-6 mt-2" v-show="!(!config.includeBasics && card.isBasic)">
+                        <div class="p-relative">
+                            <img class="card-image img-responsive" :src="card.selectedUrl" :alt="card.name">
+                            <span class="card-quantity bg-primary text-light docs-shape s-rounded centered">{{ card.quantity }}x</span>
+                            <select class="form-select select-sm mt-2" v-model="card.selectedUrl">
+                                <option v-for="(set, index) in card.setOptions" :value="set.url" :key="index" v-show="!(!config.includeDigital && set.isDigital)">{{ set.name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="print-content">
+        <template v-for="(card, index) in cards" :key="index">
+            <img v-for="n in card.quantity" :key="n" :src="card.selectedUrl" v-show="!(!config.includeBasics && card.isBasic)">
+        </template>
+    </div>
+</template>
+
+<script>
+import ScryfallDataset from '../../min.json'
+
+const basicLands = [
+    'forest', 'island', 'plains', 'swamp', 'mountain',
+    'snow-covered forest', 'snow-covered island',
+    'snow-covered plains', 'snow-covered swamp', 
+    'snow-covered mountain'];
+
+export default {
+    name: 'ProxyPage',
+    components: {
+    },
+    data() {
+        return {
+            config: {
+                includeDigital: false,
+                includeBasics: false,
+                dfcBacks: false,
+                decklist: '',
+            },
+            cards: []
+        }
+    },
+    methods: {
+        printList() {
+            window.print();
+        },
+        loadCardList() {
+            this.cards = [];
+            for (let line of this.config.decklist.split('\n')) {
+                if (/^\/\/ Sideboard/i.test(line)) {
+                    continue;
+                }
+
+                let extract = /^(\d+)x? (.+)$/.exec(line);
+                if (extract === null) {
+                    console.warn(`Failed to parse line ${line}: ${line}`);
+                    continue;
+                }
+
+                let [, quantity, cardName] = extract;
+
+                const options = {
+                    quantity: parseInt(quantity),
+                    name: cardName,
+                    setOptions: ScryfallDataset[cardName.toLowerCase()].map(option => {
+                        return {
+                            name: option.s,
+                            url: `https://c1.scryfall.com/file/scryfall-cards/normal/front/${option.f}`,
+                            isDigital: option.d === 'y',
+                        };
+                    }),
+                    isBasic: basicLands.includes(cardName.toLowerCase()),
+                    selectedUrl: '',
+                };
+
+                options.selectedUrl = options.setOptions[0].url;
+
+                this.cards.push(options);
+            }
+        },
+    },
+}
+</script>
+
+<style>
+.card-quantity {
+    font-size: 1.2rem;
+    font-weight: 100;
+    display: inline-block;
+    position: absolute;
+    bottom: 2.4rem;
+    left: 0.6rem;
+    padding: 0.2rem;
+    line-height: 1rem;
+}
+
+img.card-image {
+    border-radius: 4.75% / 3.5%;
+}
+
+#print-content {
+    display: none;
+}
+
+#print-content {
+    line-height: 0;
+}
+
+#print-content img {
+    width: 60mm;
+    height: 85mm;
+    margin: 0;
+    padding: 0;
+}
+
+@media print {
+    body { all: initial; }
+    body * { all: unset; }
+
+    .section, header { 
+        display: none !important; 
+    }
+
+    body {
+        margin: 0 !important;
+    }
+
+    @page {
+        size: auto;
+        margin-left: 1cm;
+        margin-right: 1cm;
+        margin-bottom: 5mm;
+        margin-top: 5mm;
+    }
+
+    html {
+        visibility: hidden;
+    }
+
+    #print-content {
+        visibility: visible;
+        display: block !important;
+        line-height: 0;
+    }
+    
+    #print-content img {
+        width: 60mm;
+        height: 85mm;
+        margin: 0;
+        padding: 0;
+    }
+
+    img {
+        break-inside: avoid;
+    }
+}
+</style>
