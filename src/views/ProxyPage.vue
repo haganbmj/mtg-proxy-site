@@ -124,6 +124,10 @@ export default {
                     continue;
                 }
 
+                // Convert diacritics down.
+                cardName = cardName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+                console.log(`Searching for ${cardName}`);
+
                 const cardLookup = ScryfallDataset[cardName.toLowerCase()];
 
                 if (!cardLookup) {
@@ -134,7 +138,7 @@ export default {
                 const options = {
                     quantity: parseInt(quantity),
                     name: cardName,
-                    setOptions: ScryfallDataset[cardName.toLowerCase()].map(option => {
+                    setOptions: cardLookup.map(option => {
                         return {
                             name: option.s,
                             url: `https://c1.scryfall.com/file/scryfall-cards/normal/front/${option.f}`,

@@ -56,7 +56,7 @@ const stripped = cards.filter(card => {
         id: card.id,
         oracleId: card.oracle_id,
         oracleName: card.name,
-        name: card.card_faces?.[0]?.image_uris ? card.card_faces[0].name : card.name,
+        name: (card.card_faces?.[0]?.image_uris ? card.card_faces[0].name : card.name).normalize('NFD').replace(/[\u0300-\u036f]/g, ""),
         releaseDate: card.released_at,
         set: {
             name: card.set_name,
@@ -95,6 +95,7 @@ const minimized = stripped.sort((a, b) => {
 // fs.writeFileSync('./min-pretty.json', JSON.stringify(minimized, null, 2));
 fs.writeFileSync('./data/cards-minimized.json', JSON.stringify(minimized));
 
+console.log('Finished writing minimized card list.');
 // 4072kb with `code number`
 // 4453kb with s, n
 // 4938kb with `name (number)`

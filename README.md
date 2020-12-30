@@ -40,4 +40,7 @@
 1 Ashnod's Coupon
 1 Axe of the Warmonger
 1 Bog Humbugs
+1 Lim-Dûl's Vault
+1 Apes of Rath
+1 Lim-Dul's Vault
 ```
