@@ -107,19 +107,27 @@ export default {
         loadCardList() {
             this.cards = [];
             for (let line of this.config.decklist.split('\n')) {
+                line = line.trim();
                 if (/^\/\/ Sideboard/i.test(line) || line.trim() === '') {
                     continue;
                 }
 
                 let extract = /^(\d+)x? (.+)$/.exec(line);
                 if (extract === null) {
-                    console.warn(`Failed to parse line ${line}: ${line}`);
+                    console.warn(`Failed to parse line: ${line}`);
                     continue;
                 }
 
                 let [, quantity, cardName] = extract;
 
                 if (parseInt(quantity) <= 0) {
+                    continue;
+                }
+
+                const cardLookup = ScryfallDataset[cardName.toLowerCase()];
+
+                if (!cardLookup) {
+                    console.warn(`Failed to identify card on line: ${line}`);
                     continue;
                 }
 
