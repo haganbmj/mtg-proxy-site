@@ -4,7 +4,7 @@
             <div class="column col-3 col-sm-12">
                 <div class="form-group">
                     <textarea id="deck-input" class="form-input" v-model="config.decklist" rows="20" autofocus
-                        placeholder="4 Wild Nacatl&#10;4 Steppe Lynx&#10;4x Lightning Bolt&#10;3x Price of Progress&#10;&#10;// Sideboard&#10;1 Orim's Chant&#10;3x Rough // Tumble"></textarea>
+                        placeholder="4 Wild Nacatl&#10;4 Steppe Lynx&#10;0x Griselbrand&#10;4x Lightning Bolt&#10;3x Price of Progress&#10;&#10;// Sideboard&#10;1 Orim's Chant&#10;3x Rough // Tumble"></textarea>
                 </div>
 
                 <div class="btn-group btn-group-block">
@@ -20,6 +20,13 @@
                         <label class="form-switch">
                             <input type="checkbox" v-model="config.includeDigital">
                             <i class="form-icon"></i> Show Digital Printings
+                        </label>
+                    </div>
+
+                    <div class="column col-12">
+                        <label class="form-switch">
+                            <input type="checkbox" v-model="config.includePromo">
+                            <i class="form-icon"></i> Show Promo Printings
                         </label>
                     </div>
 
@@ -41,12 +48,12 @@
 
             <div class="column col-9 col-sm-12">
                 <div class="cards columns">
-                    <div v-for="(card, index) in cards" :key="index" class="card-select column col-3 col-sm-6 mt-2" v-show="!(!config.includeBasics && card.isBasic)">
+                    <div v-for="(card, index) in cards" :key="index" class="card-select column col-3 col-sm-6 mt-2" v-show="shouldShowCard(card)">
                         <div class="p-relative">
                             <img class="card-image img-responsive" :src="card.selectedUrl" :alt="card.name">
                             <span class="card-quantity bg-primary text-light docs-shape s-rounded centered">{{ card.quantity }}x</span>
                             <select class="form-select select-sm mt-2" v-model="card.selectedUrl">
-                                <option v-for="(set, index) in card.setOptions" :value="set.url" :key="index" v-show="!(!config.includeDigital && set.isDigital)">{{ set.name }}</option>
+                                <option v-for="(set, index) in card.setOptions" :value="set.url" :key="index" v-show="shouldShowSetOption(set)">{{ set.name }}</option>
                             </select>
                         </div>
                     </div>
@@ -57,13 +64,13 @@
 
     <div id="print-content">
         <template v-for="(card, index) in cards" :key="index">
-            <img v-for="n in card.quantity" :key="n" :src="card.selectedUrl" v-show="!(!config.includeBasics && card.isBasic)">
+            <img v-for="n in card.quantity" :key="n" :src="card.selectedUrl" v-show="shouldShowCard(card)">
         </template>
     </div>
 </template>
 
 <script>
-import ScryfallDataset from '../../min.json'
+import ScryfallDataset from '../../data/cards-minimized.json'
 
 const basicLands = [
     'forest', 'island', 'plains', 'swamp', 'mountain',
@@ -79,6 +86,7 @@ export default {
         return {
             config: {
                 includeDigital: false,
+                includePromo: false,
                 includeBasics: false,
                 dfcBacks: false,
                 decklist: '',
@@ -87,13 +95,19 @@ export default {
         }
     },
     methods: {
+        shouldShowSetOption(option) {
+            return (this.config.includeDigital || !option.isDigital) && (this.config.includePromo || !option.isPromo);
+        },
+        shouldShowCard(card) {
+            return (this.config.includeBasics || !card.isBasic);
+        },
         printList() {
             window.print();
         },
         loadCardList() {
             this.cards = [];
             for (let line of this.config.decklist.split('\n')) {
-                if (/^\/\/ Sideboard/i.test(line)) {
+                if (/^\/\/ Sideboard/i.test(line) || line.trim() === '') {
                     continue;
                 }
 
@@ -105,6 +119,10 @@ export default {
 
                 let [, quantity, cardName] = extract;
 
+                if (parseInt(quantity) <= 0) {
+                    continue;
+                }
+
                 const options = {
                     quantity: parseInt(quantity),
                     name: cardName,
@@ -113,13 +131,16 @@ export default {
                             name: option.s,
                             url: `https://c1.scryfall.com/file/scryfall-cards/normal/front/${option.f}`,
                             isDigital: option.d === 'y',
+                            isPromo: option.p === 'y',
                         };
                     }),
                     isBasic: basicLands.includes(cardName.toLowerCase()),
                     selectedUrl: '',
                 };
 
-                options.selectedUrl = options.setOptions[0].url;
+                options.selectedUrl = options.setOptions.filter(option => {
+                    return !option.isDigital && !option.isPromo;
+                })?.[0]?.url ?? options.setOptions[0].url;
 
                 this.cards.push(options);
             }

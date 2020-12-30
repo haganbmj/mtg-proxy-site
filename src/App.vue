@@ -39,6 +39,7 @@ export default {
 #content {
   margin: 0 auto;
   margin-top: 0.4rem;
+  margin-bottom: 4rem;
   max-width: 1200px;
 }
 

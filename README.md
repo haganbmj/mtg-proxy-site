@@ -21,3 +21,23 @@
 ### Future Thoughts
 
 - Relying on Scryfall's fuzzy match search would provide a means of doing card name lookup with minimal effort, but would add the only (non-image) network call to this thing.
+
+### Decent Test Data Set
+
+```none
+1 Bolas's Citadel
+1 Karn, the Great Creator
+1 Teferi's Protection
+1 Gaea's Cradle
+1 Stormblood Berserker
+1 Delver of Secrets
+1 Fire // Ice
+1 Forest
+1 Impatient Iguana
+1 Pestilence
+1 Planewide Disaster
+1 Goldmeadow
+1 Ashnod's Coupon
+1 Axe of the Warmonger
+1 Bog Humbugs
+```
