@@ -112,13 +112,17 @@ export default {
                     continue;
                 }
 
-                let extract = /^(\d+)x? (.+)$/.exec(line);
+                let extract = /^(?:(\d+)?x?\s)?(.+)$/.exec(line);
                 if (extract === null) {
                     console.warn(`Failed to parse line: ${line}`);
                     continue;
                 }
 
                 let [, quantity, cardName] = extract;
+
+                if (quantity === undefined) {
+                    quantity = 1;
+                }
 
                 if (parseInt(quantity) <= 0) {
                     continue;
