@@ -4,7 +4,7 @@
             <div class="column col-3 col-sm-12">
                 <div class="form-group">
                     <textarea id="deck-input" class="form-input" v-model="config.decklist" rows="20" autofocus
-                        placeholder="4 Wild Nacatl&#10;4 Steppe Lynx&#10;0x Griselbrand&#10;4x Lightning Bolt&#10;3x Price of Progress&#10;&#10;// Sideboard&#10;1 Orim's Chant&#10;3x Rough // Tumble"></textarea>
+                        placeholder="4 Wild Nacatl&#10;4 Steppe Lynx&#10;0x Griselbrand&#10;4x Lightning Bolt&#10;3x Price of Progress&#10;&#10;// Sideboard&#10;Orim's Chant&#10;3x Rough // Tumble"></textarea>
                 </div>
 
                 <div class="btn-group btn-group-block">
