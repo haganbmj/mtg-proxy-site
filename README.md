@@ -32,6 +32,7 @@
 1 Stormblood Berserker
 1 Delver of Secrets
 1 Fire // Ice
+1 dead / GONE
 1 Forest
 1 Impatient Iguana
 1 Pestilence

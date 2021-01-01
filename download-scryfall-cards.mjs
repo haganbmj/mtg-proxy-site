@@ -1,5 +1,6 @@
 import fs from 'fs';
 import axios from 'axios';
+import { normalizeCardName } from './src/helpers/CardNames.mjs';
 
 if (!fs.existsSync('./data/default-cards.json')) {
     console.log('Downloading fresh card data.');
@@ -56,7 +57,7 @@ const stripped = cards.filter(card => {
         id: card.id,
         oracleId: card.oracle_id,
         oracleName: card.name,
-        name: (card.card_faces?.[0]?.image_uris ? card.card_faces[0].name : card.name).normalize('NFD').replace(/[\u0300-\u036f]/g, ""),
+        name: normalizeCardName(card.card_faces?.[0]?.image_uris ? card.card_faces[0].name : card.name),
         releaseDate: card.released_at,
         set: {
             name: card.set_name,
@@ -93,7 +94,7 @@ const minimized = stripped.sort((a, b) => {
 // I think the next major minimization that could be done would have to be with the set names.
 // Could alias those and pull them out to a seperate file for mapping against. Saves 880kb pre-whitespace stripping.
 // fs.writeFileSync('./min-pretty.json', JSON.stringify(minimized, null, 2));
-fs.writeFileSync('./data/cards-minimized.json', JSON.stringify(minimized));
+fs.writeFileSync('./data/cards-minimized.json', JSON.stringify(minimized, null, 2));
 
 console.log('Finished writing minimized card list.');
 // 4072kb with `code number`

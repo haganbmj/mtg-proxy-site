@@ -71,8 +71,10 @@
 
 <script>
 import ScryfallDataset from '../../data/cards-minimized.json'
+import { normalizeCardName } from '../helpers/CardNames.mjs'
 
 const basicLands = [
+    'wastes', 
     'forest', 'island', 'plains', 'swamp', 'mountain',
     'snow-covered forest', 'snow-covered island',
     'snow-covered plains', 'snow-covered swamp', 
@@ -108,10 +110,13 @@ export default {
             this.cards = [];
             for (let line of this.config.decklist.split('\n')) {
                 line = line.trim();
-                if (/^\/\/ Sideboard/i.test(line) || line.trim() === '') {
+
+                // Different sites have different sideboard formats.
+                if (/^\/\/ Sideboard/i.test(line) || line === '') {
                     continue;
                 }
 
+                // Extract the quantity and card name.
                 let extract = /^(?:(\d+)?x?\s)?(.+)$/.exec(line);
                 if (extract === null) {
                     console.warn(`Failed to parse line: ${line}`);
@@ -124,15 +129,13 @@ export default {
                     quantity = 1;
                 }
 
+                // parseInt should be safe here since it's a digit extraction, 
+                // decimal numbers will just get roped into the cardName and fail.
                 if (parseInt(quantity) <= 0) {
                     continue;
                 }
 
-                // Convert diacritics down.
-                cardName = cardName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-                console.log(`Searching for ${cardName}`);
-
-                const cardLookup = ScryfallDataset[cardName.toLowerCase()];
+                const cardLookup = ScryfallDataset[normalizeCardName(cardName)];
 
                 if (!cardLookup) {
                     console.warn(`Failed to identify card on line: ${line}`);
@@ -154,6 +157,7 @@ export default {
                     selectedUrl: '',
                 };
 
+                // Set a default selection.
                 options.selectedUrl = options.setOptions.filter(option => {
                     return !option.isDigital && !option.isPromo;
                 })?.[0]?.url ?? options.setOptions[0].url;
