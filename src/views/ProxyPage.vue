@@ -2,46 +2,46 @@
     <div class="section">
         <div class="columns">
             <div class="column col-3 col-sm-12">
-                <div class="form-group">
+                <div id="config" class="form-group p-sticky">
                     <textarea id="deck-input" class="form-input" v-model="config.decklist" rows="20" autofocus
                         placeholder="4 Wild Nacatl&#10;4 Steppe Lynx&#10;0x Griselbrand&#10;4x Lightning Bolt&#10;3x Price of Progress&#10;&#10;// Sideboard&#10;Orim's Chant&#10;3x Rough // Tumble"></textarea>
-                </div>
 
-                <div class="btn-group btn-group-block">
-                    <button id="submit-decklist" class="btn btn-primary" @click="loadCardList()">{{ cards.length ? 'Update' : 'Submit' }}</button>
-                    <button id="print" class="btn btn-block" @click="printList" :disabled="cards.length == 0">🖶 Print</button>
-                </div>
-
-                <div class="spacer" style="height:1.6rem;"></div>
-                <div class="divider text-center" data-content="CONFIGURATION"></div>
-
-                <div class="columns">
-                    <div class="column col-12">
-                        <label class="form-switch">
-                            <input type="checkbox" v-model="config.includeDigital">
-                            <i class="form-icon"></i> Show Digital Printings
-                        </label>
+                    <div class="btn-group btn-group-block">
+                        <button id="submit-decklist" class="btn btn-primary" @click="loadCardList()">{{ cards.length ? 'Update' : 'Submit' }}</button>
+                        <button id="print" class="btn btn-block" @click="printList" :disabled="cards.length == 0">🖶 Print</button>
                     </div>
 
-                    <div class="column col-12">
-                        <label class="form-switch">
-                            <input type="checkbox" v-model="config.includePromo">
-                            <i class="form-icon"></i> Show Promo Printings
-                        </label>
-                    </div>
+                    <div class="spacer" style="height:1.6rem;"></div>
+                    <div class="divider text-center" data-content="CONFIGURATION"></div>
 
-                    <div class="column col-12">
-                        <label class="form-switch">
-                            <input type="checkbox" v-model="config.includeBasics">
-                            <i class="form-icon"></i> Include Basic Lands
-                        </label>
-                    </div>
+                    <div class="columns">
+                        <div class="column col-12">
+                            <label class="form-switch">
+                                <input type="checkbox" v-model="config.includeDigital">
+                                <i class="form-icon"></i> Show Digital Printings
+                            </label>
+                        </div>
 
-                    <div class="column col-12">
-                        <label class="form-switch">
-                            <input type="checkbox" v-model="config.dfcBacks">
-                            <i class="form-icon"></i> Print DFC Backs
-                        </label>
+                        <div class="column col-12">
+                            <label class="form-switch">
+                                <input type="checkbox" v-model="config.includePromo">
+                                <i class="form-icon"></i> Show Promo Printings
+                            </label>
+                        </div>
+
+                        <div class="column col-12">
+                            <label class="form-switch">
+                                <input type="checkbox" v-model="config.includeBasics">
+                                <i class="form-icon"></i> Include Basic Lands
+                            </label>
+                        </div>
+
+                        <div class="column col-12">
+                            <label class="form-switch">
+                                <input type="checkbox" v-model="config.dfcBacks">
+                                <i class="form-icon"></i> Print DFC Backs
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -180,6 +180,10 @@ export default {
 </script>
 
 <style>
+#config {
+    top: 0.6rem;
+}
+
 .card-quantity {
     font-size: 1.2rem;
     font-weight: 100;
