@@ -203,8 +203,8 @@ export default {
                     setOptions: cardLookup.map(option => {
                         return {
                             name: option.s,
-                            url: `https://c1.scryfall.com/file/scryfall-cards/normal/front/${option.f}`,
-                            urlBack: option.b ? `https://c1.scryfall.com/file/scryfall-cards/normal/back/${option.b}` : undefined,
+                            url: `https://c1.scryfall.com/file/scryfall-cards/border_crop/front/${option.f}`,
+                            urlBack: option.b ? `https://c1.scryfall.com/file/scryfall-cards/border_crop/back/${option.b}` : undefined,
                             isDigital: option.d === 'y',
                             isPromo: option.p === 'y',
                         };
@@ -242,7 +242,8 @@ export default {
 }
 
 img.card-image {
-    border-radius: 4.75% / 3.5%;
+    /* border-radius: 4.75% / 3.5%; */
+    border-radius: 0.3rem;
 }
 
 #arnold {

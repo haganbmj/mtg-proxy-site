@@ -67,8 +67,8 @@ const stripped = cards.filter(card => {
         isDigital: card.digital,
         isPromo: card.promo || card.promo_types || customPromoSetTypes.includes(card.set_type) || customPromoSets.includes(card.set),
         imageUris: {
-            front: card.card_faces?.[0]?.image_uris?.normal ?? card.image_uris.normal,
-            back: card.card_faces?.[1]?.image_uris?.normal ?? undefined,
+            front: card.card_faces?.[0]?.image_uris?.border_crop ?? card.image_uris.border_crop,
+            back: card.card_faces?.[1]?.image_uris?.border_crop ?? undefined,
         }
     };
 });
@@ -84,8 +84,8 @@ const minimized = stripped.sort((a, b) => {
         s: `${card.set.name} (${card.setNumber})`,
         d: card.isDigital ? 'y' : undefined,
         p: card.isPromo ? 'y' : undefined,
-        f: card.imageUris.front.replace(/\?.*/, '').replace('https://c1.scryfall.com/file/scryfall-cards/normal/front/', ''),
-        b: card.imageUris.back?.replace(/\?.*/, '').replace('https://c1.scryfall.com/file/scryfall-cards/normal/back/', ''),
+        f: card.imageUris.front.replace(/\?.*/, '').replace('https://c1.scryfall.com/file/scryfall-cards/border_crop/front/', ''),
+        b: card.imageUris.back?.replace(/\?.*/, '').replace('https://c1.scryfall.com/file/scryfall-cards/border_crop/back/', ''),
     });
 
     return store;
