@@ -37,12 +37,12 @@
                         </label>
                     </div>
 
-                    <!-- <div class="column">
+                    <div class="column col-12">
                         <label class="form-switch">
                             <input type="checkbox" v-model="config.dfcBacks">
-                            <i class="form-icon"></i> DFC Backs
+                            <i class="form-icon"></i> Print DFC Backs
                         </label>
-                    </div> -->
+                    </div>
                 </div>
             </div>
 
@@ -50,10 +50,10 @@
                 <div class="cards columns">
                     <div v-for="(card, index) in cards" :key="index" class="card-select column col-3 col-sm-6 mt-2" v-show="shouldShowCard(card)">
                         <div class="p-relative">
-                            <img class="card-image img-responsive" :src="card.selectedUrl" :alt="card.name">
+                            <img class="card-image img-responsive" :src="card.selectedOption.url" :alt="card.name">
                             <span class="card-quantity bg-primary text-light docs-shape s-rounded centered">{{ card.quantity }}x</span>
-                            <select class="form-select select-sm mt-2" v-model="card.selectedUrl">
-                                <option v-for="(set, index) in card.setOptions" :value="set.url" :key="index" v-show="shouldShowSetOption(set)">{{ set.name }}</option>
+                            <select class="form-select select-sm mt-2" v-model="card.selectedOption">
+                                <option v-for="(set, index) in card.setOptions" :value="set" :key="index" v-show="shouldShowSetOption(set)">{{ set.name }}</option>
                             </select>
                         </div>
                     </div>
@@ -64,7 +64,8 @@
 
     <div id="print-content">
         <template v-for="(card, index) in cards" :key="index">
-            <img v-for="n in card.quantity" :key="n" :src="card.selectedUrl" v-show="shouldShowCard(card)">
+            <img v-for="n in card.quantity" :key="n" :src="card.selectedOption.url" v-show="shouldShowCard(card)">
+            <img v-for="n in card.quantity" :key="n" :src="card.selectedOption.urlBack" v-show="shouldShowCard(card, 'back')">
         </template>
     </div>
 </template>
@@ -90,7 +91,7 @@ export default {
                 includeDigital: false,
                 includePromo: false,
                 includeBasics: false,
-                dfcBacks: false,
+                dfcBacks: true,
                 decklist: '',
             },
             cards: []
@@ -100,8 +101,16 @@ export default {
         shouldShowSetOption(option) {
             return (this.config.includeDigital || !option.isDigital) && (this.config.includePromo || !option.isPromo);
         },
-        shouldShowCard(card) {
-            return (this.config.includeBasics || !card.isBasic);
+        shouldShowCard(card, face = 'front') {
+            if (!this.config.includeBasics && card.isBasic) {
+                return false;
+            }
+
+            if (face === 'back' && (card.selectedOption.urlBack === undefined || !this.config.dfcBacks)) {
+                return false;
+            }
+
+            return true;
         },
         printList() {
             window.print();
@@ -149,6 +158,7 @@ export default {
                         return {
                             name: option.s,
                             url: `https://c1.scryfall.com/file/scryfall-cards/normal/front/${option.f}`,
+                            urlBack: option.b ? `https://c1.scryfall.com/file/scryfall-cards/normal/back/${option.b}` : undefined,
                             isDigital: option.d === 'y',
                             isPromo: option.p === 'y',
                         };
@@ -158,9 +168,9 @@ export default {
                 };
 
                 // Set a default selection.
-                options.selectedUrl = options.setOptions.filter(option => {
+                options.selectedOption = options.setOptions.filter(option => {
                     return !option.isDigital && !option.isPromo;
-                })?.[0]?.url ?? options.setOptions[0].url;
+                })?.[0] ?? options.setOptions[0];
 
                 this.cards.push(options);
             }
