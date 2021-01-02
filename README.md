@@ -1,6 +1,6 @@
-# mtg-proxy-site
+# https://proxy.griselbrand.com
 
-## Notes
+## Hurr Durr, Draw Seven Cards
 
 ### Known Issues
 
@@ -33,6 +33,7 @@
 1 Delver of Secrets
 1 Fire // Ice
 1 dead / GONE
+1 who / What // WHEN / wheRE // why
 1 Forest
 1 Impatient Iguana
 1 Pestilence

@@ -75,10 +75,10 @@ import ScryfallDataset from '../../data/cards-minimized.json'
 import { normalizeCardName } from '../helpers/CardNames.mjs'
 
 const basicLands = [
-    'wastes', 
+    'wastes',
     'forest', 'island', 'plains', 'swamp', 'mountain',
     'snow-covered forest', 'snow-covered island',
-    'snow-covered plains', 'snow-covered swamp', 
+    'snow-covered plains', 'snow-covered swamp',
     'snow-covered mountain'];
 
 export default {
@@ -138,7 +138,7 @@ export default {
                     quantity = 1;
                 }
 
-                // parseInt should be safe here since it's a digit extraction, 
+                // parseInt should be safe here since it's a digit extraction,
                 // decimal numbers will just get roped into the cardName and fail.
                 if (parseInt(quantity) <= 0) {
                     continue;
@@ -214,8 +214,8 @@ img.card-image {
     body { all: initial; }
     body * { all: unset; }
 
-    .section, header { 
-        display: none !important; 
+    .section, header {
+        display: none !important;
     }
 
     body {
@@ -239,7 +239,7 @@ img.card-image {
         display: block !important;
         line-height: 0;
     }
-    
+
     #print-content img {
         width: 60mm;
         height: 85mm;
