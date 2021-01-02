@@ -71,7 +71,7 @@
                     <template v-if="arnoldApproves">
                         <span class="h6 p-centered"><i>Your list doesn't contain Griselbrand! Good job.</i></span>
                         <blockquote>
-                            <p>Life may be full of pain but that’s not an excuse to give up.</p>
+                            <p>Life may be full of pain, but that’s not an excuse to give up.</p>
                             <cite>- Arnold Schwarzenegger</cite>
                         </blockquote>
                     </template>
