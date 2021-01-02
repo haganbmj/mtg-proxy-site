@@ -4,7 +4,7 @@
             <div class="column col-3 col-sm-12">
                 <div id="config" class="form-group p-sticky">
                     <textarea id="deck-input" class="form-input" v-model="config.decklist" rows="20" autofocus
-                        placeholder="4 Wild Nacatl&#10;4 Steppe Lynx&#10;0x Griselbrand&#10;4x Lightning Bolt&#10;3x Price of Progress&#10;&#10;// Sideboard&#10;Orim's Chant&#10;3x Rough // Tumble"></textarea>
+                        placeholder="4 Wild Nacatl&#10;4 Steppe Lynx&#10;0x Griselbrand&#10;4x Lightning Bolt&#10;3x Price of Progress&#10;4 Strip Mine (ATQ) 82d&#10;&#10;// Sideboard&#10;Orim's Chant&#10;3x Rough // Tumble&#10;SB: dead/gone"></textarea>
 
                     <div class="btn-group btn-group-block">
                         <button id="submit-decklist" class="btn btn-primary" @click="loadCardList()">{{ cards.length ? 'Update' : 'Submit' }}</button>
@@ -166,7 +166,8 @@ export default {
 
                 // Extract the quantity and card name.
                 // Cockatrice prefixes lines with "SB:" for sideboard cards, so optionally matching that.
-                let extract = /^(?:SB:\s)?(?:(\d+)?x?\s)?(.+)$/.exec(line);
+                // MTGA's export format puts the set and collector number in the line. ex. Arid Mesa (ZEN) 211
+                let extract = /^(?:SB:\s)?(?:(\d+)?x?\s)?([^(]+)(?:\s\(.+\) .+)?$/.exec(line);
                 if (extract === null) {
                     console.warn(`Failed to parse line: ${line}`);
                     continue;

@@ -17,6 +17,7 @@
 - Not a huge fan of packaging a full card list, but it seemed better than throttling for on api rate limits on Scryfall while still relying on Github pages.
 - Need to adjust card list construction with regards to the Scryfall image cdn uri, don't want to have to babysit it if Scryfall opts to change their pathing. The easy way to do this would be just not removing the hostname and base path while saving, but that bumps the file size.
 - Need some kind of error handling for the textarea.
+- Doesn't acknowledge MTGA format set declarations, though not sure I would want it to.
 
 ### Future Thoughts
 
@@ -47,4 +48,9 @@
 1 Lim-Dûl's Vault
 2 Lim-Dul's Vault
 1 Apes of Rath
+1 Berserk (LEB) 186
+4 Strip Mine (ATQ) 82d
+
+// 15 Sideboard
+SB: 1 Yixlid Jailer
 ```
