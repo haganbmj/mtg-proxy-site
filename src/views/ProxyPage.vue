@@ -42,6 +42,8 @@
                                 <i class="form-icon"></i> Print DFC Backs
                             </label>
                         </div>
+
+                        <div class="column col-12 divider"></div>
                     </div>
                 </div>
             </div>
