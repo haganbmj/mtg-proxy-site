@@ -25,12 +25,14 @@
 ### Decent Test Data Set
 
 ```none
+0 griselbrand
 1 Bolas's Citadel
 1 Karn, the Great Creator
 1 Teferi's Protection
 1 Gaea's Cradle
 1 Stormblood Berserker
 1 Delver of Secrets
+1 Nezumi Graverobber // Nighteyes the Desecrator
 1 Fire // Ice
 1 dead / GONE
 1 who / What // WHEN / wheRE // why
@@ -43,6 +45,6 @@
 1 Axe of the Warmonger
 1 Bog Humbugs
 1 Lim-Dûl's Vault
+2 Lim-Dul's Vault
 1 Apes of Rath
-1 Lim-Dul's Vault
 ```
