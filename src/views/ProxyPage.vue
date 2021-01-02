@@ -51,8 +51,8 @@
                     <div class="empty-icon">
                         <i class="icon icon-3x icon-search"></i>
                     </div>
-                    <p class="empty-title h5">Let's boogie.</p>
-                    <p class="empty-subtitle">Enter a list of cards, then hit Submit to begin.</p>
+                    <p class="empty-title h5" style="max-width: 25rem;">"I welcome and seek your ideas, but do not bring me small ideas; bring me big ideas to match our future."</p>
+                    <p class="empty-subtitle">- Arnold Schwarzenegger</p>
                 </div>
 
                 <div class="cards columns">
