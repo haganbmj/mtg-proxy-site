@@ -47,6 +47,14 @@
             </div>
 
             <div class="column col-9 col-sm-12">
+                <div class="empty" v-show="cards.length === 0">
+                    <div class="empty-icon">
+                        <i class="icon icon-3x icon-search"></i>
+                    </div>
+                    <p class="empty-title h5">Let's boogie.</p>
+                    <p class="empty-subtitle">Enter a list of cards, then hit Submit to begin.</p>
+                </div>
+
                 <div class="cards columns">
                     <div v-for="(card, index) in cards" :key="index" class="card-select column col-3 col-sm-6 mt-2" v-show="shouldShowCard(card)">
                         <div class="p-relative">
@@ -57,6 +65,23 @@
                             </select>
                         </div>
                     </div>
+                </div>
+
+                <div id="arnold" class="columns col-9 col-sm-12 col-mx-auto">
+                    <template v-if="arnoldApproves">
+                        <span class="h6 p-centered"><i>Your list doesn't contain Griselbrand! Good job.</i></span>
+                        <blockquote>
+                            <p>Life may be full of pain but that’s not an excuse to give up.</p>
+                            <cite>- Arnold Schwarzenegger</cite>
+                        </blockquote>
+                    </template>
+                    <template v-else-if="arnoldApproves === false">
+                        <i class="h6 p-centered">Your list contains Griselbrand. How disappointing.</i>
+                        <blockquote>
+                            <p>"What is the point of being on this Earth if you are going to be like everyone else?"</p>
+                            <cite>- Arnold Schwarzenegger (on Griselbrand)</cite>
+                        </blockquote>
+                    </template>
                 </div>
             </div>
         </div>
@@ -97,6 +122,20 @@ export default {
             cards: []
         }
     },
+    computed: {
+        arnoldApproves() {
+            console.log('checking for griselbrand');
+            if (this.cards.length === 0) {
+                return undefined;
+            }
+
+            const griselbrand = this.cards.find(card => {
+                return card.name === 'griselbrand';
+            });
+
+            return griselbrand ? false : true;
+        },
+    },
     methods: {
         shouldShowSetOption(option) {
             return (this.config.includeDigital || !option.isDigital) && (this.config.includePromo || !option.isPromo);
@@ -132,7 +171,7 @@ export default {
                     continue;
                 }
 
-                let [, quantity, cardName] = extract;
+                let [, quantity, inputCardName] = extract;
 
                 if (quantity === undefined) {
                     quantity = 1;
@@ -144,7 +183,9 @@ export default {
                     continue;
                 }
 
-                const cardLookup = ScryfallDataset[normalizeCardName(cardName)];
+                const cardName = normalizeCardName(inputCardName);
+
+                const cardLookup = ScryfallDataset[cardName];
 
                 if (!cardLookup) {
                     console.warn(`Failed to identify card on line: ${line}`);
@@ -154,6 +195,7 @@ export default {
                 const options = {
                     quantity: parseInt(quantity),
                     name: cardName,
+                    inputName: inputCardName,
                     setOptions: cardLookup.map(option => {
                         return {
                             name: option.s,
@@ -197,6 +239,10 @@ export default {
 
 img.card-image {
     border-radius: 4.75% / 3.5%;
+}
+
+#arnold {
+    margin-top: 2.4em;
 }
 
 #print-content {
