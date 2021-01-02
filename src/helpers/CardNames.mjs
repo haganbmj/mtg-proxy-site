@@ -11,6 +11,9 @@ export function normalizeCardName(cardName) {
         // Normalize a space before and after the double slashes in split cards.
         .replace(/([^/])\s*\/\/\s*([^/])/g, '$1 // $2')
 
+        // Actually, fuck it. Just use the first part of the split card name.
+        .replace(/\s\/\/.+/g, '')
+
         // Fix those dumb apostrophes.
         .replace(/’/g, `'`)
 

@@ -51,7 +51,7 @@ const customExcludedSets = [
 ]
 
 const stripped = cards.filter(card => {
-    return card.set_type !== 'token' && card.layout !== 'token' && !customExcludedSets.includes(card.set);
+    return card.set_type !== 'token' && card.layout !== 'token' && card.layout !== 'double_faced_token' && !customExcludedSets.includes(card.set);
 }).map(card => {
     return {
         id: card.id,
