@@ -2,7 +2,7 @@ name: card dataset
 
 on:
   schedule:
-    - cron: '0 12 * * 6'
+    - cron: "0 12 * * 6"
 
 jobs:
   scryfall-update:
@@ -13,7 +13,15 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2.1.2
         with:
-          node-version: '15.x'
+          node-version: "15.x"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - run: npm ci
       - run: npm run cards
@@ -21,5 +29,5 @@ jobs:
       - name: Commit
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: 'misc: update card dataset'
+          commit_message: "misc: update card dataset"
           file_pattern: data/cards-minimized.json
