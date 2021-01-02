@@ -124,7 +124,6 @@ export default {
     },
     computed: {
         arnoldApproves() {
-            console.log('checking for griselbrand');
             if (this.cards.length === 0) {
                 return undefined;
             }
@@ -160,12 +159,14 @@ export default {
                 line = line.trim();
 
                 // Different sites have different sideboard formats.
-                if (/^\/\/ Sideboard/i.test(line) || line === '') {
+                // Look for the word "sideboard" or lines that start with a double slash and skip them.
+                if (/Sideboard/i.test(line) || /^\/\//.test(line) || line === '') {
                     continue;
                 }
 
                 // Extract the quantity and card name.
-                let extract = /^(?:(\d+)?x?\s)?(.+)$/.exec(line);
+                // Cockatrice prefixes lines with "SB:" for sideboard cards, so optionally matching that.
+                let extract = /^(?:SB:\s)?(?:(\d+)?x?\s)?(.+)$/.exec(line);
                 if (extract === null) {
                     console.warn(`Failed to parse line: ${line}`);
                     continue;
