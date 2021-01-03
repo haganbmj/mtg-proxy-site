@@ -48,6 +48,7 @@ const customPromoSets = [
 const customExcludedSets = [
     'fbb',
     '4bb',
+    'rin',
 ]
 
 const stripped = cards.filter(card => {
