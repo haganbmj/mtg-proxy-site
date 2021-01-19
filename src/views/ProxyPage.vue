@@ -3,15 +3,17 @@
         <div class="columns">
             <div class="column col-3 col-sm-12">
                 <div id="config" class="form-group p-sticky">
-                    <textarea id="deck-input" class="form-input" v-model="config.decklist" rows="20" autofocus
-                        placeholder="4 Wild Nacatl&#10;4 Steppe Lynx&#10;0x Griselbrand&#10;4x Lightning Bolt&#10;3x Price of Progress&#10;4 Strip Mine (ATQ) 82d&#10;&#10;// Sideboard&#10;Orim's Chant&#10;3x Rough // Tumble&#10;SB: dead/gone"></textarea>
+                    <div class="form-group">
+                        <textarea id="deck-input" class="form-input" v-model="config.decklist" rows="20" autofocus
+                            placeholder="4 Wild Nacatl&#10;4 Steppe Lynx&#10;0x Griselbrand&#10;4x Lightning Bolt&#10;3x Price of Progress&#10;4 Strip Mine (ATQ) 82d&#10;&#10;// Sideboard&#10;Orim's Chant&#10;3x Rough // Tumble&#10;SB: dead/gone"></textarea>
+                    </div>
 
-                    <div class="btn-group btn-group-block">
+                    <div class="form-group btn-group btn-group-block">
                         <button id="submit-decklist" class="btn btn-primary" @click="loadCardList()">{{ cards.length ? 'Update' : 'Submit' }}</button>
                         <button id="print" class="btn btn-block" @click="printList" :disabled="cards.length == 0">🖶 Print</button>
                     </div>
 
-                    <div class="spacer" style="height:1.6rem;"></div>
+                    <div class="spacer" style="height:0.4rem;"></div>
                     <div class="divider text-center" data-content="CONFIGURATION"></div>
 
                     <div class="columns">
