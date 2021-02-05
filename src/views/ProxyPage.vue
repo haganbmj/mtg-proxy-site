@@ -45,6 +45,13 @@
                             </label>
                         </div>
 
+                        <div class="column col-12">
+                            <label class="form-switch">
+                                <input type="checkbox" v-model="config.thiccBorders">
+                                <i class="form-icon"></i> Thicc Borders
+                            </label>
+                        </div>
+
                         <div class="column col-12 divider"></div>
                     </div>
                 </div>
@@ -99,11 +106,17 @@
         </div>
     </div>
 
-    <div id="print-content">
+    <div id="print-content" :class="this.config.thiccBorders ? 'thicc' : ''">
         <template v-for="(card, index) in cards" :key="index">
-            <img v-for="n in card.quantity" :key="n" :src="card.selectedOption.url" v-show="shouldShowCard(card)">
-            <img v-for="n in card.quantity" :key="n" :src="card.selectedOption.urlBack" v-show="shouldShowCard(card, 'back')">
+            <img v-for="n in card.quantity" :key="n" :src="card.selectedOption.url" v-show="shouldShowCard(card)" :style="'border-image-source: url(' + card.selectedOption.url + ')'">
+            <img v-for="n in card.quantity" :key="n" :src="card.selectedOption.urlBack" v-show="shouldShowCard(card, 'back')" :style="'border-image-source: url(' + card.selectedOption.urlBack + ')'">
         </template>
+
+        <!-- <template v-for="(card, index) in cards" :key="index">
+            <div class="card-border" v-for="n in card.quantity" :key="n" v-show="shouldShowCard(card)" :style="'border-image-source: url(' + card.selectedOption.url + ')'">
+                <img :src="card.selectedOption.url">
+            </div>
+        </template> -->
     </div>
 </template>
 
@@ -129,6 +142,7 @@ export default {
                 includePromo: false,
                 includeBasics: false,
                 dfcBacks: true,
+                thiccBorders: false,
                 decklist: '',
             },
             cards: [],
@@ -318,6 +332,12 @@ img.card-image {
         height: 85mm;
         margin: 0;
         padding: 0;
+    }
+
+    #print-content.thicc img {
+        border: 1mm solid transparent;
+        border-image-slice: 1 fill;
+        border-image-repeat: stretch;
     }
 
     img {
