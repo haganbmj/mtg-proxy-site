@@ -1,0 +1,19 @@
+<img src="https://c1.scryfall.com/file/scryfall-cards/border_crop/front/2/b/2bb0e884-5bb4-41f3-b04b-6f638357c166.jpg">
+
+<script>
+    const img = document.querySelectorAll('img')[0];
+    console.log(img);
+
+    var canvas = document.createElement('canvas');
+    canvas.width = 100;
+    canvas.height = 300;
+    document.body.appendChild(canvas);
+
+    var context = canvas.getContext('2d');
+    context.drawImage(img, 0, 0, 100, 300);
+
+    var imgData = context.getImageData(50, 0, 1, 1);
+    console.log(imgData);
+    const [r, g, b, a] = imgData.data;
+    console.log(r, g, b, a);
+</script>
