@@ -51,12 +51,20 @@
             </div>
 
             <div class="column col-9 col-sm-12">
-                <div class="empty" v-show="cards.length === 0">
+                <div class="empty" v-show="cards.length === 0 && errors.length === 0">
                     <div class="empty-icon">
                         <i class="icon icon-3x icon-search"></i>
                     </div>
                     <p class="empty-title h5" style="max-width: 25rem;">"I welcome and seek your ideas, but do not bring me small ideas; bring me big ideas to match our future."</p>
                     <p class="empty-subtitle">- Arnold Schwarzenegger</p>
+                </div>
+
+                <div id="input-errors" class="toast toast-error" v-show="errors.length > 0">
+                    <button class="btn btn-clear float-right" @click="errors = []"></button>
+                    <div>Some cards could not be identified.</div>
+                    <ul>
+                        <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
+                    </ul>
                 </div>
 
                 <div class="cards columns">
@@ -123,7 +131,8 @@ export default {
                 dfcBacks: true,
                 decklist: '',
             },
-            cards: []
+            cards: [],
+            errors: [],
         }
     },
     computed: {
@@ -159,6 +168,7 @@ export default {
         },
         loadCardList() {
             this.cards = [];
+            this.errors = [];
             for (let line of this.config.decklist.split('\n')) {
                 line = line.trim();
 
@@ -173,6 +183,7 @@ export default {
                 // MTGA's export format puts the set and collector number in the line. ex. Arid Mesa (ZEN) 211
                 let extract = /^(?:SB:\s)?(?:(\d+)?x?\s)?([^(]+)(?:\s\(.+\) .+)?$/.exec(line);
                 if (extract === null) {
+                    this.errors.push(line);
                     console.warn(`Failed to parse line: ${line}`);
                     continue;
                 }
@@ -194,6 +205,7 @@ export default {
                 const cardLookup = ScryfallDataset[cardName];
 
                 if (!cardLookup) {
+                    this.errors.push(line);
                     console.warn(`Failed to identify card on line: ${line}`);
                     continue;
                 }
@@ -250,6 +262,10 @@ img.card-image {
 
 #arnold {
     margin-top: 2.4em;
+}
+
+#input-errors ul li {
+    margin-top: unset;
 }
 
 #print-content {
