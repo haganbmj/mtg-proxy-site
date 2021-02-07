@@ -73,7 +73,7 @@
                             <img class="card-image img-responsive" :src="card.selectedOption.url" :alt="card.name">
                             <span class="card-quantity bg-primary text-light docs-shape s-rounded centered">{{ card.quantity }}x</span>
                             <select class="form-select select-sm mt-2" v-model="card.selectedOption">
-                                <option v-for="(set, index) in card.setOptions" :value="set" :key="index" v-show="shouldShowSetOption(set)">{{ set.name }}</option>
+                                <option v-for="(set, index) in card.setOptions" :value="set" :key="index" v-show="shouldShowSetOption(card, set)">{{ set.name }}</option>
                             </select>
                         </div>
                     </div>
@@ -149,7 +149,12 @@ export default {
         },
     },
     methods: {
-        shouldShowSetOption(option) {
+        shouldShowSetOption(card, option) {
+            // FIXME: Need a better filter method to detect promo-only garbage.
+            if (card.setOptions.length <= 1 || card.selectedOption == option) {
+                return true;
+            }
+
             return (this.config.includeDigital || !option.isDigital) && (this.config.includePromo || !option.isPromo);
         },
         shouldShowCard(card, face = 'front') {

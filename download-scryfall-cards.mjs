@@ -37,6 +37,7 @@ const customPromoSetTypes = [
     'spellbook',
     'memorabilia', // Includes World Champs decks and CE/IE.
     'box', // Includes all Secret Lairs.
+    'duel_deck',
 ];
 
 const customPromoSets = [
@@ -49,7 +50,7 @@ const customExcludedSets = [
     'fbb',
     '4bb',
     'rin',
-]
+];
 
 const stripped = cards.filter(card => {
     return card.set_type !== 'token' && card.layout !== 'token' && card.layout !== 'double_faced_token' && !customExcludedSets.includes(card.set);
