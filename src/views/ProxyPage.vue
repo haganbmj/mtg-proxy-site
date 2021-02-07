@@ -38,6 +38,19 @@
                             </label>
                         </div>
 
+                        <div class="column col-12 divider"></div>
+
+                        <div class="column col-12">
+                            <label class="form-label">
+                                <i class="form-icon"></i> Print Scale
+                                <select class="form-select select" type="number" v-model="config.scale" style="width:100%;">
+                                    <option value="small">Wimpy (98%)</option>
+                                    <option value="normal">Regular (100%)</option>
+                                    <option value="large">Jacked (102%)</option>
+                                </select>
+                            </label>
+                        </div>
+
                         <div class="column col-12">
                             <label class="form-switch">
                                 <input type="checkbox" v-model="config.dfcBacks">
@@ -99,7 +112,7 @@
         </div>
     </div>
 
-    <div id="print-content">
+    <div id="print-content" :class="'scale-' + config.scale">
         <template v-for="(card, index) in cards" :key="index">
             <img v-for="n in card.quantity" :key="n" :src="card.selectedOption.url" v-show="shouldShowCard(card)">
             <img v-for="n in card.quantity" :key="n" :src="card.selectedOption.urlBack" v-show="shouldShowCard(card, 'back')">
@@ -129,6 +142,7 @@ export default {
                 includePromo: false,
                 includeBasics: false,
                 dfcBacks: true,
+                scale: 'normal',
                 decklist: '',
             },
             cards: [],
@@ -318,6 +332,16 @@ img.card-image {
         height: 85mm;
         margin: 0;
         padding: 0;
+    }
+
+    #print-content.scale-large img {
+        width: calc(60mm * 1.02);
+        height: calc(85mm * 1.02);
+    }
+
+    #print-content.scale-small img {
+        width: calc(60mm * 0.98);
+        height: calc(85mm * 0.98);
     }
 
     img {
