@@ -70,7 +70,7 @@
                 <div class="cards columns">
                     <div v-for="(card, index) in cards" :key="index" class="card-select column col-3 col-sm-6 mt-2" v-show="shouldShowCard(card)">
                         <div class="p-relative">
-                            <img class="card-image img-responsive" :src="card.selectedOption.url" :alt="card.name">
+                            <image-loader class="card-image img-responsive" :src="card.selectedOption.url" placeholder="./card_back.jpg" :alt="card.name" />
                             <span class="card-quantity bg-primary text-light docs-shape s-rounded centered">{{ card.quantity }}x</span>
                             <select class="form-select select-sm mt-2" v-model="card.selectedOption">
                                 <option v-for="(set, index) in card.setOptions" :value="set" :key="index" v-show="shouldShowSetOption(card, set)">{{ set.name }}</option>
@@ -110,6 +110,7 @@
 <script>
 import ScryfallDataset from '../../data/cards-minimized.json'
 import { normalizeCardName } from '../helpers/CardNames.mjs'
+import ImageLoader from '../components/ImageLoader.vue'
 
 const basicLands = [
     'wastes',
@@ -121,6 +122,7 @@ const basicLands = [
 export default {
     name: 'ProxyPage',
     components: {
+        'image-loader': ImageLoader,
     },
     data() {
         return {
@@ -186,7 +188,7 @@ export default {
                 // Extract the quantity and card name.
                 // Cockatrice prefixes lines with "SB:" for sideboard cards, so optionally matching that.
                 // MTGA's export format puts the set and collector number in the line. ex. Arid Mesa (ZEN) 211
-                let extract = /^(?:SB:\s)?(?:(\d+)?x?\s)?([^(]+)(?:\s\(.+\) .+)?$/.exec(line);
+                let extract = /^(?:SB:\s)?(?:(\d+)?x?\s)?([^(]+)(?:\s\(.+\) .+)?$/i.exec(line);
                 if (extract === null) {
                     this.errors.push(line);
                     console.warn(`Failed to parse line: ${line}`);
@@ -260,7 +262,7 @@ export default {
     line-height: 1rem;
 }
 
-img.card-image {
+.card-image {
     /* border-radius: 4.75% / 3.5%; */
     border-radius: 0.3rem;
 }
