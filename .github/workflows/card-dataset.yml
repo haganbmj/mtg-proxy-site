@@ -3,6 +3,7 @@ name: card dataset
 on:
   schedule:
     - cron: "0 12 * * 6"
+  workflow_dispatch:
 
 jobs:
   scryfall-update:
