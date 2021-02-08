@@ -86,6 +86,8 @@
                         <div class="column col-12">
                             <button class="btn p-centered" @click="showHelp = true">Help?</button>
                         </div>
+
+                        <div class="column col-12 divider"></div>
                     </div>
                 </div>
             </div>
