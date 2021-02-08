@@ -46,7 +46,7 @@
 
                     <div class="form-group btn-group btn-group-block">
                         <button id="submit-decklist" class="btn btn-primary" @click="loadCardList()">{{ cards.length ? 'Update' : 'Submit' }}</button>
-                        <button id="print" class="btn btn-block" @click="printList" :disabled="cards.length == 0">🖶 Print</button>
+                        <button id="print" class="btn btn-block" @click="printList" :disabled="cards.length == 0"><span class="icon-print"></span> Print</button>
                     </div>
 
                     <div class="spacer" style="height:0.4rem;"></div>
