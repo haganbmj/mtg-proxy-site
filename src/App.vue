@@ -2,7 +2,10 @@
   <header class="navbar bg-gray">
       <section class="navbar-section">
           <!-- <a href="/"><img class="navbar-icon" src="../android-chrome-192x192.png"></a> -->
-          <a href="/" class="btn btn-link">MTG Proxy Print</a>
+          <a href="https://griselbrand.com">
+            <img class="navbar-icon" src="https://griselbrand.com/android-chrome-192x192.png">
+          </a>
+          <a href="https://griselbrand.com" class="btn btn-link">Griselbrand</a>
       </section>
       <!-- <section class="navbar-center"></section> -->
       <section class="navbar-section hide-sm">
