@@ -1,40 +1,6 @@
 <template>
     <div class="section">
-        <div id="help-modal" class="modal active" v-show="showHelp">
-            <a href="#" class="modal-overlay" aria-label="Close" @click="showHelp = false"></a>
-            <div class="modal-container">
-                <div class="modal-header">
-                    <a href="#" class="btn btn-clear float-right" aria-label="Close" @click="showHelp = false"></a>
-                    <div class="modal-title h4">Help, Tips & Tricks, FAQ</div>
-                </div>
-                <div class="modal-body">
-                    <div class="content">
-                        <h5>Basic Usage</h5>
-                        <p>Paste a list of cards into the input box and hit <i>Submit</i>. Most deck builder export formats should be supported, but if you find something that doesn't work let me know on either of the Twitter or Github links at the top of the desktop site.</p>
-                        <p>Once your list is loaded, you can adjust set selections using the dropdowns below each card.</p>
-                        <p>Either click the <i>Print</i> button on the page or use your browser's Print menus to complete the process.</p>
-
-                        <h5>Print Formatting</h5>
-                        <p><b>Paper Size:</b> Use your browser's print dialog to configure options such as the paper size and printer destination. Saving as a PDF is listed as a printer selection in all modern browsers.</p>
-                        <p><b>Card Scaling:</b> Use your browser's print dialog to also configure the scale. I recommend staying within +/-2% if you're looking to squeeze these into standard sized sleeves.</p>
-                        <p><b>Margins:</b> I recommend <b>not</b> adjusting the margins on the page, but wish you the best of luck if you opt to.</p>
-
-                        <h5>Known Issues</h5>
-                        <p><b>Set Selections not Saved:</b> The page currently overwrites your set selections if you hit <i>Update</i>. Just use caution.</p>
-                        <p><b>Meld Card Backs:</b> The back face of Meld cards are currently unprintable, but who the hell plays Meld anyways?</p>
-                        <p><b>Show Promo/Digital:</b> Yeah yeah, I keep finding more stuff that doesn't fit Scryfall's data format, so there might be some promos that are lingering around that aren't properly flagged.</p>
-                        <p><b>Tokens/Emblems/Etc:</b> Currently there's no focus on supporting these, so they likely won't appear. The token printing versions are a mess (especially with double faced tokens) that I haven't wanted to wade through yet.</p>
-                        <p><b>Non-English:</b> There is no intended support for non-English cards, but there might be a couple that have slipped through. Scryfall's foreign card imagery is very limited for older cards, but eventually maybe I'll get the appetite to tackle it for the newer stuff.</p>
-
-                        <h5>Misc</h5>
-                        <p>This site is modeled as a substitute for MTGPress since that site has been unusable for a while. As such it's using the cropped down images, so expect thin borders when using it. I personally prefer this, but some people find find it more tedious to cut out.</p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <a href="#" class="btn btn-link" aria-label="Close" @click="showHelp = false">Close</a>
-                </div>
-            </div>
-        </div>
+        <HelpModal ref="helpModal" />
 
         <div class="columns">
             <div class="column col-3 col-sm-12">
@@ -84,7 +50,7 @@
                         <div class="column col-12 divider"></div>
 
                         <div class="column col-12">
-                            <button class="btn p-centered" @click="showHelp = true">Help?</button>
+                            <button class="btn p-centered" @click="$refs.helpModal.show()">Help?</button>
                         </div>
 
                         <div class="column col-12 divider"></div>
@@ -112,7 +78,7 @@
                 <div class="cards columns">
                     <div v-for="(card, index) in cards" :key="index" class="card-select column col-3 col-sm-6 mt-2" v-show="shouldShowCard(card)">
                         <div class="p-relative">
-                            <image-loader class="card-image img-responsive" :src="card.selectedOption.url" placeholder="./card_back.jpg" :alt="card.name" />
+                            <ImageLoader class="card-image img-responsive" :src="card.selectedOption.url" placeholder="./card_back.jpg" :alt="card.name" />
                             <span class="card-quantity bg-primary text-light docs-shape s-rounded centered">{{ card.quantity }}x</span>
                             <select class="form-select select-sm mt-2" v-model="card.selectedOption">
                                 <option v-for="(set, index) in card.setOptions" :value="set" :key="index" v-show="shouldShowSetOption(card, set)">{{ set.name }}</option>
@@ -121,22 +87,7 @@
                     </div>
                 </div>
 
-                <div id="arnold" class="columns col-9 col-sm-12 col-mx-auto">
-                    <template v-if="arnoldApproves">
-                        <span class="h6 p-centered"><i>Your list doesn't contain Griselbrand! Good job.</i></span>
-                        <blockquote>
-                            <p>Life may be full of pain, but that’s not an excuse to give up.</p>
-                            <cite>- Arnold Schwarzenegger</cite>
-                        </blockquote>
-                    </template>
-                    <template v-else-if="arnoldApproves === false">
-                        <i class="h6 p-centered">Your list contains Griselbrand. How disappointing.</i>
-                        <blockquote>
-                            <p>"What is the point of being on this Earth if you are going to be like everyone else?"</p>
-                            <cite>- Arnold Schwarzenegger (on Griselbrand)</cite>
-                        </blockquote>
-                    </template>
-                </div>
+                <ArnoldsApproval id="arnold" :cards="cards" />
             </div>
         </div>
     </div>
@@ -153,6 +104,8 @@
 import ScryfallDataset from '../../data/cards-minimized.json'
 import { normalizeCardName } from '../helpers/CardNames.mjs'
 import ImageLoader from '../components/ImageLoader.vue'
+import HelpModal from '../components/HelpModal.vue'
+import ArnoldsApproval from '../components/ArnoldsApproval';
 
 const basicLands = [
     'wastes',
@@ -164,11 +117,12 @@ const basicLands = [
 export default {
     name: 'ProxyPage',
     components: {
-        'image-loader': ImageLoader,
+        ImageLoader,
+        HelpModal,
+        ArnoldsApproval,
     },
     data() {
         return {
-            showHelp: false,
             config: {
                 includeDigital: false,
                 includePromo: false,
@@ -179,19 +133,6 @@ export default {
             cards: [],
             errors: [],
         }
-    },
-    computed: {
-        arnoldApproves() {
-            if (this.cards.length === 0) {
-                return undefined;
-            }
-
-            const griselbrand = this.cards.find(card => {
-                return card.name === 'griselbrand';
-            });
-
-            return griselbrand ? false : true;
-        },
     },
     methods: {
         shouldShowSetOption(card, option) {
