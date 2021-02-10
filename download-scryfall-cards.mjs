@@ -38,6 +38,7 @@ const customPromoSetTypes = [
     'memorabilia', // Includes World Champs decks and CE/IE.
     'box', // Includes all Secret Lairs.
     'duel_deck',
+    'premium_deck',
 ];
 
 const customPromoSets = [
