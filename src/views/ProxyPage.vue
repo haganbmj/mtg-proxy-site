@@ -6,7 +6,7 @@
             <div class="column col-3 col-sm-12">
                 <div id="config" class="form-group p-sticky">
                     <div class="form-group">
-                        <textarea id="deck-input" class="form-input" v-model="config.decklist" rows="20" autofocus
+                        <textarea id="deck-input" class="form-input" v-model="config.decklist" autofocus
                             placeholder="4 Wild Nacatl&#10;4 Steppe Lynx&#10;0x Griselbrand&#10;4x Lightning Bolt&#10;3x Price of Progress&#10;4 Strip Mine (ATQ) 82d&#10;&#10;// Sideboard&#10;Orim's Chant&#10;3x Rough // Tumble&#10;SB: dead/gone"></textarea>
                     </div>
 
@@ -238,6 +238,16 @@ export default {
 </script>
 
 <style>
+#deck-input {
+    height: 20rem;
+}
+
+@media (max-width: 600px) {
+    #deck-input {
+        height: 10rem;
+    }
+}
+
 #config {
     top: 0.6rem;
 }
