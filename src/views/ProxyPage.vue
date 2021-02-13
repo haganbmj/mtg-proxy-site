@@ -80,7 +80,7 @@
                         <div class="p-relative">
                             <ImageLoader class="card-image img-responsive" :src="card.selectedOption.url" placeholder="./card_back.jpg" :alt="card.name" />
                             <span class="card-quantity bg-primary text-light docs-shape s-rounded centered">{{ card.quantity }}x</span>
-                            <select class="form-select select-sm mt-2" v-model="card.selectedOption">
+                            <select class="form-select select-sm mt-2" v-model="card.selectedOption" @change="updateSessionSet(card.name, card.selectedOption)">
                                 <option v-for="(set, index) in card.setOptions" :value="set" :key="index" v-show="shouldShowSetOption(card, set)">{{ set.name }}</option>
                             </select>
                         </div>
@@ -132,6 +132,7 @@ export default {
             },
             cards: [],
             errors: [],
+            sessionSetSelections: {},
         }
     },
     methods: {
@@ -153,6 +154,9 @@ export default {
             }
 
             return true;
+        },
+        updateSessionSet(cardName, setOption) {
+            this.sessionSetSelections[cardName] = setOption;
         },
         printList() {
             window.print();
@@ -216,12 +220,15 @@ export default {
                     }),
                     isBasic: basicLands.includes(cardName.toLowerCase()),
                     selectedUrl: '',
+                    selectedOption: this.sessionSetSelections[cardName],
                 };
 
-                // Set a default selection.
-                options.selectedOption = options.setOptions.filter(option => {
-                    return !option.isDigital && !option.isPromo;
-                })?.[0] ?? options.setOptions[0];
+                if (!options.selectedOption) {
+                    // Set a default selection.
+                    options.selectedOption = options.setOptions.filter(option => {
+                        return !option.isDigital && !option.isPromo;
+                    })?.[0] ?? options.setOptions[0];
+                }
 
                 this.cards.push(options);
             }
