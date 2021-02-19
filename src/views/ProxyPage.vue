@@ -292,8 +292,15 @@ export default {
 }
 
 @media print {
-    body { all: initial; }
-    body * { all: unset; }
+    body {
+        all: initial;
+    }
+
+    html, html * {
+        all: unset;
+        font-size: 0 !important;
+        line-height: 0 !important;
+    }
 
     .section, header {
         display: none !important;
@@ -308,7 +315,7 @@ export default {
         margin-left: 1cm;
         margin-right: 1cm;
         margin-bottom: 5mm;
-        margin-top: 5mm;
+        margin-top: 10mm;
     }
 
     html {
