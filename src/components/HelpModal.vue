@@ -15,7 +15,6 @@
 
                     <h5>Print Formatting</h5>
                     <p><b>Paper Size:</b> Use your browser's print dialog to configure options such as the paper size and printer destination. Saving as a PDF is listed as a printer selection in all modern browsers.</p>
-                    <p><b>Card Scaling:</b> Use your browser's print dialog to also configure the scale. I recommend staying within +/-2% if you're looking to squeeze these into standard sized sleeves.</p>
                     <p><b>Margins:</b> I recommend <b>not</b> adjusting the margins on the page, but wish you the best of luck if you opt to.</p>
 
                     <h5>Known Issues</h5>
