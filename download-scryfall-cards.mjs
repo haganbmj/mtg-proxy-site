@@ -1,5 +1,6 @@
 import fs from 'fs';
 import axios from 'axios';
+import { strict as assert } from 'assert';
 import { normalizeCardName } from './src/helpers/CardNames.mjs';
 
 if (!fs.existsSync('./data/default-cards.json')) {
@@ -70,7 +71,7 @@ const stripped = cards.filter(card => {
         isDigital: card.digital,
         isPromo: card.promo || card.promo_types || customPromoSetTypes.includes(card.set_type) || customPromoSets.includes(card.set),
         imageUris: {
-            front: card.card_faces?.[0]?.image_uris?.border_crop ?? card.image_uris.border_crop,
+            front: card.card_faces?.[0]?.image_uris?.border_crop ?? card.image_uris?.border_crop,
             back: card.card_faces?.[1]?.image_uris?.border_crop ?? undefined,
         }
     };
@@ -87,12 +88,16 @@ const minimized = stripped.sort((a, b) => {
         s: `${card.set.name} (${card.setNumber})`,
         d: card.isDigital ? 'y' : undefined,
         p: card.isPromo ? 'y' : undefined,
-        f: card.imageUris.front.replace(/\?.*/, '').replace('https://c1.scryfall.com/file/scryfall-cards/border_crop/front/', ''),
+        f: card.imageUris.front?.replace(/\?.*/, '').replace('https://c1.scryfall.com/file/scryfall-cards/border_crop/front/', ''),
         b: card.imageUris.back?.replace(/\?.*/, '').replace('https://c1.scryfall.com/file/scryfall-cards/border_crop/back/', ''),
     });
 
     return store;
 }, {});
+
+assert.equal(minimized['abandon hope']?.length, 1);
+assert.equal(minimized['abandon hope']?.[0].s, 'Tempest (107)');
+assert.match(minimized['abandon hope']?.[0].f, /^((?!scryfall\.com).)*\.jpg$/);
 
 // I think the next major minimization that could be done would have to be with the set names.
 // Could alias those and pull them out to a seperate file for mapping against. Saves 880kb pre-whitespace stripping.
