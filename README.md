@@ -47,6 +47,7 @@
 1 Apes of Rath
 1 Berserk (LEB) 186
 4 Strip Mine (ATQ) 82d
+1 Mana Crypt
 
 // 15 Sideboard
 SB: 1 Yixlid Jailer

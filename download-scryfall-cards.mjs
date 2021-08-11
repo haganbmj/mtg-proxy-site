@@ -77,7 +77,7 @@ const stripped = cards.filter(card => {
         releaseDate: card.released_at,
         set: {
             name: card.set_name,
-            code: card.set,
+            code: card.set.toLowerCase(),
         },
         setNumber: card.collector_number,
         isDigital: card.digital,
@@ -95,21 +95,25 @@ const minimized = stripped.sort((a, b) => {
     return Date.parse(a.releaseDate) <= Date.parse(b.releaseDate) ? -1 : 1;
 }).reduce((store, card) => {
     const name = card.name.toLowerCase();
-    store[name] = store[name] || [];
-    store[name].push({
-        s: `${card.set.name} (${card.setNumber})`,
-        d: card.isDigital ? 'y' : undefined,
-        p: card.isPromo ? 'y' : undefined,
+    store.cards[name] = store.cards[name] || [];
+    store.cards[name].push({
+        s: `${card.set.code}|${card.setNumber}`,
+        d: card.isDigital ? 1 : undefined,
+        p: card.isPromo ? 1 : undefined,
         f: card.imageUris.front?.replace(/\?.*/, '').replace('https://c1.scryfall.com/file/scryfall-cards/border_crop/front/', ''),
         b: card.imageUris.back?.replace(/\?.*/, '').replace('https://c1.scryfall.com/file/scryfall-cards/border_crop/back/', ''),
     });
 
-    return store;
-}, {});
+    store.sets[card.set.code] = card.set.name;
 
-assert.equal(minimized['abandon hope']?.length, 1);
-assert.equal(minimized['abandon hope']?.[0].s, 'Tempest (107)');
-assert.match(minimized['abandon hope']?.[0].f, /^((?!scryfall\.com).)*\.jpg$/);
+    return store;
+}, { cards: {}, sets: {} });
+
+assert.equal(minimized.cards['abandon hope']?.length, 1);
+assert.equal(minimized.cards['abandon hope']?.[0].s, 'tmp|107');
+assert.match(minimized.cards['abandon hope']?.[0].f, /^((?!scryfall\.com).)*\.jpg$/);
+
+assert.equal(minimized.sets['tmp'], 'Tempest');
 
 // I think the next major minimization that could be done would have to be with the set names.
 // Could alias those and pull them out to a seperate file for mapping against. Saves 880kb pre-whitespace stripping.

@@ -211,7 +211,7 @@ export default {
 
                 const cardName = normalizeCardName(inputCardName);
 
-                const cardLookup = ScryfallDataset[cardName];
+                const cardLookup = ScryfallDataset.cards[cardName];
 
                 if (!cardLookup) {
                     this.errors.push(line);
@@ -224,12 +224,13 @@ export default {
                     name: cardName,
                     inputName: inputCardName,
                     setOptions: cardLookup.map(option => {
+                        let [ setCode, setNumber ] = option.s.split('|');
                         return {
-                            name: option.s,
+                            name: `${ScryfallDataset.sets[setCode]} (${setNumber})`,
                             url: `https://c1.scryfall.com/file/scryfall-cards/border_crop/front/${option.f}`,
                             urlBack: option.b ? `https://c1.scryfall.com/file/scryfall-cards/border_crop/back/${option.b}` : undefined,
-                            isDigital: option.d === 'y',
-                            isPromo: option.p === 'y',
+                            isDigital: option.d === 1,
+                            isPromo: option.p === 1,
                         };
                     }),
                     isBasic: basicLands.includes(cardName.toLowerCase()),
