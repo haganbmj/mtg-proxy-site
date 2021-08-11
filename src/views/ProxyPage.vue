@@ -45,7 +45,7 @@
                         <div class="column col-12">
                             <label class="form-label">
                                 <i class="form-icon"></i> Print Scale
-                                <select class="form-select select" type="number" v-model="config.scale" style="width:100%;">
+                                <select class="form-select select" v-model="config.scale" style="width:100%;">
                                     <option value="small">Wimpy (98%)</option>
                                     <option value="normal">Regular (100%)</option>
                                     <option value="large">Jacked (102%)</option>
