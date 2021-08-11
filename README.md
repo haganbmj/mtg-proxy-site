@@ -53,4 +53,5 @@
 SB: 1 Yixlid Jailer
 1 Erase (Not the Urza's Legacy One)
 2 Erase
++2 Mace
 ```
