@@ -48,14 +48,26 @@ const customPromoSets = [
     'sum', // Summer Magic.
 ];
 
-const customExcludedSets = [
+const excludedSets = [
     'fbb',
     '4bb',
     'rin',
 ];
 
+const excludedSetTypes = [
+    'token',
+];
+
+const excludedLayouts = [
+    'token',
+    'double_faced_token',
+    'art_series',
+];
+
 const stripped = cards.filter(card => {
-    return card.set_type !== 'token' && card.layout !== 'token' && card.layout !== 'double_faced_token' && !customExcludedSets.includes(card.set);
+    return !excludedSetTypes.includes(card.set_type)
+        && !excludedLayouts.includes(card.layout)
+        && !excludedSets.includes(card.set);
 }).map(card => {
     return {
         id: card.id,
