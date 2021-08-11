@@ -48,6 +48,10 @@ const customPromoSets = [
     'sum', // Summer Magic.
 ];
 
+const customNotPromoSets = [
+    'phpr'
+];
+
 const excludedSets = [
     'fbb',
     '4bb',
@@ -77,11 +81,11 @@ const stripped = cards.filter(card => {
         releaseDate: card.released_at,
         set: {
             name: card.set_name,
-            code: card.set.toLowerCase(),
+            code: card.set,
         },
         setNumber: card.collector_number,
         isDigital: card.digital,
-        isPromo: card.promo || card.promo_types || customPromoSetTypes.includes(card.set_type) || customPromoSets.includes(card.set),
+        isPromo: !customNotPromoSets.includes(card.set) && (card.promo || card.promo_types || customPromoSetTypes.includes(card.set_type) || customPromoSets.includes(card.set)),
         imageUris: {
             front: card.card_faces?.[0]?.image_uris?.border_crop ?? card.image_uris?.border_crop,
             back: card.card_faces?.[1]?.image_uris?.border_crop ?? undefined,
