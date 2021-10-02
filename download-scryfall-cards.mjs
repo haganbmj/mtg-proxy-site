@@ -99,7 +99,12 @@ const stripped = cards.filter(card => {
 
 const minimized = stripped.sort((a, b) => {
     // From there organize everything by release date in reverse chronological order.
-    return Date.parse(a.releaseDate) <= Date.parse(b.releaseDate) ? -1 : 1;
+    // In the event of multiple printings from the same set (basics) sort by set number.
+    if (Date.parse(a.releaseDate) === Date.parse(b.releaseDate)) {
+        return a.setNumber <= b.setNumber ? -1 : 1;
+    }
+
+    return Date.parse(a.releaseDate) < Date.parse(b.releaseDate) ? -1 : 1;
 }).reduce((store, card) => {
     // And take that and tighten it down as much as possible.
     // Need to look into gzip more, it might be possible to leave full urls if they get properly compressed out.
