@@ -114,10 +114,10 @@
 </template>
 
 <script>
-import ScryfallDataset from '../../data/cards-minimized.json'
-import { normalizeCardName } from '../helpers/CardNames.mjs'
-import ImageLoader from '../components/ImageLoader.vue'
-import HelpModal from '../components/HelpModal.vue'
+import ScryfallDataset from '../../data/cards-minimized.json';
+import { normalizeCardName } from '../helpers/CardNames.mjs';
+import ImageLoader from '../components/ImageLoader.vue';
+import HelpModal from '../components/HelpModal.vue';
 import ArnoldsApproval from '../components/ArnoldsApproval';
 
 const basicLands = [
