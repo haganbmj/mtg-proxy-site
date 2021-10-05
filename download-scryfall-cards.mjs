@@ -56,6 +56,7 @@ const excludedSets = [
     'fbb',
     '4bb',
     'rin',
+    'ren',
 ];
 
 const excludedSetTypes = [
