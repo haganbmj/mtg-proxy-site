@@ -227,8 +227,8 @@ export default {
                         let [ setCode, setNumber ] = option.s.split('|');
                         return {
                             name: `${ScryfallDataset.sets[setCode]} (${setNumber})`,
-                            url: `https://c1.scryfall.com/file/scryfall-cards/border_crop/front/${option.f}`,
-                            urlBack: option.b ? `https://c1.scryfall.com/file/scryfall-cards/border_crop/back/${option.b}` : undefined,
+                            url: option.f,
+                            urlBack: option.b,
                             isDigital: option.d === 1,
                             isPromo: option.p === 1,
                         };

@@ -115,8 +115,11 @@ const minimized = stripped.sort((a, b) => {
         s: `${card.set.code}|${card.setNumber}`,
         d: card.isDigital ? 1 : undefined,
         p: card.isPromo ? 1 : undefined,
-        f: card.imageUris.front?.replace(/\?.*/, '').replace('https://c1.scryfall.com/file/scryfall-cards/border_crop/front/', ''),
-        b: card.imageUris.back?.replace(/\?.*/, '').replace('https://c1.scryfall.com/file/scryfall-cards/border_crop/back/', ''),
+
+        // Scryfall puts a timestamp query param on these, which we don't need as it'll trigger a full regeneration each week.
+        // GZip seems to be doing a good job of optimizing out all the duplicate cdn url prefixes, so I guess it's okay to not over optimize.
+        f: card.imageUris.front?.replace(/\?.*/, ''),
+        b: card.imageUris.back?.replace(/\?.*/, ''),
     });
 
     store.sets[card.set.code] = card.set.name;
@@ -129,7 +132,7 @@ console.log(`Found ${Object.keys(minimized.cards).length} cards from ${Object.ke
 // Run some basic sanity tests.
 assert.equal(minimized.cards['abandon hope']?.length, 1);
 assert.equal(minimized.cards['abandon hope']?.[0].s, 'tmp|107');
-assert.match(minimized.cards['abandon hope']?.[0].f, /^((?!scryfall\.com).)*\.jpg$/);
+assert.match(minimized.cards['abandon hope']?.[0].f, /scryfall\.com.*\.jpg$/);
 
 assert.equal(minimized.cards['lightning dragon']?.length, 4);
 assert.equal(minimized.cards['lightning dragon']?.[0].s, 'pusg|202');
