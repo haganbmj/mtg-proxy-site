@@ -74,6 +74,16 @@ const stripped = cards.filter(card => {
     return !excludedSetTypes.includes(card.set_type)
         && !excludedLayouts.includes(card.layout)
         && !excludedSets.includes(card.set);
+}).flatMap(card => {
+    // Do some handling for the stupid Reversible Card bullshit.
+    if (card.layout === 'reversible_card') {
+        return [
+            { ...card, ...card.card_faces[0], collector_number: `${card.collector_number}a`, card_faces: undefined },
+            { ...card, ...card.card_faces[1], collector_number: `${card.collector_number}b`, card_faces: undefined },
+        ];
+    }
+
+    return [ card ];
 }).map(card => {
     // Then set the high level data necessary to organize the remaining cards.
     return {
