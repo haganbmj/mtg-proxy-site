@@ -71,7 +71,7 @@ const excludedLayouts = [
 
 const stripped = cards.filter(card => {
     // Process the exclusions.
-    return !card.oversized
+    return (!card.oversized || card.layout === 'planar')
         && !excludedSetTypes.includes(card.set_type)
         && !excludedLayouts.includes(card.layout)
         && !excludedSets.includes(card.set);
