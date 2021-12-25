@@ -71,7 +71,8 @@ const excludedLayouts = [
 
 const stripped = cards.filter(card => {
     // Process the exclusions.
-    return !excludedSetTypes.includes(card.set_type)
+    return !card.oversized
+        && !excludedSetTypes.includes(card.set_type)
         && !excludedLayouts.includes(card.layout)
         && !excludedSets.includes(card.set);
 }).flatMap(card => {
