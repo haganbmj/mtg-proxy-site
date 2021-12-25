@@ -25,6 +25,13 @@
 
                     <h5>Misc</h5>
                     <p>This site is modeled as a substitute for MTGPress since that site has been unusable for a while. As such it's using the cropped down images, so expect thin borders when using it. I personally prefer this, but some people find find it more tedious to cut out.</p>
+
+                    <h5>Build Details</h5>
+                    <ul>
+                        <li>Repository: <a href="https://github.com/haganbmj/mtg-proxy-site" target="_blank">github.com/haganbmj/mtg-proxy-site</a></li>
+                        <li>Build SHA: <a :href="'https://github.com/haganbmj/mtg-proxy-site/commit/' + getBuildSha()" target="_blank">{{ getBuildSha() }}</a></li>
+                        <li>Timestamp: {{ getBuildTimestamp() }}</li>
+                    </ul>
                 </div>
             </div>
             <div class="modal-footer">
@@ -49,7 +56,13 @@ export default {
         close() {
             this.visible = false;
             this.$emit('close');
-        }
+        },
+        getBuildTimestamp() {
+            return document.documentElement.dataset.buildTimestamp;
+        },
+        getBuildSha() {
+            return document.documentElement.dataset.buildSha || 'local';
+        },
     }
 }
 </script>

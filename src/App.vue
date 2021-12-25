@@ -25,7 +25,7 @@ export default {
   name: 'App',
   components: {
     ProxyPage
-  }
+  },
 }
 </script>
 
