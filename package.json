@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "spectre.css": "^0.5.9",
-    "vue": "^3.2.26"
+    "vue": "^3.2.32"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.15",
