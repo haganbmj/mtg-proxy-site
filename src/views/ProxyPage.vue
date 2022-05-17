@@ -114,11 +114,13 @@
 </template>
 
 <script>
-import ScryfallDataset from '../../data/cards-minimized.json';
 import { normalizeCardName } from '../helpers/CardNames.mjs';
 import ImageLoader from '../components/ImageLoader.vue';
 import HelpModal from '../components/HelpModal.vue';
 import ArnoldsApproval from '../components/ArnoldsApproval';
+
+// Chunk out the card list for quasi-lazy loading. Or at least loading that doesn't block the page rendering.
+const ScryfallDatasetAsync = () => import('../../data/cards-minimized.json');
 
 const basicLands = [
     'wastes',
@@ -144,14 +146,23 @@ export default {
                 scale: 'normal',
                 decklist: '',
             },
+            sets: {},
             cards: [],
             errors: [],
             sessionSetSelections: {},
         }
     },
+    mounted() {
+        // Trigger an immediate load of the card list + set names.
+        this.loadSetList();
+    },
     methods: {
+        async loadSetList() {
+            this.sets = (await ScryfallDatasetAsync()).sets;
+        },
         shouldShowSetOption(card, option) {
             // FIXME: Need a better filter method to detect promo-only garbage.
+            // This initial clause here is to tackle promo-only or if the user has a promo selected.
             if (card.setOptions.length <= 1 || card.selectedOption == option) {
                 return true;
             }
@@ -175,7 +186,7 @@ export default {
         printList() {
             window.print();
         },
-        loadCardList() {
+        async loadCardList() {
             this.cards = [];
             this.errors = [];
             for (let line of this.config.decklist.split('\n')) {
@@ -211,7 +222,7 @@ export default {
 
                 const cardName = normalizeCardName(inputCardName);
 
-                const cardLookup = ScryfallDataset.cards[cardName];
+                const cardLookup = (await ScryfallDatasetAsync()).cards[cardName];
 
                 if (!cardLookup) {
                     this.errors.push(line);
@@ -226,7 +237,7 @@ export default {
                     setOptions: cardLookup.map(option => {
                         let [ setCode, setNumber ] = option.s.split('|');
                         return {
-                            name: `${ScryfallDataset.sets[setCode]} (${setNumber})`,
+                            name: `${this.sets[setCode]} (${setNumber})`,
                             url: option.f,
                             urlBack: option.b,
                             isDigital: option.d === 1,
