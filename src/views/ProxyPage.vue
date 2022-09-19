@@ -12,7 +12,15 @@
 
                     <div class="form-group btn-group btn-group-block">
                         <button id="submit-decklist" class="btn btn-primary" @click="loadCardList()">{{ cards.length ? 'Update' : 'Submit' }}</button>
-                        <button id="print" class="btn btn-block" @click="printList" :disabled="cards.length == 0"><span class="icon-print"></span> Print</button>
+                        <button id="print" class="btn btn-block tooltip" @click="printList" :disabled="cards.length == 0" :data-tooltip="`${cardCountWhenPrinting.count} of ${cardCountWhenPrinting.bound} slots consumed.\nAssuming an 8.5x11 paper size.`"><span class="icon-print"></span> Print</button>
+                    </div>
+
+                    <div class="form-group btn-group btn-group-block">
+                        <div id="slot-usage" class="bar">
+                            <template v-for="index in 9" :key="index">
+                                <div :class="`bar-item ${index <= cardCountWhenPrinting.overflow ? 'consumed' : 'unconsumed'}`" role="progressbar"></div>
+                            </template>
+                        </div>
                     </div>
 
                     <div class="spacer" style="height:0.4rem;"></div>
@@ -152,6 +160,23 @@ export default {
             sessionSetSelections: {},
         }
     },
+    computed: {
+        cardCountWhenPrinting() {
+            const count = this.cards.reduce((total, c) => {
+                return total + (c.quantity * ((this.shouldShowCard(c, 'front') ? 1 : 0) + (this.shouldShowCard(c, 'back') ? 1 : 0)));
+            }, 0);
+
+            const overflow = count % 9;
+            const bound = overflow == 0 ? count : count + (9 - count % 9);
+
+            return {
+                count,
+                overflow,
+                bound,
+                percentage: Math.round(overflow / 9 * 100),
+            };
+        },
+    },
     mounted() {
         // Trigger an immediate load of the card list + set names.
         this.loadSetList();
@@ -276,6 +301,25 @@ export default {
 
 #config {
     top: 0.6rem;
+}
+
+#slot-usage {
+    border-collapse: collapse;
+    height: 0.3rem;
+}
+
+#slot-usage .bar-item {
+    border: 1px solid #bcc3ce;
+    border-collapse: collapse;
+    width: 11.1%;
+}
+
+#slot-usage .bar-item.consumed {
+    background: #5755d9;
+}
+
+#slot-usage .bar-item.unconsumed {
+    background: #eef0f3;
 }
 
 .card-quantity {
