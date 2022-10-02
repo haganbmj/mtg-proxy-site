@@ -180,6 +180,7 @@ export default {
     mounted() {
         // Trigger an immediate load of the card list + set names.
         this.loadSetList();
+        this.loadConfig();
     },
     methods: {
         async loadSetList() {
@@ -208,7 +209,22 @@ export default {
         updateSessionSet(cardName, setOption) {
             this.sessionSetSelections[cardName] = setOption;
         },
+        storeConfig() {
+            localStorage.includeDigital = this.config.includeDigital;
+            localStorage.includePromo = this.config.includePromo;
+            localStorage.includeBasics = this.config.includeBasics;
+            localStorage.dfcBacks = this.config.dfcBacks;
+            localStorage.scale = this.config.scale;
+        },
+        loadConfig() {
+            this.config.includeDigital = localStorage.includeDigital === 'true';
+            this.config.includePromo = localStorage.includePromo === 'true';
+            this.config.includeBasics = localStorage.includeBasics === 'true';
+            this.config.dfcBacks = localStorage.dfcBacks === 'true';
+            this.config.scale = localStorage.scale ?? 'normal';
+        },
         printList() {
+            this.storeConfig();
             window.print();
         },
         async loadCardList() {
