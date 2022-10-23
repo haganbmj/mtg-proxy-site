@@ -15,8 +15,8 @@ export function normalizeCardName(cardName) {
         .replace(/\s\/\/.+/g, '')
 
         // Fix those dumb apostrophes and quotation marks.
-        .replace(/’/g, `'`)
-        .replace(/”/g, `"`)
+        .replace(/[’‚‘‛]/g, `'`)
+        .replace(/[‟”„“]/g, `"`)
 
         // Consolidate underscores.
         .replace(/_+/g, `_`)
