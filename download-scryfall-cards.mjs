@@ -52,6 +52,10 @@ const customNotPromoSets = [
     'phpr'
 ];
 
+const includedSets = [
+    'sunf' // Unfinity Sticker Sheets.
+];
+
 const excludedSets = [
     'fbb',
     '4bb',
@@ -71,10 +75,11 @@ const excludedLayouts = [
 
 const stripped = cards.filter(card => {
     // Process the exclusions.
-    return (!card.oversized || card.layout === 'planar')
+    return includedSets.includes(card.set) ||
+        ((!card.oversized || card.layout === 'planar')
         && !excludedSetTypes.includes(card.set_type)
         && !excludedLayouts.includes(card.layout)
-        && !excludedSets.includes(card.set);
+        && !excludedSets.includes(card.set));
 }).flatMap(card => {
     // Do some handling for the stupid Reversible Card bullshit.
     if (card.layout === 'reversible_card') {
