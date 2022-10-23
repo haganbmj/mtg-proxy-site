@@ -27,7 +27,7 @@
 1 Bolas's Citadel
 1 Karn, the Great Creator
 1 Teferi's Protection
-1 Gaea's Cradle
+1 Gaea’s Cradle
 1 Stormblood Berserker
 1 Delver of Secrets
 1 Nezumi Graverobber // Nighteyes the Desecrator
@@ -58,7 +58,7 @@ Now You See Me...
 How Is This a Par Three?!
 _____ _____ _____ Trespasser
 "Brims" Barone, Midway Mobster
-2 "Brims" Barone, Midway Mobster
+2 ‟Brims” Barone, Midway Mobster
 
 
 // 15 Sideboard
