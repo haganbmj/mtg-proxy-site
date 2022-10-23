@@ -14,8 +14,12 @@ export function normalizeCardName(cardName) {
         // Actually, fuck it. Just use the first part of the split card name.
         .replace(/\s\/\/.+/g, '')
 
-        // Fix those dumb apostrophes.
+        // Fix those dumb apostrophes and quotation marks.
         .replace(/’/g, `'`)
+        .replace(/”/g, `"`)
+
+        // Consolidate underscores.
+        .replace(/_+/g, `_`)
 
         // Normalize case.
         .toLowerCase();

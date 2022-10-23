@@ -48,6 +48,18 @@
 1 Berserk (LEB) 186
 4 Strip Mine (ATQ) 82d
 1 Mana Crypt
+2 Ancestral Hot Dog Minotaur
+1 _____ Bird Gets the Worm
+2 __ Bird Gets the Worm
+Now You See Me . . .
+Now You See Me...
+5 Robo-Piñata
+2 Robo-Pinata
+How Is This a Par Three?!
+_____ _____ _____ Trespasser
+"Brims" Barone, Midway Mobster
+2 "Brims" Barone, Midway Mobster
+
 
 // 15 Sideboard
 SB: 1 Yixlid Jailer
