@@ -3,7 +3,7 @@
         <HelpModal ref="helpModal" />
 
         <div class="columns">
-            <div class="column col-3 col-sm-12">
+            <div class="column col-3 col-sm-12" style="z-index:300;">
                 <div id="config" class="form-group p-sticky">
                     <div class="form-group">
                         <textarea id="deck-input" class="form-input" v-model="config.decklist" autofocus
