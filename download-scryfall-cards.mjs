@@ -133,8 +133,18 @@ stripped.push({
 const minimized = stripped.sort((a, b) => {
     // From there organize everything by release date in reverse chronological order.
     // In the event of multiple printings from the same set (basics) sort by set number.
+    // Collector Numbers aren't actually numeric, becuase we can have A/B/C variants.
+    // So we have to strip the non-numeric characters, compare those, then fallback to the alpha comparisons.
+    // Without this we get into situations where 218a < 60 can happen with alt arts and such.
     if (Date.parse(a.releaseDate) === Date.parse(b.releaseDate)) {
-        return a.setNumber <= b.setNumber ? -1 : 1;
+        const aInt = parseInt(a.setNumber.replace(/[^0-9]/, ''));
+        const bInt = parseInt(b.setNumber.replace(/[^0-9]/, ''));
+
+        if (aInt == bInt) {
+            return a.setNumber <= b.setNumber ? -1 : 1;
+        } else {
+            return aInt <= bInt ? -1 : 1;
+        }
     }
 
     return Date.parse(a.releaseDate) < Date.parse(b.releaseDate) ? -1 : 1;
