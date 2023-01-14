@@ -40,6 +40,7 @@ const customPromoSetTypes = [
     'box', // Includes all Secret Lairs.
     'duel_deck',
     'premium_deck',
+    'masterpiece',
 ];
 
 const customPromoSets = [
