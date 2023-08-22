@@ -175,7 +175,7 @@ const minimized = stripped.sort((a, b) => {
     }
 }, { cards: {}, sets: {} });
 
-console.log(`Found ${Object.keys(minimized.cards).length} cards from ${Object.keys(minimized.sets).length} sets.`);
+console.log(`Found ${Object.keys(minimized.cards).length} distinct cards from ${Object.keys(minimized.sets).length} sets.`);
 
 // Run some basic sanity tests.
 assert.equal(minimized.cards['abandon hope']?.length, 1);

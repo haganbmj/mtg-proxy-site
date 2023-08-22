@@ -2445,5 +2445,149 @@
             "front": "https://haganbmj-lorcana-card-images.s3.us-east-2.amazonaws.com/001/204.jpg"
         },
         "setNumber": "204"
+    },
+    {
+        "name": "hades - king of olympus",
+        "releaseDate": "2099-01-01",
+        "set": {
+            "name": "The First Chapter",
+            "code": "lorcana-1"
+        },
+        "imageUris": {
+            "front": "https://haganbmj-lorcana-card-images.s3.us-east-2.amazonaws.com/001/205.jpg"
+        },
+        "setNumber": "205"
+    },
+    {
+        "name": "stitch - carefree surfer",
+        "releaseDate": "2099-01-01",
+        "set": {
+            "name": "The First Chapter",
+            "code": "lorcana-1"
+        },
+        "imageUris": {
+            "front": "https://haganbmj-lorcana-card-images.s3.us-east-2.amazonaws.com/001/206.jpg"
+        },
+        "setNumber": "206"
+    },
+    {
+        "name": "elsa - spirit of winter",
+        "releaseDate": "2099-01-01",
+        "set": {
+            "name": "The First Chapter",
+            "code": "lorcana-1"
+        },
+        "imageUris": {
+            "front": "https://haganbmj-lorcana-card-images.s3.us-east-2.amazonaws.com/001/207.jpg"
+        },
+        "setNumber": "207"
+    },
+    {
+        "name": "mickey mouse - wayward sorcerer",
+        "releaseDate": "2099-01-01",
+        "set": {
+            "name": "The First Chapter",
+            "code": "lorcana-1"
+        },
+        "imageUris": {
+            "front": "https://haganbmj-lorcana-card-images.s3.us-east-2.amazonaws.com/001/208.jpg"
+        },
+        "setNumber": "208"
+    },
+    {
+        "name": "genie - on the job",
+        "releaseDate": "2099-01-01",
+        "set": {
+            "name": "The First Chapter",
+            "code": "lorcana-1"
+        },
+        "imageUris": {
+            "front": "https://haganbmj-lorcana-card-images.s3.us-east-2.amazonaws.com/001/209.jpg"
+        },
+        "setNumber": "209"
+    },
+    {
+        "name": "mickey mouse - artful rogue",
+        "releaseDate": "2099-01-01",
+        "set": {
+            "name": "The First Chapter",
+            "code": "lorcana-1"
+        },
+        "imageUris": {
+            "front": "https://haganbmj-lorcana-card-images.s3.us-east-2.amazonaws.com/001/210.jpg"
+        },
+        "setNumber": "210"
+    },
+    {
+        "name": "aladdin - heroic outlaw",
+        "releaseDate": "2099-01-01",
+        "set": {
+            "name": "The First Chapter",
+            "code": "lorcana-1"
+        },
+        "imageUris": {
+            "front": "https://haganbmj-lorcana-card-images.s3.us-east-2.amazonaws.com/001/211.jpg"
+        },
+        "setNumber": "211"
+    },
+    {
+        "name": "maui - hero to all",
+        "releaseDate": "2099-01-01",
+        "set": {
+            "name": "The First Chapter",
+            "code": "lorcana-1"
+        },
+        "imageUris": {
+            "front": "https://haganbmj-lorcana-card-images.s3.us-east-2.amazonaws.com/001/212.jpg"
+        },
+        "setNumber": "212"
+    },
+    {
+        "name": "aurora - dreaming guardian",
+        "releaseDate": "2099-01-01",
+        "set": {
+            "name": "The First Chapter",
+            "code": "lorcana-1"
+        },
+        "imageUris": {
+            "front": "https://haganbmj-lorcana-card-images.s3.us-east-2.amazonaws.com/001/213.jpg"
+        },
+        "setNumber": "213"
+    },
+    {
+        "name": "belle - strange but special",
+        "releaseDate": "2099-01-01",
+        "set": {
+            "name": "The First Chapter",
+            "code": "lorcana-1"
+        },
+        "imageUris": {
+            "front": "https://haganbmj-lorcana-card-images.s3.us-east-2.amazonaws.com/001/214.jpg"
+        },
+        "setNumber": "214"
+    },
+    {
+        "name": "simba - returned king",
+        "releaseDate": "2099-01-01",
+        "set": {
+            "name": "The First Chapter",
+            "code": "lorcana-1"
+        },
+        "imageUris": {
+            "front": "https://haganbmj-lorcana-card-images.s3.us-east-2.amazonaws.com/001/215.jpg"
+        },
+        "setNumber": "215"
+    },
+    {
+        "name": "tinker bell - giant fairy",
+        "releaseDate": "2099-01-01",
+        "set": {
+            "name": "The First Chapter",
+            "code": "lorcana-1"
+        },
+        "imageUris": {
+            "front": "https://haganbmj-lorcana-card-images.s3.us-east-2.amazonaws.com/001/216.jpg"
+        },
+        "setNumber": "216"
     }
 ]
