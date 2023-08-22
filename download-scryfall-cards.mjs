@@ -111,7 +111,9 @@ const stripped = cards.filter(card => {
             back: card.card_faces?.[1]?.image_uris ? `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&version=border_crop&face=back` : undefined,
         }
     };
-});
+// Slap Lorcana onto the end of the list.
+// These have a distant future timestamp so they'll show up at the bottom of any conflicts.
+}).concat(JSON.parse(fs.readFileSync('./data/lorcana-stripped.json')));
 
 stripped.push({
     name: 'griselbrand',
@@ -149,24 +151,28 @@ const minimized = stripped.sort((a, b) => {
 
     return Date.parse(a.releaseDate) < Date.parse(b.releaseDate) ? -1 : 1;
 }).reduce((store, card) => {
-    // And take that and tighten it down as much as possible.
-    // Need to look into gzip more, it might be possible to leave full urls if they get properly compressed out.
-    const name = card.name.toLowerCase();
-    store.cards[name] = store.cards[name] || [];
-    store.cards[name].push({
-        s: `${card.set.code}|${card.setNumber}`,
-        d: card.isDigital ? 1 : undefined,
-        p: card.isPromo ? 1 : undefined,
+    try {
+        // And take that and tighten it down as much as possible.
+        const name = card.name.toLowerCase();
+        store.cards[name] = store.cards[name] || [];
+        store.cards[name].push({
+            s: `${card.set.code}|${card.setNumber}`,
+            d: card.isDigital ? 1 : undefined,
+            p: card.isPromo ? 1 : undefined,
 
-        // Scryfall puts a timestamp query param on these, which we don't need as it'll trigger a full regeneration each week.
-        // GZip seems to be doing a good job of optimizing out all the duplicate cdn url prefixes, so I guess it's okay to not over optimize.
-        f: card.imageUris.front,
-        b: card.imageUris.back,
-    });
+            // Scryfall puts a timestamp query param on these, which we don't need as it'll trigger a full regeneration each week.
+            // GZip seems to be doing a good job of optimizing out all the duplicate cdn url prefixes, so I guess it's okay to not over optimize.
+            f: card.imageUris.front,
+            b: card.imageUris.back,
+        });
 
-    store.sets[card.set.code] = card.set.name;
+        store.sets[card.set.code] = card.set.name;
 
-    return store;
+        return store;
+    } catch (e) {
+        console.log(`Failure during card: ${JSON.stringify(card)}`, e);
+        throw e;
+    }
 }, { cards: {}, sets: {} });
 
 console.log(`Found ${Object.keys(minimized.cards).length} cards from ${Object.keys(minimized.sets).length} sets.`);

@@ -25,6 +25,7 @@
 
                     <h5>Misc</h5>
                     <p>This site is modeled as a substitute for MTGPress since that site has been unusable for a while. As such it's using the cropped down images, so expect thin borders when using it. I personally prefer this, but some people find find it more tedious to cut out.</p>
+                    <p>Lorcana was slapped on as an afterthought. In the event of a name conflict (eg. Smash) the Magic results take priority so just be careful to double check before hitting print.</p>
 
                     <h5>Build Details</h5>
                     <ul>

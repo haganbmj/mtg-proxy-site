@@ -7,7 +7,7 @@
                 <div id="config" class="form-group p-sticky">
                     <div class="form-group">
                         <textarea id="deck-input" class="form-input" v-model="config.decklist" autofocus
-                            placeholder="4 Wild Nacatl&#10;4 Steppe Lynx&#10;0x Griselbrand&#10;4x Lightning Bolt&#10;3x Price of Progress&#10;4 Strip Mine (ATQ) 82d&#10;&#10;// Sideboard&#10;Orim's Chant&#10;3x Rough // Tumble&#10;SB: dead/gone"></textarea>
+                            placeholder="4 Wild Nacatl&#10;4 Steppe Lynx&#10;0x Griselbrand&#10;4x Lightning Bolt&#10;3x Price of Progress&#10;4 Strip Mine (ATQ) 82d&#10;2 Tinker Bell - Giant Fairy&#10;4 Rafiki - Mysterious Sage&#10;&#10;// Sideboard&#10;Orim's Chant&#10;3x Rough // Tumble&#10;SB: dead/gone"></textarea>
                     </div>
 
                     <div class="form-group btn-group btn-group-block">
