@@ -9,6 +9,7 @@
     "cards": "node download-scryfall-cards.mjs"
   },
   "dependencies": {
+    "core-js": "^3.32.1",
     "spectre.css": "^0.5.9",
     "vue": "^3.2.32"
   },

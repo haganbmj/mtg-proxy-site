@@ -159,6 +159,7 @@ const minimized = stripped.sort((a, b) => {
             s: `${card.set.code}|${card.setNumber}`,
             d: card.isDigital ? 1 : undefined,
             p: card.isPromo ? 1 : undefined,
+            m: card.oracleName?.includes(' // ') ? 1 : undefined,
 
             // Scryfall puts a timestamp query param on these, which we don't need as it'll trigger a full regeneration each week.
             // GZip seems to be doing a good job of optimizing out all the duplicate cdn url prefixes, so I guess it's okay to not over optimize.

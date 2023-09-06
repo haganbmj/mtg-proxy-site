@@ -196,6 +196,10 @@ export default {
             return (this.config.includeDigital || !option.isDigital) && (this.config.includePromo || !option.isPromo);
         },
         shouldShowCard(card, face = 'front') {
+            if (card.isMeld) {
+                return true
+            }
+        
             if (!this.config.includeBasics && card.isBasic) {
                 return false;
             }
@@ -283,6 +287,7 @@ export default {
                             urlBack: option.b,
                             isDigital: option.d === 1,
                             isPromo: option.p === 1,
+                            isMeld: option.m === 1,
                         };
                     }),
                     isBasic: basicLands.includes(cardName.toLowerCase()),
