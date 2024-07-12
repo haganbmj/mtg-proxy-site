@@ -28,7 +28,7 @@ jobs:
       - run: npm run cards
 
       - name: Commit
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "misc: update card dataset"
           file_pattern: data/cards-minimized.json
