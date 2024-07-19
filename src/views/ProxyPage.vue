@@ -55,6 +55,13 @@
                             </label>
                         </div>
 
+                        <div class="column col-12">
+                            <label class="form-switch">
+                                <input type="checkbox" v-model="config.includeBacks">
+                                <i class="form-icon"></i> Include Backs
+                            </label>
+                        </div>
+
                         <div class="column col-12 divider"></div>
 
                         <div class="column col-12">
@@ -122,8 +129,11 @@
 
     <div id="print-content" :class="[`scale-${config.scale}`, {'with-cut-lines': config.includeCutLines}]">
         <template v-for="(card, index) in cards" :key="index">
-            <img v-for="n in card.quantity" :key="n" :src="card.selectedOption.url" v-show="shouldShowCard(card)">
-            <img v-for="n in card.quantity" :key="n" :src="card.selectedOption.urlBack" v-show="shouldShowCard(card, 'back')">
+            <template v-for="n in card.quantity" :key="n">
+                <img :src="card.selectedOption.url" v-if="shouldShowCard(card)">
+                <img :src="card.selectedOption.urlBack" v-if="shouldShowCard(card, 'back')">
+                <img src="card_back_highres.jpg" v-else-if="config.includeBacks">
+            </template>
         </template>
     </div>
 </template>
@@ -158,6 +168,7 @@ export default {
                 includePromo: false,
                 includeBasics: false,
                 includeCutLines: false,
+                includeBacks: false,
                 dfcBacks: true,
                 scale: 'normal',
                 decklist: '',
@@ -170,8 +181,10 @@ export default {
     },
     computed: {
         cardCountWhenPrinting() {
-            const count = this.cards.reduce((total, c) => {
-                return total + (c.quantity * ((this.shouldShowCard(c, 'front') ? 1 : 0) + (this.shouldShowCard(c, 'back') ? 1 : 0)));
+            const count = this.cards.reduce((total, card) => {
+                const frontSides = this.shouldShowCard(card, 'front') ? 1 : 0;
+                const backSides = (this.config.includeBacks || this.shouldShowCard(card, 'back')) ? 1 : 0;
+                return total + (card.quantity * (frontSides + backSides));
             }, 0);
 
             const overflow = count % 9;
@@ -222,6 +235,7 @@ export default {
             localStorage.includePromo = this.config.includePromo;
             localStorage.includeBasics = this.config.includeBasics;
             localStorage.includeCutLines = this.config.includeCutLines;
+            localStorage.includeBacks = this.config.includeBacks;
             localStorage.dfcBacks = this.config.dfcBacks;
             localStorage.scale = this.config.scale;
         },
@@ -230,6 +244,7 @@ export default {
             this.config.includePromo = localStorage.includePromo === 'true';
             this.config.includeBasics = localStorage.includeBasics === 'true';
             this.config.includeCutLines = localStorage.includeCutLines === 'true';
+            this.config.includeBacks = localStorage.includeBacks === 'true';
             this.config.dfcBacks = !(localStorage.dfcBacks === 'false');
             this.config.scale = localStorage.scale ?? 'normal';
         },
