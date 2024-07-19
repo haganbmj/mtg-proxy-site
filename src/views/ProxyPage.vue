@@ -371,8 +371,8 @@ export default {
 }
 
 #print-content img {
-    width: 60mm;
-    height: 85mm;
+    width: 63mm;
+    height: 88mm;
     margin: 0;
     padding: 0;
 }
@@ -415,20 +415,20 @@ export default {
     }
 
     #print-content img {
-        width: 60mm;
-        height: 85mm;
+        width: 63mm;
+        height: 88mm;
         margin: 0;
         padding: 0;
     }
 
     #print-content.scale-large img {
-        width: calc(60mm * 1.02);
-        height: calc(85mm * 1.02);
+        width: calc(63mm * 1.02);
+        height: calc(88mm * 1.02);
     }
 
     #print-content.scale-small img {
-        width: calc(60mm * 0.98);
-        height: calc(85mm * 0.98);
+        width: calc(63mm * 0.98);
+        height: calc(88mm * 0.98);
     }
 
     img {
