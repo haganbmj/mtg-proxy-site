@@ -48,6 +48,13 @@
                             </label>
                         </div>
 
+                        <div class="column col-12">
+                            <label class="form-switch">
+                                <input type="checkbox" v-model="config.includeCutLines">
+                                <i class="form-icon"></i> Include Cut Lines
+                            </label>
+                        </div>
+
                         <div class="column col-12 divider"></div>
 
                         <div class="column col-12">
@@ -113,7 +120,7 @@
         </div>
     </div>
 
-    <div id="print-content" :class="'scale-' + config.scale">
+    <div id="print-content" :class="[`scale-${config.scale}`, {'with-cut-lines': config.includeCutLines}]">
         <template v-for="(card, index) in cards" :key="index">
             <img v-for="n in card.quantity" :key="n" :src="card.selectedOption.url" v-show="shouldShowCard(card)">
             <img v-for="n in card.quantity" :key="n" :src="card.selectedOption.urlBack" v-show="shouldShowCard(card, 'back')">
@@ -150,6 +157,7 @@ export default {
                 includeDigital: false,
                 includePromo: false,
                 includeBasics: false,
+                includeCutLines: false,
                 dfcBacks: true,
                 scale: 'normal',
                 decklist: '',
@@ -213,6 +221,7 @@ export default {
             localStorage.includeDigital = this.config.includeDigital;
             localStorage.includePromo = this.config.includePromo;
             localStorage.includeBasics = this.config.includeBasics;
+            localStorage.includeCutLines = this.config.includeCutLines;
             localStorage.dfcBacks = this.config.dfcBacks;
             localStorage.scale = this.config.scale;
         },
@@ -220,6 +229,7 @@ export default {
             this.config.includeDigital = localStorage.includeDigital === 'true';
             this.config.includePromo = localStorage.includePromo === 'true';
             this.config.includeBasics = localStorage.includeBasics === 'true';
+            this.config.includeCutLines = localStorage.includeCutLines === 'true';
             this.config.dfcBacks = !(localStorage.dfcBacks === 'false');
             this.config.scale = localStorage.scale ?? 'normal';
         },
@@ -419,6 +429,10 @@ export default {
         height: 85mm;
         margin: 0;
         padding: 0;
+    }
+
+    #print-content.with-cut-lines img {
+        margin: 0 1px 1px 0;
     }
 
     #print-content.scale-large img {
