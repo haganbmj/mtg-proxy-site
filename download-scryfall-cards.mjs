@@ -107,8 +107,14 @@ const stripped = cards.filter(card => {
         isDigital: card.digital,
         isPromo: !customNotPromoSets.includes(card.set) && (card.promo || card.promo_types || customPromoSetTypes.includes(card.set_type) || customPromoSets.includes(card.set)),
         imageUris: {
-            front: `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&version=border_crop&face=front`,
-            back: card.card_faces?.[1]?.image_uris ? `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&version=border_crop&face=back` : undefined,
+            front: {
+                cropped: `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&version=border_crop&face=front`,
+                normal: `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&version=normal&face=front`,
+            },
+            back: card.card_faces?.[1]?.image_uris ? {
+                cropped: `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&version=border_crop&face=back`,
+                normal: `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&version=normal&face=back`,
+             } : undefined,
         }
     };
 // Slap Lorcana onto the end of the list.
@@ -126,7 +132,10 @@ stripped.push({
     isDigital: false,
     isPromo: false,
     imageUris: {
-        front: '/avr-106-griselbrand.jpg',
+        front: {
+            cropped: '/avr-106-griselbrand.jpg',
+            normal: '/avr-106-griselbrand.jpg',
+        },
     },
 });
 
@@ -162,8 +171,10 @@ const minimized = stripped.sort((a, b) => {
 
             // Scryfall puts a timestamp query param on these, which we don't need as it'll trigger a full regeneration each week.
             // GZip seems to be doing a good job of optimizing out all the duplicate cdn url prefixes, so I guess it's okay to not over optimize.
-            f: card.imageUris.front,
-            b: card.imageUris.back,
+            f1: card.imageUris.front?.normal ?? undefined,
+            f2: card.imageUris.front?.cropped ?? undefined,
+            b1: card.imageUris.back?.normal ?? undefined,
+            b2: card.imageUris.back?.cropped ?? undefined,
         });
 
         store.sets[card.set.code] = card.set.name;
@@ -180,7 +191,10 @@ console.log(`Found ${Object.keys(minimized.cards).length} distinct cards from ${
 // Run some basic sanity tests.
 assert.equal(minimized.cards['abandon hope']?.length, 1);
 assert.equal(minimized.cards['abandon hope']?.[0].s, 'tmp|107');
-assert.match(minimized.cards['abandon hope']?.[0].f, /api\.scryfall\.com.*$/);
+assert.match(minimized.cards['abandon hope']?.[0].f1, /api\.scryfall\.com.*version=normal.*$/);
+assert.match(minimized.cards['abandon hope']?.[0].f2, /api\.scryfall\.com.*version=border_crop.*$/);
+assert.match(minimized.cards['wedding announcement']?.[0].b1, /api\.scryfall\.com.*version=normal.*$/);
+assert.match(minimized.cards['wedding announcement']?.[0].b2, /api\.scryfall\.com.*version=border_crop.*$/);
 
 assert.equal(minimized.cards['lightning dragon']?.length, 4);
 assert.equal(minimized.cards['lightning dragon']?.[0].s, 'pusg|202');
