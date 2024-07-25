@@ -79,9 +79,13 @@
                         </div>
 
                         <div class="column col-12">
-                            <label class="form-switch">
-                                <input type="checkbox" v-model="config.dfcBacks">
-                                <i class="form-icon"></i> Print DFC Backs
+                            <label class="form-label">
+                                <i class="form-icon"></i> Card Backs
+                                <select class="form-select select" v-model="config.cardBacks" style="width:100%;">
+                                    <option value="none">None</option>
+                                    <option value="dfc">Double Faced Cards</option>
+                                    <option value="all">All</option>
+                                </select>
                             </label>
                         </div>
 
@@ -168,9 +172,9 @@ export default {
                 includePromo: false,
                 includeBasics: false,
                 includeCutLines: false,
-                dfcBacks: true,
                 imageType: 'border_crop',
                 scale: 'normal',
+                cardBacks: 'dfc',
                 decklist: '',
             },
             sets: {},
@@ -219,8 +223,19 @@ export default {
                 return false;
             }
 
-            if (face === 'back' && (card.selectedOption.urlBack === undefined || !this.config.dfcBacks)) {
-                return false;
+            // Bleh, this is clunky and should be simplified.
+            if (face === 'back') {
+                if (this.config.cardBacks === 'none') {
+                    return false;
+                }
+
+                if (this.config.cardBacks === 'all') {
+                    return true;
+                }
+
+                if (card.selectedOption.urlBack === undefined) {
+                    return false;
+                }
             }
 
             return true;
@@ -244,18 +259,18 @@ export default {
             localStorage.includePromo = this.config.includePromo;
             localStorage.includeBasics = this.config.includeBasics;
             localStorage.includeCutLines = this.config.includeCutLines;
-            localStorage.dfcBacks = this.config.dfcBacks;
             localStorage.imageType = this.config.imageType;
             localStorage.scale = this.config.scale;
+            localStorage.cardBacks = this.config.cardBacks;
         },
         loadConfig() {
             this.config.includeDigital = localStorage.includeDigital === 'true';
             this.config.includePromo = localStorage.includePromo === 'true';
             this.config.includeBasics = localStorage.includeBasics === 'true';
             this.config.includeCutLines = localStorage.includeCutLines === 'true';
-            this.config.dfcBacks = !(localStorage.dfcBacks === 'false');
             this.config.imageType = localStorage.imageType ?? 'border_crop';
             this.config.scale = localStorage.scale ?? 'normal';
+            this.config.cardBacks = localStorage.cardBacks ?? 'dfc';
         },
         printList() {
             this.storeConfig();
