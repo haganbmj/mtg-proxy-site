@@ -50,34 +50,20 @@
 
                         <div class="column col-12">
                             <label class="form-switch">
-                                <input type="checkbox" v-model="config.includeBacks">
-                                <i class="form-icon"></i> Include Backs
-                            </label>
-                        </div>
-
-                        <div class="column col-12">
-                            <label class="form-switch">
-                                <input type="checkbox" v-model="config.useCroppedImages" @change="loadCardList">
-                                <i class="form-icon"></i> Use Cropped Images <i class="tooltip" data-tooltip="If such version available">?</i>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="spacer" style="height:0.4rem;"></div>
-                    <div class="divider text-center" data-content="PRINTING"></div>
-
-                    <div class="columns">
-                        <div class="column col-12">
-                            <label class="form-switch">
                                 <input type="checkbox" v-model="config.includeCutLines">
                                 <i class="form-icon"></i> Include Cut Lines
                             </label>
                         </div>
 
+                        <div class="column col-12 divider"></div>
+
                         <div class="column col-12">
-                            <label class="form-switch">
-                                <input type="checkbox" v-model="config.dfcBacks">
-                                <i class="form-icon"></i> Print DFC Backs
+                            <label class="form-label">
+                                <i class="form-icon"></i> Image Type
+                                <select class="form-select select" v-model="config.imageType" style="width:100%;">
+                                    <option value="normal">Normal</option>
+                                    <option value="border_crop">Border Crop</option>
+                                </select>
                             </label>
                         </div>
 
@@ -92,11 +78,20 @@
                             </label>
                         </div>
 
+                        <div class="column col-12">
+                            <label class="form-switch">
+                                <input type="checkbox" v-model="config.dfcBacks">
+                                <i class="form-icon"></i> Print DFC Backs
+                            </label>
+                        </div>
+
                         <div class="column col-12 divider"></div>
 
                         <div class="column col-12">
                             <button class="btn p-centered" @click="$refs.helpModal.show()">Help?</button>
                         </div>
+
+                        <div class="column col-12 divider"></div>
                     </div>
                 </div>
             </div>
@@ -121,10 +116,10 @@
                 <div class="cards columns">
                     <div v-for="(card, index) in cards" :key="index" class="card-select column col-3 col-sm-6 mt-2" v-show="shouldShowCard(card)">
                         <div class="p-relative">
-                            <ImageLoader class="card-image img-responsive" :src="getSelectedOption(card).url" placeholder="./card_back_border_crop.jpg" :alt="card.name" />
+                            <ImageLoader class="card-image img-responsive" :src="resolveCardImage(card)" placeholder="./card_back_border_crop.jpg" :alt="card.name" />
                             <span class="card-quantity bg-primary text-light docs-shape s-rounded centered">{{ card.quantity }}x</span>
-                            <select class="form-select select-sm mt-2" v-model="card.selectedOptionIndex" @change="updateSessionSet(card.name, card.selectedOptionIndex)">
-                                <option v-for="(set, index) in card.setOptions" :value="index" :key="index" v-show="shouldShowSetOption(card, set)">{{ set.name }}</option>
+                            <select class="form-select select-sm mt-2" v-model="card.selectedOption" @change="updateSessionSet(card.name, card.selectedOption)">
+                                <option v-for="(set, index) in card.setOptions" :value="set" :key="index" v-show="shouldShowSetOption(card, set)">{{ set.name }}</option>
                             </select>
                         </div>
                     </div>
@@ -137,11 +132,8 @@
 
     <div id="print-content" :class="[`scale-${config.scale}`, {'with-cut-lines': config.includeCutLines}]">
         <template v-for="(card, index) in cards" :key="index">
-            <template v-for="n in card.quantity" :key="n">
-                <img :src="getSelectedOption(card).url" v-if="shouldShowCard(card)">
-                <img :src="getSelectedOption(card).urlBack" v-if="shouldShowCard(card, 'back')">
-                <img :src="config.useCroppedImages ? 'card_back_border_crop.jpg' : 'card_back_normal.jpg'" v-else-if="config.includeBacks">
-            </template>
+            <img v-for="n in card.quantity" :key="n" :src="resolveCardImage(card)" v-show="shouldShowCard(card)">
+            <img v-for="n in card.quantity" :key="n" :src="resolveCardImage(card, 'back')" v-show="shouldShowCard(card, 'back')">
         </template>
     </div>
 </template>
@@ -176,9 +168,8 @@ export default {
                 includePromo: false,
                 includeBasics: false,
                 includeCutLines: false,
-                useCroppedImages: false,
-                includeBacks: false,
                 dfcBacks: true,
+                imageType: 'border_crop',
                 scale: 'normal',
                 decklist: '',
             },
@@ -190,10 +181,8 @@ export default {
     },
     computed: {
         cardCountWhenPrinting() {
-            const count = this.cards.reduce((total, card) => {
-                const frontSides = this.shouldShowCard(card, 'front') ? 1 : 0;
-                const backSides = (this.config.includeBacks || this.shouldShowCard(card, 'back')) ? 1 : 0;
-                return total + (card.quantity * (frontSides + backSides));
+            const count = this.cards.reduce((total, c) => {
+                return total + (c.quantity * ((this.shouldShowCard(c, 'front') ? 1 : 0) + (this.shouldShowCard(c, 'back') ? 1 : 0)));
             }, 0);
 
             const overflow = count % 9;
@@ -219,7 +208,7 @@ export default {
         shouldShowSetOption(card, option) {
             // FIXME: Need a better filter method to detect promo-only garbage.
             // This initial clause here is to tackle promo-only or if the user has a promo selected.
-            if (card.setOptions.length <= 1 || this.getSelectedOption(card) == option) {
+            if (card.setOptions.length <= 1 || card.selectedOption == option) {
                 return true;
             }
 
@@ -230,26 +219,33 @@ export default {
                 return false;
             }
 
-            if (face === 'back' && (this.getSelectedOption(card).urlBack === undefined || !this.config.dfcBacks)) {
+            if (face === 'back' && (card.selectedOption.urlBack === undefined || !this.config.dfcBacks)) {
                 return false;
             }
 
             return true;
         },
-        getSelectedOption(card) {
-            return card.setOptions[card.selectedOptionIndex];
+        resolveCardImage(card, face = 'front') {
+            if (face == 'front') {
+                return `${card.selectedOption.url}&version=${this.config.imageType}`;
+            } else {
+                if (card.selectedOption.urlBack !== undefined) {
+                    return `${card.selectedOption.urlBack}&version=${this.config.imageType}`;
+                } else {
+                    return `./card_back_${this.config.imageType}.jpg`;
+                }
+            }
         },
-        updateSessionSet(cardName, optionIndex) {
-            this.sessionSetSelections[cardName] = optionIndex;
+        updateSessionSet(cardName, setOption) {
+            this.sessionSetSelections[cardName] = setOption;
         },
         storeConfig() {
             localStorage.includeDigital = this.config.includeDigital;
             localStorage.includePromo = this.config.includePromo;
             localStorage.includeBasics = this.config.includeBasics;
             localStorage.includeCutLines = this.config.includeCutLines;
-            localStorage.useCroppedImages = this.config.useCroppedImages;
-            localStorage.includeBacks = this.config.includeBacks;
             localStorage.dfcBacks = this.config.dfcBacks;
+            localStorage.imageType = this.config.imageType;
             localStorage.scale = this.config.scale;
         },
         loadConfig() {
@@ -257,9 +253,8 @@ export default {
             this.config.includePromo = localStorage.includePromo === 'true';
             this.config.includeBasics = localStorage.includeBasics === 'true';
             this.config.includeCutLines = localStorage.includeCutLines === 'true';
-            this.config.useCroppedImages = localStorage.useCroppedImages === 'true';
-            this.config.includeBacks = localStorage.includeBacks === 'true';
             this.config.dfcBacks = !(localStorage.dfcBacks === 'false');
+            this.config.imageType = localStorage.imageType ?? 'border_crop';
             this.config.scale = localStorage.scale ?? 'normal';
         },
         printList() {
@@ -318,28 +313,22 @@ export default {
                         let [ setCode, setNumber ] = option.s.split('|');
                         return {
                             name: `${this.sets[setCode]} (${setNumber})`,
-                            url: this.config.useCroppedImages ? (option.f2 || option.f1) : option.f1 ,
-                            urlBack: this.config.useCroppedImages ? (option.b2 || option.b1) : option.b1,
+                            url: option.f,
+                            urlBack: option.b,
                             isDigital: option.d === 1,
                             isPromo: option.p === 1,
                         };
                     }),
                     isBasic: basicLands.includes(cardName.toLowerCase()),
                     selectedUrl: '',
-                    selectedOptionIndex: this.sessionSetSelections[cardName],
+                    selectedOption: this.sessionSetSelections[cardName],
                 };
 
-                if (!options.selectedOptionIndex) {
+                if (!options.selectedOption) {
                     // Set a default selection.
-                    const optionIndex = options.setOptions.findIndex(option => {
+                    options.selectedOption = options.setOptions.filter(option => {
                         return !option.isDigital && !option.isPromo;
-                    });
-
-                    if (optionIndex !== -1) {
-                        options.selectedOptionIndex = optionIndex;
-                    } else {
-                        options.selectedOptionIndex = 0;
-                    }
+                    })?.[0] ?? options.setOptions[0];
                 }
 
                 this.cards.push(options);
@@ -351,7 +340,7 @@ export default {
 
 <style>
 #deck-input {
-    height: 14rem;
+    height: 20rem;
 }
 
 @media (max-width: 600px) {
@@ -392,6 +381,11 @@ export default {
     left: 0.6rem;
     padding: 0.2rem;
     line-height: 1rem;
+}
+
+.card-image {
+    /* border-radius: 4.75% / 3.5%; */
+    border-radius: 0.3rem;
 }
 
 #arnold {
