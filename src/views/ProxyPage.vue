@@ -74,6 +74,7 @@
                                     <option value="small">Wimpy (98%)</option>
                                     <option value="normal">Regular (100%)</option>
                                     <option value="large">Jacked (102%)</option>
+                                    <option value="actual">Actual (63mm x 88mm)</option>
                                 </select>
                             </label>
                         </div>
@@ -355,7 +356,7 @@ export default {
 
 <style>
 #deck-input {
-    height: 20rem;
+    height: 14rem;
 }
 
 @media (max-width: 600px) {
@@ -396,11 +397,6 @@ export default {
     left: 0.6rem;
     padding: 0.2rem;
     line-height: 1rem;
-}
-
-.card-image {
-    /* border-radius: 4.75% / 3.5%; */
-    border-radius: 0.3rem;
 }
 
 #arnold {
@@ -482,6 +478,11 @@ export default {
     #print-content.scale-small img {
         width: calc(60mm * 0.98);
         height: calc(85mm * 0.98);
+    }
+
+    #print-content.scale-actual img {
+        width: 63mm;
+        height: 88mm;
     }
 
     img {
