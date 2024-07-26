@@ -107,8 +107,8 @@ const stripped = cards.filter(card => {
         isDigital: card.digital,
         isPromo: !customNotPromoSets.includes(card.set) && (card.promo || card.promo_types || customPromoSetTypes.includes(card.set_type) || customPromoSets.includes(card.set)),
         imageUris: {
-            front: `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&version=border_crop&face=front`,
-            back: card.card_faces?.[1]?.image_uris ? `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&version=border_crop&face=back` : undefined,
+            front: `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&face=front`,
+            back: card.card_faces?.[1]?.image_uris ? `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&face=back` : undefined,
         }
     };
 // Slap Lorcana onto the end of the list.

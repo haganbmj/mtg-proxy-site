@@ -50,8 +50,8 @@
 
                         <div class="column col-12">
                             <label class="form-switch">
-                                <input type="checkbox" v-model="config.includeCutLines">
-                                <i class="form-icon"></i> Include Cut Lines
+                                <input type="checkbox" v-model="config.showCutLines">
+                                <i class="form-icon"></i> Show Cut Lines
                             </label>
                         </div>
 
@@ -59,19 +59,34 @@
 
                         <div class="column col-12">
                             <label class="form-label">
-                                <i class="form-icon"></i> Print Scale
-                                <select class="form-select select" v-model="config.scale" style="width:100%;">
-                                    <option value="small">Wimpy (98%)</option>
-                                    <option value="normal">Regular (100%)</option>
-                                    <option value="large">Jacked (102%)</option>
+                                <span class="tooltip tooltip-right" data-tooltip="Style of source images to use."><i class="form-icon"></i> Image Type <span class="icon-info"></span></span>
+                                <select class="form-select select" v-model="config.imageType" style="width:100%;">
+                                    <option value="normal">Normal</option>
+                                    <option value="border_crop">Border Crop</option>
                                 </select>
                             </label>
                         </div>
 
                         <div class="column col-12">
-                            <label class="form-switch">
-                                <input type="checkbox" v-model="config.dfcBacks">
-                                <i class="form-icon"></i> Print DFC Backs
+                            <label class="form-label">
+                                <span class="tooltip tooltip-right" data-tooltip="Smaller sizes will be easier to fit in sleeves."><i class="form-icon"></i> Print Scale <span class="icon-info"></span></span>
+                                <select class="form-select select" v-model="config.scale" style="width:100%;">
+                                    <option value="small">Small (-2%)</option>
+                                    <option value="normal">Regular (60mm x 85mm)</option>
+                                    <option value="large">Large (+2%)</option>
+                                    <option value="actual">Actual (63mm x 88mm)</option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <div class="column col-12">
+                            <label class="form-label">
+                                <i class="form-icon"></i> Card Backs
+                                <select class="form-select select" v-model="config.cardBacks" style="width:100%;">
+                                    <option value="none">None</option>
+                                    <option value="dfc">Double Faced Cards</option>
+                                    <option value="all">All</option>
+                                </select>
                             </label>
                         </div>
 
@@ -106,7 +121,7 @@
                 <div class="cards columns">
                     <div v-for="(card, index) in cards" :key="index" class="card-select column col-3 col-sm-6 mt-2" v-show="shouldShowCard(card)">
                         <div class="p-relative">
-                            <ImageLoader class="card-image img-responsive" :src="card.selectedOption.url" placeholder="./card_back.jpg" :alt="card.name" />
+                            <ImageLoader class="card-image img-responsive" :src="resolveCardImage(card)" placeholder="./card_back_border_crop.jpg" :alt="card.name" />
                             <span class="card-quantity bg-primary text-light docs-shape s-rounded centered">{{ card.quantity }}x</span>
                             <select class="form-select select-sm mt-2" v-model="card.selectedOption" @change="updateSessionSet(card.name, card.selectedOption)">
                                 <option v-for="(set, index) in card.setOptions" :value="set" :key="index" v-show="shouldShowSetOption(card, set)">{{ set.name }}</option>
@@ -120,10 +135,12 @@
         </div>
     </div>
 
-    <div id="print-content" :class="[`scale-${config.scale}`, {'with-cut-lines': config.includeCutLines}]">
+    <div id="print-content" :class="[`scale-${config.scale}`, {'with-cut-lines': config.showCutLines}]">
         <template v-for="(card, index) in cards" :key="index">
-            <img v-for="n in card.quantity" :key="n" :src="card.selectedOption.url" v-show="shouldShowCard(card)">
-            <img v-for="n in card.quantity" :key="n" :src="card.selectedOption.urlBack" v-show="shouldShowCard(card, 'back')">
+            <template v-for="n in card.quantity" :key="n">
+                <img :src="resolveCardImage(card)" v-show="shouldShowCard(card)">
+                <img :src="resolveCardImage(card, 'back')" v-show="shouldShowCard(card, 'back')">
+            </template>
         </template>
     </div>
 </template>
@@ -157,9 +174,10 @@ export default {
                 includeDigital: false,
                 includePromo: false,
                 includeBasics: false,
-                includeCutLines: false,
-                dfcBacks: true,
+                showCutLines: false,
+                imageType: 'border_crop',
                 scale: 'normal',
+                cardBacks: 'dfc',
                 decklist: '',
             },
             sets: {},
@@ -208,11 +226,33 @@ export default {
                 return false;
             }
 
-            if (face === 'back' && (card.selectedOption.urlBack === undefined || !this.config.dfcBacks)) {
-                return false;
+            // Bleh, this is clunky and should be simplified.
+            if (face === 'back') {
+                if (this.config.cardBacks === 'none') {
+                    return false;
+                }
+
+                if (this.config.cardBacks === 'all') {
+                    return true;
+                }
+
+                if (card.selectedOption.urlBack === undefined) {
+                    return false;
+                }
             }
 
             return true;
+        },
+        resolveCardImage(card, face = 'front') {
+            if (face == 'front') {
+                return `${card.selectedOption.url}&version=${this.config.imageType}`;
+            } else {
+                if (card.selectedOption.urlBack !== undefined) {
+                    return `${card.selectedOption.urlBack}&version=${this.config.imageType}`;
+                } else {
+                    return `./card_back_${this.config.imageType}.jpg`;
+                }
+            }
         },
         updateSessionSet(cardName, setOption) {
             this.sessionSetSelections[cardName] = setOption;
@@ -221,17 +261,19 @@ export default {
             localStorage.includeDigital = this.config.includeDigital;
             localStorage.includePromo = this.config.includePromo;
             localStorage.includeBasics = this.config.includeBasics;
-            localStorage.includeCutLines = this.config.includeCutLines;
-            localStorage.dfcBacks = this.config.dfcBacks;
+            localStorage.showCutLines = this.config.showCutLines;
+            localStorage.imageType = this.config.imageType;
             localStorage.scale = this.config.scale;
+            localStorage.cardBacks = this.config.cardBacks;
         },
         loadConfig() {
             this.config.includeDigital = localStorage.includeDigital === 'true';
             this.config.includePromo = localStorage.includePromo === 'true';
             this.config.includeBasics = localStorage.includeBasics === 'true';
-            this.config.includeCutLines = localStorage.includeCutLines === 'true';
-            this.config.dfcBacks = !(localStorage.dfcBacks === 'false');
+            this.config.showCutLines = localStorage.showCutLines === 'true';
+            this.config.imageType = localStorage.imageType ?? 'border_crop';
             this.config.scale = localStorage.scale ?? 'normal';
+            this.config.cardBacks = localStorage.cardBacks ?? 'dfc';
         },
         printList() {
             this.storeConfig();
@@ -316,7 +358,7 @@ export default {
 
 <style>
 #deck-input {
-    height: 20rem;
+    height: 14rem;
 }
 
 @media (max-width: 600px) {
@@ -357,11 +399,6 @@ export default {
     left: 0.6rem;
     padding: 0.2rem;
     line-height: 1rem;
-}
-
-.card-image {
-    /* border-radius: 4.75% / 3.5%; */
-    border-radius: 0.3rem;
 }
 
 #arnold {
@@ -443,6 +480,11 @@ export default {
     #print-content.scale-small img {
         width: calc(60mm * 0.98);
         height: calc(85mm * 0.98);
+    }
+
+    #print-content.scale-actual img {
+        width: 63mm;
+        height: 88mm;
     }
 
     img {
