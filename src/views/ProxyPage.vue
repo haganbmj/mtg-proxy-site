@@ -50,8 +50,8 @@
 
                         <div class="column col-12">
                             <label class="form-switch">
-                                <input type="checkbox" v-model="config.includeCutLines">
-                                <i class="form-icon"></i> Include Cut Lines
+                                <input type="checkbox" v-model="config.showCutLines">
+                                <i class="form-icon"></i> Show Cut Lines
                             </label>
                         </div>
 
@@ -59,7 +59,7 @@
 
                         <div class="column col-12">
                             <label class="form-label">
-                                <i class="form-icon"></i> Image Type
+                                <span class="tooltip tooltip-right" data-tooltip="Style of source images to use."><i class="form-icon"></i> Image Type <span class="icon-info"></span></span>
                                 <select class="form-select select" v-model="config.imageType" style="width:100%;">
                                     <option value="normal">Normal</option>
                                     <option value="border_crop">Border Crop</option>
@@ -69,11 +69,11 @@
 
                         <div class="column col-12">
                             <label class="form-label">
-                                <i class="form-icon"></i> Print Scale
+                                <span class="tooltip tooltip-right" data-tooltip="Smaller sizes will be easier to fit in sleeves."><i class="form-icon"></i> Print Scale <span class="icon-info"></span></span>
                                 <select class="form-select select" v-model="config.scale" style="width:100%;">
-                                    <option value="small">Wimpy (98%)</option>
-                                    <option value="normal">Regular (100%)</option>
-                                    <option value="large">Jacked (102%)</option>
+                                    <option value="small">Small (-2%)</option>
+                                    <option value="normal">Regular (60mm x 85mm)</option>
+                                    <option value="large">Large (+2%)</option>
                                     <option value="actual">Actual (63mm x 88mm)</option>
                                 </select>
                             </label>
@@ -135,7 +135,7 @@
         </div>
     </div>
 
-    <div id="print-content" :class="[`scale-${config.scale}`, {'with-cut-lines': config.includeCutLines}]">
+    <div id="print-content" :class="[`scale-${config.scale}`, {'with-cut-lines': config.showCutLines}]">
         <template v-for="(card, index) in cards" :key="index">
             <img v-for="n in card.quantity" :key="n" :src="resolveCardImage(card)" v-show="shouldShowCard(card)">
             <img v-for="n in card.quantity" :key="n" :src="resolveCardImage(card, 'back')" v-show="shouldShowCard(card, 'back')">
@@ -172,7 +172,7 @@ export default {
                 includeDigital: false,
                 includePromo: false,
                 includeBasics: false,
-                includeCutLines: false,
+                showCutLines: false,
                 imageType: 'border_crop',
                 scale: 'normal',
                 cardBacks: 'dfc',
@@ -259,7 +259,7 @@ export default {
             localStorage.includeDigital = this.config.includeDigital;
             localStorage.includePromo = this.config.includePromo;
             localStorage.includeBasics = this.config.includeBasics;
-            localStorage.includeCutLines = this.config.includeCutLines;
+            localStorage.showCutLines = this.config.showCutLines;
             localStorage.imageType = this.config.imageType;
             localStorage.scale = this.config.scale;
             localStorage.cardBacks = this.config.cardBacks;
@@ -268,7 +268,7 @@ export default {
             this.config.includeDigital = localStorage.includeDigital === 'true';
             this.config.includePromo = localStorage.includePromo === 'true';
             this.config.includeBasics = localStorage.includeBasics === 'true';
-            this.config.includeCutLines = localStorage.includeCutLines === 'true';
+            this.config.showCutLines = localStorage.showCutLines === 'true';
             this.config.imageType = localStorage.imageType ?? 'border_crop';
             this.config.scale = localStorage.scale ?? 'normal';
             this.config.cardBacks = localStorage.cardBacks ?? 'dfc';
