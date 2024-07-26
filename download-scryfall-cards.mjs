@@ -115,20 +115,20 @@ const stripped = cards.filter(card => {
 // These have a distant future timestamp so they'll show up at the bottom of any conflicts.
 }).concat(JSON.parse(fs.readFileSync('./data/lorcana-stripped.json')));
 
-stripped.push({
-    name: 'griselbrand',
-    releaseDate: '1990-01-01',
-    set: {
-        name: 'Griselbrand.com',
-        code: 'Griselbrand.com',
-    },
-    setNumber: '1',
-    isDigital: false,
-    isPromo: false,
-    imageUris: {
-        front: '/avr-106-griselbrand.jpg',
-    },
-});
+// stripped.push({
+//     name: 'griselbrand',
+//     releaseDate: '1990-01-01',
+//     set: {
+//         name: 'Griselbrand.com',
+//         code: 'Griselbrand.com',
+//     },
+//     setNumber: '1',
+//     isDigital: false,
+//     isPromo: false,
+//     imageUris: {
+//         front: '/avr-106-griselbrand.jpg',
+//     },
+// });
 
 // fs.writeFileSync('./out.json', JSON.stringify(stripped, null, 2));
 
