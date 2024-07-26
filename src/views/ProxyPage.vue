@@ -137,8 +137,10 @@
 
     <div id="print-content" :class="[`scale-${config.scale}`, {'with-cut-lines': config.showCutLines}]">
         <template v-for="(card, index) in cards" :key="index">
-            <img v-for="n in card.quantity" :key="n" :src="resolveCardImage(card)" v-show="shouldShowCard(card)">
-            <img v-for="n in card.quantity" :key="n" :src="resolveCardImage(card, 'back')" v-show="shouldShowCard(card, 'back')">
+            <template v-for="n in card.quantity" :key="n">
+                <img :src="resolveCardImage(card)" v-show="shouldShowCard(card)">
+                <img :src="resolveCardImage(card, 'back')" v-show="shouldShowCard(card, 'back')">
+            </template>
         </template>
     </div>
 </template>
