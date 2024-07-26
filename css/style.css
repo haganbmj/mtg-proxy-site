@@ -28,3 +28,7 @@
 .icon-print:before {
   content: "\e900";
 }
+
+.icon-info:before {
+  content: "\e901";
+}
