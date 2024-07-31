@@ -3,7 +3,7 @@ import axios from 'axios';
 import { strict as assert } from 'assert';
 import { normalizeCardName } from './src/helpers/CardNames.mjs';
 
-if (!fs.existsSync('./data/default-cards.json')) {
+if (!fs.existsSync('./data/default-cards.json') || process.argv[2] == "--update") {
     console.log('Downloading fresh card data.');
     const bulkResp = await axios.get('https://api.scryfall.com/bulk-data');
 
@@ -111,9 +111,7 @@ const stripped = cards.filter(card => {
             back: card.card_faces?.[1]?.image_uris ? `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&face=back` : undefined,
         }
     };
-// Slap Lorcana onto the end of the list.
-// These have a distant future timestamp so they'll show up at the bottom of any conflicts.
-}).concat(JSON.parse(fs.readFileSync('./data/lorcana-stripped.json')));
+});
 
 // stripped.push({
 //     name: 'griselbrand',
