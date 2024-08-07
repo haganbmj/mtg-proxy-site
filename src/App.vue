@@ -39,7 +39,15 @@ export default {
     }
   },
   mounted() {
-    this.darkTheme = localStorage.darkTheme === 'true';
+    // Detect theme on first visit, then persist it for subsequent use.
+    if (localStorage.darkTheme === undefined) {
+        const browserPreference = window.matchMedia("(prefers-color-scheme: dark)");
+        if (browserPreference.matches) {
+            this.darkTheme = true;
+        }
+    } else {
+        this.darkTheme = localStorage.darkTheme === 'true';
+    }
     this.updateTheme();
   },
   methods: {
