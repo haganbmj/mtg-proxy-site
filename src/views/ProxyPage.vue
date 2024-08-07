@@ -374,20 +374,30 @@ export default {
 #slot-usage {
     border-collapse: collapse;
     height: 0.3rem;
+
+    .bar-item {
+        border: 1px solid #bcc3ce;
+        border-collapse: collapse;
+        width: 11.1%;
+
+        &.consumed {
+            background: #5755d9;
+        }
+
+        &.unconsumed {
+            background: #eef0f3;
+        }
+    }
 }
 
-#slot-usage .bar-item {
-    border: 1px solid #bcc3ce;
-    border-collapse: collapse;
-    width: 11.1%;
-}
+html.dark-theme {
+    #slot-usage .bar-item {
+        border: 1px solid #eef0f3;
 
-#slot-usage .bar-item.consumed {
-    background: #5755d9;
-}
-
-#slot-usage .bar-item.unconsumed {
-    background: #eef0f3;
+        &.unconsumed {
+            background: #303742;
+        }
+    }
 }
 
 .card-quantity {
