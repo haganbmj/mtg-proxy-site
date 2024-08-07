@@ -8,9 +8,11 @@
           <a href="https://griselbrand.com" class="btn btn-link">Griselbrand</a>
       </section>
       <!-- <section class="navbar-center"></section> -->
-      <section class="navbar-section hide-sm">
-          <a href="https://twitter.com/haganbmj" target="_blank" class="btn ml-1">Twitter</a>
-          <a href="https://github.com/haganbmj/mtg-proxy-site" target="_blank" class="btn btn-primary ml-1">GitHub</a>
+      <section class="navbar-section">
+          <a title="Change Theme" class="btn btn-action btn-primary s-circle" @click="changeTheme()"><span class="icon-brightness-contrast"></span></a>
+          <span class="px-1 hide-sm"></span>
+          <a href="https://twitter.com/haganbmj" target="_blank" class="btn ml-1 hide-sm">Twitter</a>
+          <a href="https://github.com/haganbmj/mtg-proxy-site" target="_blank" class="btn btn-primary ml-1 hide-sm">GitHub</a>
       </section>
   </header>
   <div id="content" class="container">
@@ -26,6 +28,34 @@ export default {
   components: {
     ProxyPage
   },
+  data() {
+    return {
+        darkTheme: false,
+    }
+  },
+  watch: {
+    darkTheme(newValue) {
+        localStorage.darkTheme = this.darkTheme;
+    }
+  },
+  mounted() {
+    this.darkTheme = localStorage.darkTheme === 'true';
+    this.updateTheme();
+  },
+  methods: {
+    changeTheme() {
+        this.darkTheme = !this.darkTheme;
+        this.updateTheme();
+    },
+    updateTheme() {
+        const elem = document.querySelector('html');
+        if (!this.darkTheme && elem.classList.contains('dark-theme')) {
+            elem.classList.remove('dark-theme');
+        } else {
+            elem.classList.add('dark-theme');
+        }
+    }
+  }
 }
 </script>
 
@@ -41,7 +71,7 @@ export default {
 
 #content {
   margin: 0 auto;
-  margin-top: 0.4rem;
+  margin-top: 0.8rem;
   margin-bottom: 4rem;
   max-width: 1200px;
 }

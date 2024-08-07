@@ -9,7 +9,8 @@
 
 html.dark-theme {
     // Core colors
-    $primary-color: #5755d9;
+    // $primary-color: #5755d9;
+    $primary-color: #393885;
     $primary-color-dark: darken($primary-color, 3%);
     $primary-color-light: lighten($primary-color, 3%);
     $secondary-color: lighten($primary-color, 37.5%);
@@ -17,9 +18,10 @@ html.dark-theme {
     $secondary-color-light: lighten($secondary-color, 3%);
 
     // Gray colors
-    $dark-color: #303742;
-    $light-color: #e6edf3;
-    $gray-color: lighten($dark-color, 55%);
+    $dark-color: #3e3f40;
+    $light-color: #e9ecee;
+    // $gray-color: lighten($dark-color, 35%);
+    $gray-color: darken($light-color, 35%);
     $gray-color-dark: darken($gray-color, 30%);
     $gray-color-light: lighten($gray-color, 20%);
 
@@ -39,7 +41,7 @@ html.dark-theme {
     $code-color: #d73e48;
     $highlight-color: #443e2e;
     $body-bg: $bg-color-light;
-    $body-font-color: darken($light-color, 15%);
+    $body-font-color: darken($light-color, 25%);
     $link-color: $primary-color;
     $link-color-dark: darken($link-color, 10%);
     $link-color-light: lighten($link-color, 10%);
