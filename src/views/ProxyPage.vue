@@ -392,7 +392,7 @@ export default {
 
 html.dark-theme {
     #slot-usage .bar-item {
-        border: 1px solid #eef0f3;
+        border: 1px solid #707274;
 
         &.unconsumed {
             background: #303742;
