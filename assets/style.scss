@@ -36,7 +36,7 @@ html.dark-theme {
     $code-color: #d73e48;
     $highlight-color: #443e2e;
     $body-bg: $bg-color-light;
-    $body-font-color: darken($light-color, 25%);
+    $body-font-color: darken($light-color, 10%);
     $link-color: $primary-color;
     $link-color-dark: darken($link-color, 10%);
     $link-color-light: lighten($link-color, 10%);
