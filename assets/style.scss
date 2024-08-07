@@ -13,7 +13,7 @@ html.dark-theme {
     $primary-color: #393885;
     $primary-color-dark: darken($primary-color, 3%);
     $primary-color-light: lighten($primary-color, 3%);
-    $secondary-color: lighten($primary-color, 37.5%);
+    $secondary-color: lighten($primary-color, 25%);
     $secondary-color-dark: darken($secondary-color, 3%);
     $secondary-color-light: lighten($secondary-color, 3%);
 
@@ -21,16 +21,16 @@ html.dark-theme {
     $dark-color: #3e3f40;
     $light-color: #e9ecee;
     // $gray-color: lighten($dark-color, 35%);
-    $gray-color: darken($light-color, 35%);
+    $gray-color: darken($light-color, 55%);
     $gray-color-dark: darken($gray-color, 30%);
     $gray-color-light: lighten($gray-color, 20%);
 
     $border-color: lighten($dark-color, 65%);
     $border-color-dark: darken($border-color, 10%);
     $border-color-light: lighten($border-color, 8%);
-    $bg-color: darken($light-color, 85%);
-    $bg-color-dark: darken($bg-color, 3%);
-    $bg-color-light: darken($bg-color, 3%);
+    $bg-color-dark: darken($light-color, 85%);
+    $bg-color: darken($bg-color-dark, 3%);
+    $bg-color-light: darken($light-color, 85%);
 
     // Control colors
     $success-color: #32b643;
