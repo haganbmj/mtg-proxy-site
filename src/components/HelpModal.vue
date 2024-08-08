@@ -18,7 +18,6 @@
                     <p><b>Margins:</b> I recommend <b>not</b> adjusting the margins on the page, but wish you the best of luck if you opt to.</p>
 
                     <h5>Known Issues</h5>
-                    <p><b>Meld Card Backs:</b> The back face of Meld cards are currently unprintable, but who the hell plays Meld anyways?</p>
                     <p><b>Show Promo/Digital:</b> Yeah yeah, I keep finding more stuff that doesn't fit Scryfall's data format, so there might be some promos that are lingering around that aren't properly flagged.</p>
                     <p><b>Tokens/Emblems/Etc:</b> Currently there's no focus on supporting these, so they likely won't appear. The token printing versions are a mess (especially with double faced tokens) that I haven't wanted to wade through yet.</p>
                     <p><b>Non-English:</b> There is no intended support for non-English cards, but there might be a couple that have slipped through. Scryfall's foreign card imagery is very limited for older cards, but eventually maybe I'll get the appetite to tackle it for the newer stuff.</p>

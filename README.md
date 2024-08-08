@@ -5,11 +5,10 @@
 ### Developer Notes
 
 - This project is intended to be deployed statically and uses a minimal list of cards bundled with the distributables.
-- Use `npm run cards` to build the card list using locally stored data, or `npm run cards-update` to force fetching an updated list from Scryfall. 
+- Use `npm run cards` to build the card list using locally stored data, or `npm run cards:update` to force fetching an updated list from Scryfall. 
 
 ### Known Issues
 
-- Meld cards don't have backs.
 - Search is fairly specific due to exact matching.
 - Excluding basic lands and creating a list with _only_ basics is permit, but I'm pretty sure that's a stupid edge case I don't want to deal with.
 - Better mutation handling for the textarea. ie. Keep existing selections when adding additional cards.
@@ -27,6 +26,7 @@
 
 ```none
 0 griselbrand
+3 Bruna, the Fading Light
 1 Bolas's Citadel
 1 Karn, the Great Creator
 1 Teferi's Protection
