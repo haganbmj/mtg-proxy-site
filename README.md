@@ -9,7 +9,6 @@
 
 ### Known Issues
 
-- Meld cards don't have backs.
 - Search is fairly specific due to exact matching.
 - Excluding basic lands and creating a list with _only_ basics is permit, but I'm pretty sure that's a stupid edge case I don't want to deal with.
 - Better mutation handling for the textarea. ie. Keep existing selections when adding additional cards.
