@@ -123,7 +123,7 @@
                         <div class="p-relative">
                             <ImageLoader class="card-image img-responsive" :src="resolveCardImage(card)" placeholder="./card_back_border_crop.jpg" :alt="card.name" />
                             <span class="card-quantity bg-primary text-light docs-shape s-rounded centered">{{ card.quantity }}x</span>
-                            <select class="form-select select-sm mt-2" v-model="card.selectedOption" @change="updateSessionSet(card.name, card.selectedOption)">
+                            <select class="form-select select-sm mt-2" name="selected-option" v-model="card.selectedOption" @change="updateSessionSet(card.name, card.selectedOption)">
                                 <option v-for="(set, index) in card.setOptions" :value="set" :key="index" v-show="shouldShowSetOption(card, set)">{{ set.name }}</option>
                             </select>
                         </div>
@@ -159,7 +159,14 @@ const basicLands = [
     'forest', 'island', 'plains', 'swamp', 'mountain',
     'snow-covered forest', 'snow-covered island',
     'snow-covered plains', 'snow-covered swamp',
-    'snow-covered mountain'];
+    'snow-covered mountain'
+];
+
+function setImageVersion(url, version) {
+    var url = new URL(url);
+    url.searchParams.set('version', version);
+    return url.href;
+}
 
 export default {
     name: 'ProxyPage',
@@ -226,17 +233,12 @@ export default {
                 return false;
             }
 
-            // Bleh, this is clunky and should be simplified.
             if (face === 'back') {
-                if (this.config.cardBacks === 'none') {
-                    return false;
-                }
-
                 if (this.config.cardBacks === 'all') {
                     return true;
                 }
 
-                if (card.selectedOption.urlBack === undefined) {
+                if (this.config.cardBacks === 'none' || card.selectedOption.urlBack === undefined) {
                     return false;
                 }
             }
@@ -245,10 +247,10 @@ export default {
         },
         resolveCardImage(card, face = 'front') {
             if (face == 'front') {
-                return `${card.selectedOption.url}&version=${this.config.imageType}`;
+                return setImageVersion(card.selectedOption.url, this.config.imageType);
             } else {
                 if (card.selectedOption.urlBack !== undefined) {
-                    return `${card.selectedOption.urlBack}&version=${this.config.imageType}`;
+                    return setImageVersion(card.selectedOption.urlBack, this.config.imageType);
                 } else {
                     return `./card_back_${this.config.imageType}.jpg`;
                 }

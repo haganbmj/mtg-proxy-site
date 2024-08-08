@@ -93,6 +93,13 @@ const stripped = cards.filter(card => {
     return [ card ];
 }).map(card => {
     // Then set the high level data necessary to organize the remaining cards.
+    var cardBackUri = undefined;
+    if (card.card_faces?.[1]?.image_uris) {
+        cardBackUri = `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&face=back`;
+    } else if (card.layout == 'meld') {
+        cardBackUri = `https://backs.scryfall.io/large/${card.card_back_id.charAt(0)}/${card.card_back_id.charAt(1)}/${card.card_back_id}.jpg`;
+    }
+
     return {
         id: card.id,
         oracleId: card.oracle_id,
@@ -108,7 +115,7 @@ const stripped = cards.filter(card => {
         isPromo: !customNotPromoSets.includes(card.set) && (card.promo || card.promo_types || customPromoSetTypes.includes(card.set_type) || customPromoSets.includes(card.set)),
         imageUris: {
             front: `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&face=front`,
-            back: card.card_faces?.[1]?.image_uris ? `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&face=back` : undefined,
+            back: cardBackUri,
         }
     };
 });

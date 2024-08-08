@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "cards": "node download-scryfall-cards.mjs",
-    "cards-update": "node download-scryfall-cards.mjs --update"
+    "cards:update": "node download-scryfall-cards.mjs --update"
   },
   "dependencies": {
     "core-js": "^3.8.3",
