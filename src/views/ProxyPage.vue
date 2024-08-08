@@ -111,7 +111,7 @@
                 </div>
 
                 <div id="input-errors" class="toast toast-error" v-show="errors.length > 0">
-                    <button class="btn btn-clear float-right" @click="errors = []"></button>
+                    <button class="btn btn-clear float-right" alt="Dismiss Errors" @click="errors = []"></button>
                     <div>Some cards could not be identified.</div>
                     <ul>
                         <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
@@ -356,7 +356,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 #deck-input {
     height: 14rem;
 }
