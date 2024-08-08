@@ -14,6 +14,10 @@ export function normalizeCardName(cardName) {
         // Actually, fuck it. Just use the first part of the split card name.
         .replace(/\s\/\/.+/g, '')
 
+        // Remove text in parenthesis because it gets difficult when working with the Arena deck format.
+        // This means we're not doing great matches on a couple cards, but at least they're available.
+        .replace(/\(.*\)/g, '')
+
         // Fix those dumb apostrophes and quotation marks.
         .replace(/[’‚‘‛]/g, `'`)
         .replace(/[‟”„“]/g, `"`)
@@ -22,5 +26,6 @@ export function normalizeCardName(cardName) {
         .replace(/_+/g, `_`)
 
         // Normalize case.
-        .toLowerCase();
+        .toLowerCase()
+        .trim();
 }

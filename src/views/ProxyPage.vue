@@ -296,7 +296,9 @@ export default {
                 // Extract the quantity and card name.
                 // Cockatrice prefixes lines with "SB:" for sideboard cards, so optionally matching that.
                 // MTGA's export format puts the set and collector number in the line. ex. Arid Mesa (ZEN) 211
-                let extract = /^(?:SB:\s)?(?:(\d+)?x?\s)?([^(]+)(?:\s\(.+\) .+)?$/i.exec(line);
+                // FIXME: Need a more specific match for MTGA so I can still parse cards with parensthesis.
+                //  Ideally need to match specifically the MTGA suffix of: (SET) ###
+                let extract = /^(?:SB:\s)?(?:(\d+)?x?\s)?([^(]+).*$/i.exec(line);
                 if (extract === null) {
                     this.errors.push(line);
                     console.warn(`Failed to parse line: ${line}`);
