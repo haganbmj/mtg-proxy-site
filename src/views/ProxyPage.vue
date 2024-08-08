@@ -6,7 +6,7 @@
             <div class="column col-3 col-sm-12" style="z-index:300;">
                 <div id="config" class="form-group p-sticky">
                     <div class="form-group">
-                        <textarea id="deck-input" class="form-input" v-model="config.decklist" autofocus
+                        <textarea id="deck-input" class="form-input" title="Deck Input" v-model="config.decklist" autofocus
                             placeholder="4 Wild Nacatl&#10;4 Steppe Lynx&#10;0x Griselbrand&#10;4x Lightning Bolt&#10;3x Price of Progress&#10;4 Strip Mine (ATQ) 82d&#10;&#10;// Sideboard&#10;Orim's Chant&#10;3x Rough // Tumble&#10;SB: dead/gone"></textarea>
                     </div>
 
@@ -29,28 +29,28 @@
                     <div class="columns">
                         <div class="column col-12">
                             <label class="form-switch">
-                                <input type="checkbox" v-model="config.includeDigital">
+                                <input type="checkbox" name="include-digital" v-model="config.includeDigital">
                                 <i class="form-icon"></i> Show Digital Printings
                             </label>
                         </div>
 
                         <div class="column col-12">
                             <label class="form-switch">
-                                <input type="checkbox" v-model="config.includePromo">
+                                <input type="checkbox" name="include-promo" v-model="config.includePromo">
                                 <i class="form-icon"></i> Show Promo Printings
                             </label>
                         </div>
 
                         <div class="column col-12">
                             <label class="form-switch">
-                                <input type="checkbox" v-model="config.includeBasics">
+                                <input type="checkbox" name="include-basics" v-model="config.includeBasics">
                                 <i class="form-icon"></i> Include Basic Lands
                             </label>
                         </div>
 
                         <div class="column col-12">
                             <label class="form-switch">
-                                <input type="checkbox" v-model="config.showCutLines">
+                                <input type="checkbox" name="show-cut-lines" v-model="config.showCutLines">
                                 <i class="form-icon"></i> Show Cut Lines
                             </label>
                         </div>
@@ -60,7 +60,7 @@
                         <div class="column col-12">
                             <label class="form-label">
                                 <span class="tooltip tooltip-right" data-tooltip="Style of source images to use."><i class="form-icon"></i> Image Type <span class="icon-info"></span></span>
-                                <select class="form-select select" v-model="config.imageType" style="width:100%;">
+                                <select class="form-select select" name="image-type" v-model="config.imageType" style="width:100%;">
                                     <option value="normal">Normal</option>
                                     <option value="border_crop">Border Crop</option>
                                 </select>
@@ -70,7 +70,7 @@
                         <div class="column col-12">
                             <label class="form-label">
                                 <span class="tooltip tooltip-right" data-tooltip="Smaller sizes will be easier to fit in sleeves."><i class="form-icon"></i> Print Scale <span class="icon-info"></span></span>
-                                <select class="form-select select" v-model="config.scale" style="width:100%;">
+                                <select class="form-select select" name="scale" v-model="config.scale" style="width:100%;">
                                     <option value="small">Small (-2%)</option>
                                     <option value="normal">Regular (60mm x 85mm)</option>
                                     <option value="large">Large (+2%)</option>
@@ -82,7 +82,7 @@
                         <div class="column col-12">
                             <label class="form-label">
                                 <i class="form-icon"></i> Card Backs
-                                <select class="form-select select" v-model="config.cardBacks" style="width:100%;">
+                                <select class="form-select select" name="card-backs" v-model="config.cardBacks" style="width:100%;">
                                     <option value="none">None</option>
                                     <option value="dfc">Double Faced Cards</option>
                                     <option value="all">All</option>
