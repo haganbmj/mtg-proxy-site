@@ -1,5 +1,5 @@
 <template>
-    <div class="loading loading-lg" :class="{ 'hidden': loaded }"></div>
+    <div class="card-loading loading loading-lg" :class="{ 'hidden': loaded }"></div>
     <img v-bind="$attrs" :src="internalSrc">
     <img v-if="!loaded" :src="src" v-on:load="onLoaded" class="hidden">
 </template>
@@ -40,8 +40,8 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-.loading {
+<style scoped>
+.card-loading.loading {
     position: absolute;
     width: 100%;
     top: 30%;
