@@ -163,9 +163,13 @@ const basicLands = [
 ];
 
 function setImageVersion(url, version) {
-    var url = new URL(url);
-    url.searchParams.set('version', version);
-    return url.href;
+    if (/scryfall/.test(url)) {
+        var url = new URL(url);
+        url.searchParams.set('version', version);
+        return url.href;
+    } else {
+        return url;
+    }
 }
 
 export default {
