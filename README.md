@@ -24,22 +24,20 @@
 
 ### Decent Test Data Set
 
+This should generate no errors with the current match strategy.
+
 ```none
 0 griselbrand
 3 Bruna, the Fading Light
-1 Bolas's Citadel
 1 Karn, the Great Creator
 1 Teferi's Protection
-1 Gaea’s Cradle
-1 Stormblood Berserker
 1 Delver of Secrets
 1 Nezumi Graverobber // Nighteyes the Desecrator
 1 Fire // Ice
 1 dead / GONE
-1 who / What // WHEN / wheRE // why
+1 who /What // WHEN /wheRE // why
 1 Forest
 1 Impatient Iguana
-1 Pestilence
 1 Planewide Disaster
 1 Goldmeadow
 1 Ashnod's Coupon
@@ -47,8 +45,6 @@
 1 Bog Humbugs
 1 Lim-Dûl's Vault
 2 Lim-Dul's Vault
-1 Apes of Rath
-1 Berserk (LEB) 186
 4 Strip Mine (ATQ) 82d
 1 Mana Crypt
 2 Ancestral Hot Dog Minotaur
@@ -57,16 +53,20 @@
 Now You See Me . . .
 Now You See Me...
 5 Robo-Piñata
-2 Robo-Pinata
+2 Robo-Pinata 
 How Is This a Par Three?!
 _____ _____ _____ Trespasser
 "Brims" Barone, Midway Mobster
 2 ‟Brims” Barone, Midway Mobster
-
+Start / Finish
+Start/Fire
+3 bind
+2 bind // liberate
 
 // 15 Sideboard
 SB: 1 Yixlid Jailer
 1 Erase (Not the Urza's Legacy One)
+1 Erase (Not the Urza's Legacy One) (UNH) 10
 2 Erase
 +2 Mace
 1 Krark's Thumb

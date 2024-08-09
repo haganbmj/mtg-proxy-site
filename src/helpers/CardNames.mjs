@@ -11,19 +11,18 @@ export function normalizeCardName(cardName) {
         // Normalize a space before and after the double slashes in split cards.
         .replace(/([^/])\s*\/\/\s*([^/])/g, '$1 // $2')
 
-        // Actually, fuck it. Just use the first part of the split card name.
-        .replace(/\s\/\/.+/g, '')
-
-        // Remove text in parenthesis because it gets difficult when working with the Arena deck format.
-        // This means we're not doing great matches on a couple cards, but at least they're available.
-        .replace(/\(.*\)/g, '')
-
         // Fix those dumb apostrophes and quotation marks.
         .replace(/[’‚‘‛]/g, `'`)
         .replace(/[‟”„“]/g, `"`)
 
         // Consolidate underscores.
         .replace(/_+/g, `_`)
+
+        // Remove periods to handle the UNF ". . ." cards?
+        .replaceAll('.', '')
+
+        // Strip excess whitespace.
+        .replace(/\s+/, ' ')
 
         // Normalize case.
         .toLowerCase()

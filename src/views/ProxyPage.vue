@@ -289,16 +289,15 @@ export default {
 
                 // Different sites have different sideboard formats.
                 // Look for the word "sideboard" or lines that start with a double slash and skip them.
-                if (/Sideboard/i.test(line) || /^\/\//.test(line) || line === '') {
+                // MTGA uses Sideboard and Deck as section headers.
+                if (/^Sideboard$/i.test(line) || /^Deck$/i.test(line) || /^\/\//.test(line) || line === '') {
                     continue;
                 }
 
                 // Extract the quantity and card name.
                 // Cockatrice prefixes lines with "SB:" for sideboard cards, so optionally matching that.
-                // MTGA's export format puts the set and collector number in the line. ex. Arid Mesa (ZEN) 211
-                // FIXME: Need a more specific match for MTGA so I can still parse cards with parensthesis.
-                //  Ideally need to match specifically the MTGA suffix of: (SET) ###
-                let extract = /^(?:SB:\s)?(?:(\d+)?x?\s)?([^(]+).*$/i.exec(line);
+                // Last I knew MTGA's export format puts the set and collector number in the line. ex. Arid Mesa (ZEN) 211
+                let extract = /^(?:SB:\s)?(?:(\d+)?x?\s)?(.+?)(?:\s\([^()]+\)\s+\w+)?$/i.exec(line);
                 if (extract === null) {
                     this.errors.push(line);
                     console.warn(`Failed to parse line: ${line}`);
