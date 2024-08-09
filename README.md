@@ -42,7 +42,7 @@ This should generate no errors with the current match strategy.
 1 Goldmeadow
 1 Ashnod's Coupon
 1 Axe of the Warmonger
-1 Bog Humbugs
+1 Bog   Humbugs
 1 Lim-Dûl's Vault
 2 Lim-Dul's Vault
 4 Strip Mine (ATQ) 82d

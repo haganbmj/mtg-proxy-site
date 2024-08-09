@@ -85,8 +85,8 @@ const stripped = cards.filter(card => {
     // Do some handling for the stupid Reversible Card bullshit.
     if (card.layout === 'reversible_card') {
         return [
-            { ...card, ...card.card_faces[0], collector_number: `${card.collector_number}a`, card_faces: undefined },
-            { ...card, ...card.card_faces[1], collector_number: `${card.collector_number}b`, card_faces: undefined },
+            { ...card, ...card.card_faces[0], collector_number: card.collector_number, card_faces: undefined, overridden_collector_number: `${card.collector_number}a`, reversible_face: 'front' },
+            { ...card, ...card.card_faces[1], collector_number: card.collector_number, card_faces: undefined, overridden_collector_number: `${card.collector_number}b`,reversible_face: 'back' },
         ];
     }
 
@@ -110,11 +110,11 @@ const stripped = cards.filter(card => {
             name: card.set_name,
             code: card.set,
         },
-        setNumber: card.collector_number,
+        setNumber: card.overridden_collector_number ?? card.collector_number,
         isDigital: card.digital,
         isPromo: !customNotPromoSets.includes(card.set) && (card.promo || card.promo_types || customPromoSetTypes.includes(card.set_type) || customPromoSets.includes(card.set)),
         imageUris: {
-            front: `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&face=front`,
+            front: `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&face=${card.reversible_face ?? 'front'}`,
             back: cardBackUri,
         }
     };
