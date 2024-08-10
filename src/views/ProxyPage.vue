@@ -3,7 +3,7 @@
         <HelpModal ref="helpModal" />
 
         <div class="columns">
-            <div class="column col-3 col-sm-12" style="z-index:300;">
+            <div class="column col-3 col-sm-12 mb-2" style="z-index:300;">
                 <div id="config" class="form-group p-sticky">
                     <div class="form-group">
                         <textarea id="deck-input" class="form-input" title="Deck Input" v-model="config.decklist" autofocus
@@ -54,9 +54,9 @@
                                 <i class="form-icon"></i> Show Cut Lines
                             </label>
                         </div>
-
-                        <div class="column col-12 divider"></div>
-
+                    </div>
+                    <div class="column col-12 divider"></div>
+                    <div class="columns">
                         <div class="column col-12">
                             <label class="form-label">
                                 <span class="tooltip tooltip-right" data-tooltip="Style of source images to use."><i class="form-icon"></i> Image Type <span class="icon-info"></span></span>
@@ -89,15 +89,14 @@
                                 </select>
                             </label>
                         </div>
-
-                        <div class="column col-12 divider"></div>
-
+                    </div>
+                    <div class="column col-12 divider"></div>
+                    <div class="columns">
                         <div class="column col-12">
                             <button class="btn p-centered" @click="$refs.helpModal.show()">Help?</button>
                         </div>
-
-                        <div class="column col-12 divider"></div>
                     </div>
+                    <div class="column col-12 divider"></div>
                 </div>
             </div>
 
