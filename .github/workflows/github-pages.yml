@@ -29,6 +29,7 @@ jobs:
       - run: echo "VUE_APP_BUILD_SHA=$GITHUB_SHA" >> $GITHUB_ENV
       - run: npm ci
       - run: npm run build
+      - run: npm run test
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
