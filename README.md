@@ -27,6 +27,7 @@
 This should generate no errors with the current match strategy.
 
 ```none
+Deck
 0 griselbrand
 3 Bruna, the Fading Light
 1 Karn, the Great Creator

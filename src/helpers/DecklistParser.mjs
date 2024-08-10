@@ -5,6 +5,7 @@ export function parseDecklist(decklist) {
         lines: [],
         errors: [],
     }
+
     for (let line of decklist.split('\n')) {
         line = line.trim();
 
@@ -37,11 +38,9 @@ export function parseDecklist(decklist) {
             continue;
         }
 
-        const cardName = normalizeCardName(inputCardName);
-
         response.lines.push({
-            name: cardName,
-            quantity: quantity,
+            name: normalizeCardName(inputCardName),
+            quantity: parseInt(quantity),
         })
     }
 

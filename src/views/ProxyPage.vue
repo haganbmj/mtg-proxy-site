@@ -290,6 +290,7 @@ export default {
 
             const { lines, errors } = parseDecklist(this.config.decklist);
             this.errors = errors;
+
             for (let line of lines) {
                 const cardLookup = (await ScryfallDatasetAsync()).cards[line.name];
 
@@ -300,7 +301,7 @@ export default {
                 }
 
                 const options = {
-                    quantity: parseInt(line.quantity),
+                    quantity: line.quantity,
                     name: line.name,
                     setOptions: cardLookup.map(option => {
                         let [ setCode, setNumber ] = option.s.split('|');
