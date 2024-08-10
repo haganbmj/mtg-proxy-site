@@ -3,6 +3,7 @@ export function normalizeCardName(cardName) {
         // Convert diacritics down.
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[Ææ]/g, 'ae')
 
         // Use all double slashes for split cards. ex. Fire / Ice => Fire // Ice
         // As of right now split cards are the only ones using slashes, so hopefully this is safe?
@@ -19,10 +20,10 @@ export function normalizeCardName(cardName) {
         .replace(/_+/g, `_`)
 
         // Remove periods to handle the UNF ". . ." cards?
-        .replaceAll('.', '')
+        .replace(/\s*\./g, '.')
 
         // Strip excess whitespace.
-        .replace(/\s+/, ' ')
+        .replace(/\s+/g, ' ')
 
         // Normalize case.
         .toLowerCase()
