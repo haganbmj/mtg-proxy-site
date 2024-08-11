@@ -16,7 +16,7 @@ describe('normalizeCardNames()', () => {
 
     describe('Whitespace', () => {
         [
-            { input: `  Delver   of  Secrets   `, expected: `delver of secrets` },
+            { input: `  Delver  of \t Secrets   `, expected: `delver of secrets` },
         ].map((t) => {
             test(t.input, () => {
                 expect(normalizeCardName(t.input)).toBe(t.expected);
