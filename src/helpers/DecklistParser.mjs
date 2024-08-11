@@ -12,14 +12,14 @@ export function parseDecklist(decklist) {
         // Different sites have different sideboard formats.
         // Look for the word "sideboard" or lines that start with a double slash and skip them.
         // MTGA uses Sideboard and Deck as section headers.
-        if (/^Sideboard$/i.test(line) || /^Deck$/i.test(line) || /^\/\//.test(line) || line === '') {
+        if (/^Sideboard:?$/i.test(line) || /^Deck:?$/i.test(line) || /^\/\//.test(line) || line === '') {
             continue;
         }
 
         // Extract the quantity and card name.
         // Cockatrice prefixes lines with "SB:" for sideboard cards, so optionally matching that.
         // Last I knew MTGA's export format puts the set and collector number in the line. ex. Arid Mesa (ZEN) 211
-        let extract = /^(?:SB:\s+)?(?:(\d+)?x?\s)?(.+?)(?:\s\([^()]+\)\s+\w+)?$/i.exec(line);
+        let extract = /^(?:SB:\s+)?(?:(\d+)?x?\s)?(.+?)(?:\s\([^()]*\)\s+\w+)?$/i.exec(line);
         if (extract === null) {
             response.errors.push(line);
             console.warn(`Failed to parse line: ${line}`);

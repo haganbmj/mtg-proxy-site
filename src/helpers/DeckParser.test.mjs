@@ -134,13 +134,18 @@ describe('parseDecklist()', () => {
                 parseDecklist(
                     `
                     Deck
+                    Deck:
                     1x Abandon Hope
+                    The Deck of Many Things
+                    Deck Deck Go (ABC) 123
                     `
                 )
             ).toStrictEqual(
                 {
                     lines: [
                         { name: 'abandon hope', quantity: 1 },
+                        { name: 'the deck of many things', quantity: 1 },
+                        { name: 'deck deck go', quantity: 1 },
                     ],
                     errors: [],
                 }
@@ -153,6 +158,7 @@ describe('parseDecklist()', () => {
                     `
                     sideboard
                     Sideboard
+                    Sideboard:
                     3x Abandon Hope
                     SB:   2x Price of Progress
                     `
@@ -191,7 +197,8 @@ describe('parseDecklist()', () => {
     });
 
     describe('Deck Formats', () => {
-        test('MTGA Format', () => {
+        // FIXME: Moxfield exports with MTAG with an "About" header, don't know if it's worth supporting that or not.
+        test('MTGA/Moxfield Format', () => {
             expect(
                 parseDecklist(
                     `
@@ -200,6 +207,11 @@ describe('parseDecklist()', () => {
                     2 Hazmat Suit (USED)
                     Erase (Not the Urza‛s Legacy One) (UNH) 10
                     2x Vadmir, New Blood (POTJ) 113p
+
+                    SIDEBOARD:
+                    // Scryfall excludes the Set in some cases?
+                    2 Brotherhood's End () 128
+                    2 Final Revels (LRW) 113
                     `
                 )
             ).toStrictEqual(
@@ -209,6 +221,31 @@ describe('parseDecklist()', () => {
                         { name: 'hazmat suit (used)', quantity: 2 },
                         { name: `erase (not the urza's legacy one)`, quantity: 1 },
                         { name: 'vadmir, new blood', quantity: 2 },
+                        { name: `brotherhood's end`, quantity: 2 },
+                        { name: 'final revels', quantity: 2 },
+                    ],
+                    errors: [],
+                }
+            )
+        });
+
+        test('Scryfall Clipboard Format', () => {
+            expect(
+                parseDecklist(
+                    `
+                    5 Mountain
+                    4 City of Traitors
+
+                    // Sideboard
+                    2 Brotherhood's End
+                    `
+                )
+            ).toStrictEqual(
+                {
+                    lines: [
+                        { name: 'mountain', quantity: 5 },
+                        { name: 'city of traitors', quantity: 4 },
+                        { name: `brotherhood's end`, quantity: 2 },
                     ],
                     errors: [],
                 }
