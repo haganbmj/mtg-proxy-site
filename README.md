@@ -15,8 +15,6 @@
 - Need to verify @media print behavior across multiple browsers.
 - Probably also need to document print to pdf process and options.
 - Manually adjusting print margins restores the hidden default print page header/footer. Unclear if there's a way to actually remove those or not.
-- Doesn't acknowledge MTGA format set declarations, though not sure I would want it to.
-- Cards with Parenthese in the name don't work, fortunately that's just Un-cards so far.
 
 ### Future Thoughts
 
@@ -27,6 +25,7 @@
 This should generate no errors with the current match strategy.
 
 ```none
+Deck
 0 griselbrand
 3 Bruna, the Fading Light
 1 Karn, the Great Creator
@@ -59,10 +58,11 @@ _____ _____ _____ Trespasser
 "Brims" Barone, Midway Mobster
 2 ‟Brims” Barone, Midway Mobster
 Start / Finish
-Start/Fire
+Start/Fire () 123
 3 bind
 2 bind // liberate
 
+Sideboard:
 // 15 Sideboard
 SB: 1 Yixlid Jailer
 1 Erase (Not the Urza's Legacy One)

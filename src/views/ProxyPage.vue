@@ -145,7 +145,7 @@
 </template>
 
 <script>
-import { normalizeCardName } from '../helpers/CardNames.mjs';
+import { parseDecklist } from '../helpers/DecklistParser.mjs';
 import ImageLoader from '../components/ImageLoader.vue';
 import HelpModal from '../components/HelpModal.vue';
 import ArnoldsApproval from '../components/ArnoldsApproval';
@@ -287,52 +287,22 @@ export default {
         async loadCardList() {
             this.cards = [];
             this.errors = [];
-            for (let line of this.config.decklist.split('\n')) {
-                line = line.trim();
 
-                // Different sites have different sideboard formats.
-                // Look for the word "sideboard" or lines that start with a double slash and skip them.
-                // MTGA uses Sideboard and Deck as section headers.
-                if (/^Sideboard$/i.test(line) || /^Deck$/i.test(line) || /^\/\//.test(line) || line === '') {
-                    continue;
-                }
+            const { lines, errors } = parseDecklist(this.config.decklist);
+            this.errors = errors;
 
-                // Extract the quantity and card name.
-                // Cockatrice prefixes lines with "SB:" for sideboard cards, so optionally matching that.
-                // Last I knew MTGA's export format puts the set and collector number in the line. ex. Arid Mesa (ZEN) 211
-                let extract = /^(?:SB:\s)?(?:(\d+)?x?\s)?(.+?)(?:\s\([^()]+\)\s+\w+)?$/i.exec(line);
-                if (extract === null) {
-                    this.errors.push(line);
-                    console.warn(`Failed to parse line: ${line}`);
-                    continue;
-                }
-
-                let [, quantity, inputCardName] = extract;
-
-                if (quantity === undefined) {
-                    quantity = 1;
-                }
-
-                // parseInt should be safe here since it's a digit extraction,
-                // decimal numbers will just get roped into the cardName and fail.
-                if (parseInt(quantity) <= 0) {
-                    continue;
-                }
-
-                const cardName = normalizeCardName(inputCardName);
-
-                const cardLookup = (await ScryfallDatasetAsync()).cards[cardName];
+            for (let line of lines) {
+                const cardLookup = (await ScryfallDatasetAsync()).cards[line.name];
 
                 if (!cardLookup) {
-                    this.errors.push(line);
-                    console.warn(`Failed to identify card on line: ${line}`);
+                    this.errors.push(line.name);
+                    console.warn(`Failed to identify card on line: ${JSON.stringify(line)}`);
                     continue;
                 }
 
                 const options = {
-                    quantity: parseInt(quantity),
-                    name: cardName,
-                    inputName: inputCardName,
+                    quantity: line.quantity,
+                    name: line.name,
                     setOptions: cardLookup.map(option => {
                         let [ setCode, setNumber ] = option.s.split('|');
                         return {
@@ -343,9 +313,9 @@ export default {
                             isPromo: option.p === 1,
                         };
                     }),
-                    isBasic: basicLands.includes(cardName.toLowerCase()),
+                    isBasic: basicLands.includes(line.name.toLowerCase()),
                     selectedUrl: '',
-                    selectedOption: this.sessionSetSelections[cardName],
+                    selectedOption: this.sessionSetSelections[line.name],
                 };
 
                 if (!options.selectedOption) {
