@@ -25,7 +25,7 @@ import ProxyPage from './views/ProxyPage.vue'
 export default {
   name: 'App',
   components: {
-    ProxyPage
+    ProxyPage,
   },
   data() {
     return {
@@ -35,7 +35,7 @@ export default {
   watch: {
     darkTheme(newValue) {
         localStorage.darkTheme = this.darkTheme;
-    }
+    },
   },
   mounted() {
     // Detect theme on first visit, then persist it for subsequent use.
@@ -61,8 +61,8 @@ export default {
         } else {
             elem.classList.add('dark-theme');
         }
-    }
-  }
+    },
+  },
 }
 </script>
 

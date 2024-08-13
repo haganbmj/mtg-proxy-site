@@ -8,15 +8,15 @@ describe('parseDecklist()', () => {
                 parseDecklist(
                     `
                     Ghor-Clan Rampager
-                    `
-                )
+                    `,
+                ),
             ).toStrictEqual(
                 {
                     lines: [
                         { name: 'ghor-clan rampager', quantity: 1 },
                     ],
                     errors: [],
-                }
+                },
             );
         });
 
@@ -25,15 +25,15 @@ describe('parseDecklist()', () => {
                 parseDecklist(
                     `
                     3 Ghor-Clan Rampager
-                    `
-                )
+                    `,
+                ),
             ).toStrictEqual(
                 {
                     lines: [
                         { name: 'ghor-clan rampager', quantity: 3 },
                     ],
                     errors: [],
-                }
+                },
             );
         });
 
@@ -42,15 +42,15 @@ describe('parseDecklist()', () => {
                 parseDecklist(
                     `
                     4x Ghor-Clan Rampager
-                    `
-                )
+                    `,
+                ),
             ).toStrictEqual(
                 {
                     lines: [
                         { name: 'ghor-clan rampager', quantity: 4 },
                     ],
                     errors: [],
-                }
+                },
             );
         });
 
@@ -59,15 +59,15 @@ describe('parseDecklist()', () => {
                 parseDecklist(
                     `
                     43 Ghor-Clan Rampager
-                    `
-                )
+                    `,
+                ),
             ).toStrictEqual(
                 {
                     lines: [
                         { name: 'ghor-clan rampager', quantity: 43 },
                     ],
                     errors: [],
-                }
+                },
             );
         });
 
@@ -76,13 +76,13 @@ describe('parseDecklist()', () => {
                 parseDecklist(
                     `
                     0 Ghor-Clan Rampager
-                    `
-                )
+                    `,
+                ),
             ).toStrictEqual(
                 {
                     lines: [],
                     errors: [],
-                }
+                },
             );
         });
 
@@ -96,8 +96,8 @@ describe('parseDecklist()', () => {
                     Ghor-Clan Rampager
                     0 Griselbrand
                     9 9 9 9 9
-                    `
-                )
+                    `,
+                ),
             ).toStrictEqual(
                 {
                     lines: [
@@ -108,7 +108,7 @@ describe('parseDecklist()', () => {
                         { name: '9 9 9 9', quantity: 9 },
                     ],
                     errors: [],
-                }
+                },
             );
         });
     });
@@ -119,13 +119,13 @@ describe('parseDecklist()', () => {
                 parseDecklist(
                     `
 
-                    `
-                )
+                    `,
+                ),
             ).toStrictEqual(
                 {
                     lines: [],
                     errors: [],
-                }
+                },
             )
         });
 
@@ -138,8 +138,8 @@ describe('parseDecklist()', () => {
                     1x Abandon Hope
                     The Deck of Many Things
                     Deck Deck Go (ABC) 123
-                    `
-                )
+                    `,
+                ),
             ).toStrictEqual(
                 {
                     lines: [
@@ -148,7 +148,7 @@ describe('parseDecklist()', () => {
                         { name: 'deck deck go', quantity: 1 },
                     ],
                     errors: [],
-                }
+                },
             )
         });
 
@@ -161,8 +161,8 @@ describe('parseDecklist()', () => {
                     Sideboard:
                     3x Abandon Hope
                     SB:   2x Price of Progress
-                    `
-                )
+                    `,
+                ),
             ).toStrictEqual(
                 {
                     lines: [
@@ -170,7 +170,7 @@ describe('parseDecklist()', () => {
                         { name: 'price of progress', quantity: 2 },
                     ],
                     errors: [],
-                }
+                },
             )
         });
 
@@ -182,8 +182,8 @@ describe('parseDecklist()', () => {
                     2x Abandon Hope
                     // Another comment
                     fire // ice
-                    `
-                )
+                    `,
+                ),
             ).toStrictEqual(
                 {
                     lines: [
@@ -191,7 +191,7 @@ describe('parseDecklist()', () => {
                         { name: 'fire // ice', quantity: 1 },
                     ],
                     errors: [],
-                }
+                },
             )
         });
     });
@@ -212,8 +212,8 @@ describe('parseDecklist()', () => {
                     // Scryfall excludes the Set in some cases?
                     2 Brotherhood's End () 128
                     2 Final Revels (LRW) 113
-                    `
-                )
+                    `,
+                ),
             ).toStrictEqual(
                 {
                     lines: [
@@ -225,7 +225,7 @@ describe('parseDecklist()', () => {
                         { name: 'final revels', quantity: 2 },
                     ],
                     errors: [],
-                }
+                },
             )
         });
 
@@ -238,8 +238,8 @@ describe('parseDecklist()', () => {
 
                     // Sideboard
                     2 Brotherhood's End
-                    `
-                )
+                    `,
+                ),
             ).toStrictEqual(
                 {
                     lines: [
@@ -248,7 +248,7 @@ describe('parseDecklist()', () => {
                         { name: `brotherhood's end`, quantity: 2 },
                     ],
                     errors: [],
-                }
+                },
             )
         });
 
@@ -262,8 +262,8 @@ describe('parseDecklist()', () => {
 
                     Sideboard
                     2 Vadmir, New Blood
-                    `
-                )
+                    `,
+                ),
             ).toStrictEqual(
                 {
                     lines: [
@@ -273,7 +273,7 @@ describe('parseDecklist()', () => {
                         { name: 'vadmir, new blood', quantity: 2 },
                     ],
                     errors: [],
-                }
+                },
             )
         });
     });

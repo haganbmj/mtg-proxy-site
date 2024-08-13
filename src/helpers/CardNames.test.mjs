@@ -6,7 +6,7 @@ describe('normalizeCardNames()', () => {
         [
             { input: `Delver of Secrets`, expected: `delver of secrets` },
             { input: `Mr. HoUse, preSiDent and CEO`, expected: `mr. house, president and ceo` },
-            { input: `Richard Garfield, Ph.D.`, expected: `richard garfield, ph.d.`}
+            { input: `Richard Garfield, Ph.D.`, expected: `richard garfield, ph.d.`},
         ].map((t) => {
             test(t.input, () => {
                 expect(normalizeCardName(t.input)).toBe(t.expected);
@@ -53,7 +53,7 @@ describe('normalizeCardNames()', () => {
             { input: `_____ _____ _____ Trespasser`, expected: `_ _ _ trespasser` },
             { input: `__ Bird Gets the Worm`, expected: `_ bird gets the worm` },
             { input: `"Brims" Barone, Midway Mobster`, expected: `"brims" barone, midway mobster` },
-            { input: `Impounding Lot-Bot`, expected: `impounding lot-bot`, },
+            { input: `Impounding Lot-Bot`, expected: `impounding lot-bot` },
             { input: `T.A.P.P.E.R.`, expected: `t.a.p.p.e.r.` },
             { input: `+2 Mace`, expected: `+2 mace` },
             { input: `Erase (Not the Urza‛s Legacy One)`, expected: `erase (not the urza's legacy one)`},
