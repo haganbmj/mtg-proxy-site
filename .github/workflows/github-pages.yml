@@ -1,4 +1,4 @@
-name: github pages
+name: Deploy Github Pages
 
 on:
   push:
@@ -29,6 +29,7 @@ jobs:
       - run: echo "VUE_APP_BUILD_SHA=$GITHUB_SHA" >> $GITHUB_ENV
       - run: npm ci
       - run: npm run build
+      - run: npm run lint
       - run: npm run test
 
       - name: Deploy
