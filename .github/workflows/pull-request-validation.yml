@@ -3,7 +3,7 @@ name: pull request validation
 on: pull_request
 
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,5 +21,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci
+  build:
+    runs-on: ubuntu-latest
+    needs: [setup]
+    steps:
       - run: npm run build
+  test:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - run: npm run lint
       - run: npm run test
