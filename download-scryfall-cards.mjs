@@ -50,11 +50,11 @@ const customPromoSets = [
 ];
 
 const customNotPromoSets = [
-    'phpr'
+    'phpr',
 ];
 
 const includedSets = [
-    'sunf' // Unfinity Sticker Sheets.
+    'sunf', // Unfinity Sticker Sheets.
 ];
 
 const excludedSets = [
@@ -116,7 +116,7 @@ const stripped = cards.filter(card => {
         imageUris: {
             front: `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&face=${card.reversible_face ?? 'front'}`,
             back: cardBackUri,
-        }
+        },
     };
 });
 

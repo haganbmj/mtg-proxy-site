@@ -68,6 +68,6 @@ export default {
         getBuildSha() {
             return document.documentElement.dataset.buildSha || 'local';
         },
-    }
+    },
 }
 </script>

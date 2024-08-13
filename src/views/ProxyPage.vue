@@ -174,7 +174,7 @@ const basicLands = [
     'forest', 'island', 'plains', 'swamp', 'mountain',
     'snow-covered forest', 'snow-covered island',
     'snow-covered plains', 'snow-covered swamp',
-    'snow-covered mountain'
+    'snow-covered mountain',
 ];
 
 function setImageVersion(url, version) {
