@@ -1,4 +1,4 @@
-name: card dataset
+name: Update Card Dataset
 
 on:
   schedule:
