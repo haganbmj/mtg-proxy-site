@@ -5,6 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
     "cards": "node download-scryfall-cards.mjs",
     "cards:update": "node download-scryfall-cards.mjs --update",
     "test": "vitest"
@@ -19,6 +21,8 @@
     "@vue/cli-service": "~5.0.8",
     "@vue/compiler-sfc": "^3.2.26",
     "axios": "^1.7.3",
+    "eslint": "^9.9.0",
+    "eslint-plugin-vue": "^9.27.0",
     "sass": "^1.77.8",
     "sass-loader": "^16.0.0",
     "vitest": "^2.0.5",

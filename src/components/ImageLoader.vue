@@ -1,12 +1,12 @@
 <template>
-    <div class="card-loading loading loading-lg" :class="{ 'hidden': loaded }"></div>
-    <img v-bind="$attrs" :src="internalSrc">
-    <img v-if="!loaded" :src="src" v-on:load="onLoaded" class="hidden">
+  <div class="card-loading loading loading-lg" :class="{ 'hidden': loaded }" />
+  <img v-bind="$attrs" :src="internalSrc">
+  <img v-if="!loaded" :src="src" @load="onLoaded" class="hidden">
 </template>
 
 <script>
 export default {
-    name: 'image-loader',
+    name: 'ImageLoader',
     props: {
         src: {
             type: String,
