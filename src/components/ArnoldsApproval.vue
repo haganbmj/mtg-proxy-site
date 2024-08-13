@@ -1,11 +1,11 @@
 <template>
-    <div class="columns col-9 col-sm-12 col-mx-auto" v-if="approvalContent !== undefined">
-        <span class="h6 p-centered"><i>{{ approvalContent.header }}</i></span>
-        <blockquote>
-            <p>{{ approvalContent.quote }}</p>
-            <cite>- {{ approvalContent.attribution }}</cite>
-        </blockquote>
-    </div>
+  <div class="columns col-9 col-sm-12 col-mx-auto" v-if="approvalContent !== undefined">
+    <span class="h6 p-centered"><i>{{ approvalContent.header }}</i></span>
+    <blockquote>
+      <p>{{ approvalContent.quote }}</p>
+      <cite>- {{ approvalContent.attribution }}</cite>
+    </blockquote>
+  </div>
 </template>
 
 <script>

@@ -1,21 +1,21 @@
 <template>
   <header class="navbar bg-gray">
-      <section class="navbar-section">
-          <a href="https://griselbrand.com">
-            <img class="navbar-icon" alt="Site Icon" src="https://griselbrand.com/android-chrome-192x192.png">
-          </a>
-          <a href="https://griselbrand.com" class="btn btn-link">Griselbrand</a>
-      </section>
+    <section class="navbar-section">
+      <a href="https://griselbrand.com">
+        <img class="navbar-icon" alt="Site Icon" src="https://griselbrand.com/android-chrome-192x192.png">
+      </a>
+      <a href="https://griselbrand.com" class="btn btn-link">Griselbrand</a>
+    </section>
 
-      <section class="navbar-section">
-          <a title="Change Theme" class="btn btn-action btn-primary s-circle" @click="changeTheme()"><span class="icon-brightness-contrast"></span></a>
-          <span class="px-1 hide-sm"></span>
-          <a href="https://twitter.com/haganbmj" target="_blank" class="btn ml-1 hide-sm">Twitter</a>
-          <a href="https://github.com/haganbmj/mtg-proxy-site" target="_blank" class="btn btn-primary ml-1 hide-sm">GitHub</a>
-      </section>
+    <section class="navbar-section">
+      <a title="Change Theme" class="btn btn-action btn-primary s-circle" @click="changeTheme()"><span class="icon-brightness-contrast" /></a>
+      <span class="px-1 hide-sm" />
+      <a href="https://twitter.com/haganbmj" target="_blank" class="btn ml-1 hide-sm">Twitter</a>
+      <a href="https://github.com/haganbmj/mtg-proxy-site" target="_blank" class="btn btn-primary ml-1 hide-sm">GitHub</a>
+    </section>
   </header>
   <div id="content" class="container">
-    <ProxyPage/>
+    <ProxyPage />
   </div>
 </template>
 
