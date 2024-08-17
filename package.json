@@ -17,7 +17,7 @@
     "vue": "^3.4.37"
   },
   "devDependencies": {
-    "@stylistic/eslint-plugin-js": "^2.6.2",
+    "@stylistic/eslint-plugin-js": "^2.6.4",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-service": "~5.0.8",
     "@vue/compiler-sfc": "^3.4.38",
