@@ -406,7 +406,7 @@ export default {
         resolveCardImage(card, face = "front") {
             if (face == "front") {
                 return setImageVersion(
-                    card.selectedOption.url,
+                    card.selectedOption.urlFront,
                     this.config.imageType,
                 );
             } else {
@@ -470,15 +470,9 @@ export default {
                     continue;
                 }
 
-                const selectedSet =
-                    line.set && line.collectorsNumber
-                        ? `${line.set}|${line.collectorsNumber}`
-                        : undefined;
-
                 const selectedOptionIndex = cardLookup.findIndex((option) => {
                     return (
-                        option.s === selectedSet ||
-                        (!selectedSet && !option.isDigital && !option.isPromo)
+                        option.setCode === line.set && option.collectorNumber == line.collectorsNumber
                     );
                 });
 
@@ -488,17 +482,15 @@ export default {
                     quantity: line.quantity,
                     name: line.name,
                     setOptions: cardLookup.map((option) => {
-                        let [setCode, setNumber] = option.s.split("|");
                         return {
-                            name: `${this.sets[setCode]} (${setNumber})`,
-                            url: option.f,
-                            urlBack: option.b,
-                            isDigital: option.d === 1,
-                            isPromo: option.p === 1,
+                            name: `${this.sets[option.setCode]} (${option.collectorNumber})`,
+                            urlFront: option.urlFront,
+                            urlBack: option.urlBack,
+                            isDigital: option.isDigital === true,
+                            isPromo: option.isPromo === true,
                         };
                     }),
                     isBasic: basicLands.includes(line.name.toLowerCase()),
-                    selectedUrl: "",
                     selectedOption: this.sessionSetSelections[line.name],
                 };
 
