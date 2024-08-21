@@ -56,7 +56,7 @@ Now You See Me...
 How Is This a Par Three?!
 _____ _____ _____ Trespasser
 "Brims" Barone, Midway Mobster
-2 ‟Brims” Barone, Midway Mobster
+2 ‟Brims” Barone, Midway Mobster (UNF) 507
 Start / Finish
 Start/Fire () 123
 3 bind
