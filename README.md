@@ -28,14 +28,14 @@ This should generate no errors with the current match strategy.
 Deck
 0 griselbrand
 3 Bruna, the Fading Light
-1 Karn, the Great Creator (SLD) 501
+1x Karn, the Great Creator (SLD) 501
 1 Teferi's Protection
-1 Delver of Secrets
-1 Nezumi Graverobber // Nighteyes the Desecrator
+1 Delver of Secrets // Insectile Aberration
+1x Nezumi Graverobber // Nighteyes the Desecrator
 1 Fire // Ice
 1 dead / GONE
 1 who /What // WHEN /wheRE // why
-1 Forest
+1x Forest (PMPS06) 5
 1 Impatient Iguana
 1 Planewide Disaster
 1 Goldmeadow
