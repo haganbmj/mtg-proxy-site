@@ -79,6 +79,17 @@
                             <label class="form-switch">
                                 <input
                                     type="checkbox"
+                                    name="match-editions"
+                                    v-model="config.matchEditions"
+                                />
+                                <i class="form-icon" /> Match Input Editions
+                            </label>
+                        </div>
+
+                        <div class="column col-12">
+                            <label class="form-switch">
+                                <input
+                                    type="checkbox"
                                     name="include-basics"
                                     v-model="config.includeBasics"
                                 />
@@ -327,6 +338,7 @@ export default {
             config: {
                 includeDigital: false,
                 includePromo: false,
+                matchEditions: false,
                 includeBasics: false,
                 showCutLines: false,
                 imageType: "border_crop",
@@ -426,6 +438,7 @@ export default {
         storeConfig() {
             localStorage.includeDigital = this.config.includeDigital;
             localStorage.includePromo = this.config.includePromo;
+            localStorage.matchEditions = this.config.matchEditions;
             localStorage.includeBasics = this.config.includeBasics;
             localStorage.showCutLines = this.config.showCutLines;
             localStorage.imageType = this.config.imageType;
@@ -435,6 +448,7 @@ export default {
         loadConfig() {
             this.config.includeDigital = localStorage.includeDigital === "true";
             this.config.includePromo = localStorage.includePromo === "true";
+            this.config.matchEditions = localStorage.matchEditions === "true";
             this.config.includeBasics = localStorage.includeBasics === "true";
             this.config.showCutLines = localStorage.showCutLines === "true";
             this.config.imageType = localStorage.imageType ?? "border_crop";
@@ -454,13 +468,8 @@ export default {
 
             const lookupCards = await ScryfallDatasetAsync();
 
-            console.log(lines);
-
             for (let line of lines) {
                 let cardLookup = lookupCards.cards[line.name];
-                if (!cardLookup && line.name.includes(" // ")) {
-                    cardLookup = lookupCards.cards[line.name.split(" // ")[0]];
-                }
 
                 if (!cardLookup) {
                     this.errors.push(line.name);
@@ -470,20 +479,14 @@ export default {
                     continue;
                 }
 
-                const selectedOptionIndex = cardLookup.findIndex((option) => {
-                    return (
-                        option.setCode === line.set && option.collectorNumber == line.collectorsNumber
-                    );
-                });
-
-                console.log(selectedOptionIndex);
-
                 const options = {
                     quantity: line.quantity,
                     name: line.name,
                     setOptions: cardLookup.map((option) => {
                         return {
                             name: `${this.sets[option.setCode]} (${option.collectorNumber})`,
+                            setCode: option.setCode,
+                            collectorNumber: option.collectorNumber,
                             urlFront: option.urlFront,
                             urlBack: option.urlBack,
                             isDigital: option.isDigital === true,
@@ -496,12 +499,19 @@ export default {
 
                 if (!options.selectedOption) {
                     // Set a default selection.
-                    options.selectedOption =
-                        selectedOptionIndex !== -1
-                            ? options.setOptions[selectedOptionIndex]
-                            : options.setOptions.filter((option) => {
-                                  return !option.isDigital && !option.isPromo;
-                              })?.[0] ?? options.setOptions[0];
+                    // First, if enabled, attempt to find an exact match from the decklist.
+                    if (this.config.matchEditions) {
+                        options.selectedOption = options.setOptions.filter(option => {
+                            return option.setCode === line.set && option.collectorNumber == line.collectorsNumber
+                        })?.[0] ?? undefined;
+                    }
+
+                    // If we failed there, then we can set a default based on characteristics.
+                    if (!options.selectedOption) {
+                        options.selectedOption = options.setOptions.filter(option => {
+                            return !option.isDigital && !option.isPromo;
+                        })?.[0] ?? options.setOptions[0];
+                    }
                 }
 
                 this.cards.push(options);
