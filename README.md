@@ -28,7 +28,7 @@ This should generate no errors with the current match strategy.
 Deck
 0 griselbrand
 3 Bruna, the Fading Light
-1 Karn, the Great Creator
+1 Karn, the Great Creator (SLD) 501
 1 Teferi's Protection
 1 Delver of Secrets
 1 Nezumi Graverobber // Nighteyes the Desecrator

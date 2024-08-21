@@ -110,7 +110,7 @@ const stripped = cards.filter(card => {
             name: card.set_name,
             code: card.set,
         },
-        setNumber: card.overridden_collector_number ?? card.collector_number,
+        collectorNumber: card.overridden_collector_number ?? card.collector_number,
         isDigital: card.digital,
         isPromo: !customNotPromoSets.includes(card.set) && (card.promo || card.promo_types || customPromoSetTypes.includes(card.set_type) || customPromoSets.includes(card.set)),
         imageUris: {
@@ -127,7 +127,7 @@ stripped.push({
         name: 'Griselbrand.com',
         code: 'Griselbrand.com',
     },
-    setNumber: '1',
+    collectorNumber: '1',
     isDigital: false,
     isPromo: false,
     imageUris: {
@@ -144,11 +144,11 @@ const minimized = stripped.sort((a, b) => {
     // So we have to strip the non-numeric characters, compare those, then fallback to the alpha comparisons.
     // Without this we get into situations where 218a < 60 can happen with alt arts and such.
     if (Date.parse(a.releaseDate) === Date.parse(b.releaseDate)) {
-        const aInt = parseInt(a.setNumber.replace(/[^0-9]/, ''));
-        const bInt = parseInt(b.setNumber.replace(/[^0-9]/, ''));
+        const aInt = parseInt(a.collectorNumber.replace(/[^0-9]/, ''));
+        const bInt = parseInt(b.collectorNumber.replace(/[^0-9]/, ''));
 
         if (aInt == bInt) {
-            return a.setNumber <= b.setNumber ? -1 : 1;
+            return a.collectorNumber <= b.collectorNumber ? -1 : 1;
         } else {
             return aInt <= bInt ? -1 : 1;
         }
@@ -161,14 +161,13 @@ const minimized = stripped.sort((a, b) => {
         const name = card.name.toLowerCase();
         store.cards[name] = store.cards[name] || [];
         store.cards[name].push({
-            s: `${card.set.code}|${card.setNumber}`,
-            d: card.isDigital ? 1 : undefined,
-            p: card.isPromo ? 1 : undefined,
+            setCode: card.set.code,
+            collectorNumber: card.collectorNumber,
+            isDigital: card.isDigital ? true : undefined,
+            isPromo: card.isPromo ? true : undefined,
 
-            // Scryfall puts a timestamp query param on these, which we don't need as it'll trigger a full regeneration each week.
-            // GZip seems to be doing a good job of optimizing out all the duplicate cdn url prefixes, so I guess it's okay to not over optimize.
-            f: card.imageUris.front,
-            b: card.imageUris.back,
+            urlFront: card.imageUris.front,
+            urlBack: card.imageUris.back,
         });
 
         store.sets[card.set.code] = card.set.name;
@@ -184,22 +183,27 @@ console.log(`Found ${Object.keys(minimized.cards).length} distinct cards from ${
 
 // Run some basic sanity tests.
 assert.equal(minimized.cards['abandon hope']?.length, 1);
-assert.equal(minimized.cards['abandon hope']?.[0].s, 'tmp|107');
-assert.match(minimized.cards['abandon hope']?.[0].f, /api\.scryfall\.com.*$/);
+assert.equal(minimized.cards['abandon hope']?.[0].setCode, 'tmp');
+assert.equal(minimized.cards['abandon hope']?.[0].collectorNumber, '107');
+assert.match(minimized.cards['abandon hope']?.[0].urlFront, /api\.scryfall\.com.*$/);
 
 assert.equal(minimized.cards['lightning dragon']?.length, 4);
-assert.equal(minimized.cards['lightning dragon']?.[0].s, 'pusg|202');
-assert.equal(minimized.cards['lightning dragon']?.[1].s, 'usg|202');
-assert.equal(minimized.cards['lightning dragon']?.[2].s, 'prm|32196');
-assert.equal(minimized.cards['lightning dragon']?.[3].s, 'vma|177');
-assert.equal(minimized.cards['lightning dragon']?.[0].d, undefined);
-assert.equal(minimized.cards['lightning dragon']?.[1].d, undefined);
-assert.equal(minimized.cards['lightning dragon']?.[2].d, 1);
-assert.equal(minimized.cards['lightning dragon']?.[3].d, 1);
-assert.equal(minimized.cards['lightning dragon']?.[0].p, 1);
-assert.equal(minimized.cards['lightning dragon']?.[1].p, undefined);
-assert.equal(minimized.cards['lightning dragon']?.[2].p, 1);
-assert.equal(minimized.cards['lightning dragon']?.[3].p, undefined);
+assert.equal(minimized.cards['lightning dragon']?.[0].setCode, 'pusg');
+assert.equal(minimized.cards['lightning dragon']?.[0].collectorNumber, '202');
+assert.equal(minimized.cards['lightning dragon']?.[1].setCode, 'usg');
+assert.equal(minimized.cards['lightning dragon']?.[1].collectorNumber, '202');
+assert.equal(minimized.cards['lightning dragon']?.[2].setCode, 'prm');
+assert.equal(minimized.cards['lightning dragon']?.[2].collectorNumber, '32196');
+assert.equal(minimized.cards['lightning dragon']?.[3].setCode, 'vma');
+assert.equal(minimized.cards['lightning dragon']?.[3].collectorNumber, '177');
+assert.equal(minimized.cards['lightning dragon']?.[0].isDigital, undefined);
+assert.equal(minimized.cards['lightning dragon']?.[1].isDigital, undefined);
+assert.equal(minimized.cards['lightning dragon']?.[2].isDigital, true);
+assert.equal(minimized.cards['lightning dragon']?.[3].isDigital, true);
+assert.equal(minimized.cards['lightning dragon']?.[0].isPromo, true);
+assert.equal(minimized.cards['lightning dragon']?.[1].isPromo, undefined);
+assert.equal(minimized.cards['lightning dragon']?.[2].isPromo, true);
+assert.equal(minimized.cards['lightning dragon']?.[3].isPromo, undefined);
 
 assert.equal(minimized.sets['tmp'], 'Tempest');
 
