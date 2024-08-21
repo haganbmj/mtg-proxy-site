@@ -104,7 +104,7 @@ const stripped = cards.filter(card => {
         id: card.id,
         oracleId: card.oracle_id,
         oracleName: card.name,
-        name: normalizeCardName(card.card_faces?.[0]?.image_uris ? card.card_faces[0].name : card.name),
+        name: normalizeCardName(card.name),
         releaseDate: card.released_at,
         set: {
             name: card.set_name,
