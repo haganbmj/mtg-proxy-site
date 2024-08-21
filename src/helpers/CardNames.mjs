@@ -16,13 +16,13 @@ export function normalizeCardName(cardName) {
         .replace(/[’‚‘‛]/g, `'`)
         .replace(/[‟”„“]/g, `"`)
 
-        // Consolidate underscores.
+        // Consolidate underscores for the UNF _____ name sticker cards.
         .replace(/_+/g, `_`)
 
-        // Remove periods to handle the UNF ". . ." cards?
+        // Remove whitespace around periods to handle the UNF ". . ." cards.
         .replace(/\s*\./g, '.')
 
-        // Strip excess whitespace.
+        // Strip excess whitespace from anywhere in the line.
         .replace(/\s+/g, ' ')
 
         // Normalize case.

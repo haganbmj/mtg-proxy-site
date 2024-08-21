@@ -455,6 +455,7 @@ export default {
             this.config.cardBacks = localStorage.cardBacks ?? "dfc";
         },
         printList() {
+            // FIXME: Should probably use watched properties for triggering this storeConfig call.
             this.storeConfig();
             window.print();
         },
@@ -465,10 +466,8 @@ export default {
             const { lines, errors } = parseDecklist(this.config.decklist);
             this.errors = errors;
 
-            const lookupCards = await ScryfallDatasetAsync();
-
             for (let line of lines) {
-                let cardLookup = lookupCards.cards[line.name];
+                let cardLookup = (await ScryfallDatasetAsync()).cards[line.name];
 
                 if (!cardLookup) {
                     this.errors.push(line.name);
@@ -482,14 +481,15 @@ export default {
                     quantity: line.quantity,
                     name: line.name,
                     setOptions: cardLookup.map((option) => {
+                        // This could use spread syntax, but it's nice to have all the property names in this file explicitly.
                         return {
                             name: `${this.sets[option.setCode]} (${option.collectorNumber})`,
                             setCode: option.setCode,
                             collectorNumber: option.collectorNumber,
                             urlFront: option.urlFront,
                             urlBack: option.urlBack,
-                            isDigital: option.isDigital === true,
-                            isPromo: option.isPromo === true,
+                            isDigital: option.isDigital,
+                            isPromo: option.isPromo,
                         };
                     }),
                     isBasic: basicLands.includes(line.name.toLowerCase()),
