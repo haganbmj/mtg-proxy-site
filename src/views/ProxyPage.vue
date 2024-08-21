@@ -1,186 +1,314 @@
 <template>
-  <div class="section">
-    <HelpModal ref="helpModal" />
+    <div class="section">
+        <HelpModal ref="helpModal" />
 
-    <div class="columns">
-      <div class="column col-3 col-sm-12 mb-2" style="z-index:300;">
-        <div id="config" class="form-group p-sticky">
-          <div class="form-group">
-            <textarea
-              id="deck-input" class="form-input" title="Deck Input" v-model="config.decklist" autofocus
-              placeholder="4 Wild Nacatl&#10;4 Steppe Lynx&#10;0x Griselbrand&#10;4x Lightning Bolt&#10;3x Price of Progress&#10;4 Strip Mine (ATQ) 82d&#10;&#10;// Sideboard&#10;Orim's Chant&#10;3x Rough // Tumble&#10;SB: dead/gone"
-            />
-          </div>
+        <div class="columns">
+            <div class="column col-3 col-sm-12 mb-2" style="z-index: 300">
+                <div id="config" class="form-group p-sticky">
+                    <div class="form-group">
+                        <textarea
+                            id="deck-input"
+                            class="form-input"
+                            title="Deck Input"
+                            v-model="config.decklist"
+                            autofocus
+                            placeholder="4 Wild Nacatl&#10;4 Steppe Lynx&#10;0x Griselbrand&#10;4x Lightning Bolt&#10;3x Price of Progress&#10;4 Strip Mine (ATQ) 82d&#10;&#10;// Sideboard&#10;Orim's Chant&#10;3x Rough // Tumble&#10;SB: dead/gone"
+                        />
+                    </div>
 
-          <div class="form-group btn-group btn-group-block">
-            <button id="submit-decklist" class="btn btn-primary" @click="loadCardList()">
-              {{ cards.length ? 'Update' : 'Submit' }}
-            </button>
-            <button id="print" class="btn btn-block tooltip" @click="printList" :disabled="cards.length == 0" :data-tooltip="`${cardCountWhenPrinting.count} of ${cardCountWhenPrinting.bound} slots consumed.\nAssuming an 8.5x11 paper size.`">
-              <span class="icon-print" /> Print
-            </button>
-          </div>
+                    <div class="form-group btn-group btn-group-block">
+                        <button
+                            id="submit-decklist"
+                            class="btn btn-primary"
+                            @click="loadCardList()"
+                        >
+                            {{ cards.length ? "Update" : "Submit" }}
+                        </button>
+                        <button
+                            id="print"
+                            class="btn btn-block tooltip"
+                            @click="printList"
+                            :disabled="cards.length == 0"
+                            :data-tooltip="`${cardCountWhenPrinting.count} of ${cardCountWhenPrinting.bound} slots consumed.\nAssuming an 8.5x11 paper size.`"
+                        >
+                            <span class="icon-print" /> Print
+                        </button>
+                    </div>
 
-          <div class="form-group btn-group btn-group-block">
-            <div id="slot-usage" class="bar">
-              <template v-for="index in 9" :key="index">
-                <div :class="`bar-item ${index <= cardCountWhenPrinting.overflow ? 'consumed' : 'unconsumed'}`" role="progressbar" />
-              </template>
+                    <div class="form-group btn-group btn-group-block">
+                        <div id="slot-usage" class="bar">
+                            <template v-for="index in 9" :key="index">
+                                <div
+                                    :class="`bar-item ${index <= cardCountWhenPrinting.overflow ? 'consumed' : 'unconsumed'}`"
+                                    role="progressbar"
+                                />
+                            </template>
+                        </div>
+                    </div>
+
+                    <div class="spacer" style="height: 0.4rem" />
+                    <div
+                        class="divider text-center"
+                        data-content="CONFIGURATION"
+                    />
+
+                    <div class="columns">
+                        <div class="column col-12">
+                            <label class="form-switch">
+                                <input
+                                    type="checkbox"
+                                    name="include-digital"
+                                    v-model="config.includeDigital"
+                                />
+                                <i class="form-icon" /> Show Digital Printings
+                            </label>
+                        </div>
+
+                        <div class="column col-12">
+                            <label class="form-switch">
+                                <input
+                                    type="checkbox"
+                                    name="include-promo"
+                                    v-model="config.includePromo"
+                                />
+                                <i class="form-icon" /> Show Promo Printings
+                            </label>
+                        </div>
+
+                        <div class="column col-12">
+                            <label class="form-switch">
+                                <input
+                                    type="checkbox"
+                                    name="include-basics"
+                                    v-model="config.includeBasics"
+                                />
+                                <i class="form-icon" /> Include Basic Lands
+                            </label>
+                        </div>
+
+                        <div class="column col-12">
+                            <label class="form-switch">
+                                <input
+                                    type="checkbox"
+                                    name="show-cut-lines"
+                                    v-model="config.showCutLines"
+                                />
+                                <i class="form-icon" /> Show Cut Lines
+                            </label>
+                        </div>
+                    </div>
+                    <div class="column col-12 divider" />
+                    <div class="columns">
+                        <div class="column col-12">
+                            <label class="form-label">
+                                <span
+                                    class="tooltip tooltip-right"
+                                    data-tooltip="Style of source images to use."
+                                    ><i class="form-icon" /> Image Type
+                                    <span class="icon-info"
+                                /></span>
+                                <select
+                                    class="form-select select"
+                                    name="image-type"
+                                    v-model="config.imageType"
+                                    style="width: 100%"
+                                >
+                                    <option value="normal">Normal</option>
+                                    <option value="border_crop">
+                                        Border Crop
+                                    </option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <div class="column col-12">
+                            <label class="form-label">
+                                <span
+                                    class="tooltip tooltip-right"
+                                    data-tooltip="Smaller sizes will be easier to fit in sleeves."
+                                    ><i class="form-icon" /> Print Scale
+                                    <span class="icon-info"
+                                /></span>
+                                <select
+                                    class="form-select select"
+                                    name="scale"
+                                    v-model="config.scale"
+                                    style="width: 100%"
+                                >
+                                    <option value="small">Small (-2%)</option>
+                                    <option value="normal">
+                                        Regular (60mm x 85mm)
+                                    </option>
+                                    <option value="large">Large (+2%)</option>
+                                    <option value="actual">
+                                        Actual (63mm x 88mm)
+                                    </option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <div class="column col-12">
+                            <label class="form-label">
+                                <i class="form-icon" /> Card Backs
+                                <select
+                                    class="form-select select"
+                                    name="card-backs"
+                                    v-model="config.cardBacks"
+                                    style="width: 100%"
+                                >
+                                    <option value="none">None</option>
+                                    <option value="dfc">
+                                        Double Faced Cards
+                                    </option>
+                                    <option value="all">All</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="column col-12 divider" />
+                    <div class="columns">
+                        <div class="column col-12">
+                            <button
+                                class="btn p-centered"
+                                @click="$refs.helpModal.show()"
+                            >
+                                Help?
+                            </button>
+                        </div>
+                    </div>
+                    <div class="column col-12 divider" />
+                </div>
             </div>
-          </div>
 
-          <div class="spacer" style="height:0.4rem;" />
-          <div class="divider text-center" data-content="CONFIGURATION" />
+            <div class="column col-9 col-sm-12">
+                <div
+                    class="empty"
+                    v-show="cards.length === 0 && errors.length === 0"
+                >
+                    <div class="empty-icon">
+                        <i class="icon icon-3x icon-search" />
+                    </div>
+                    <p class="empty-title h5" style="max-width: 25rem">
+                        "I welcome and seek your ideas, but do not bring me
+                        small ideas; bring me big ideas to match our future."
+                    </p>
+                    <p class="empty-subtitle">- Arnold Schwarzenegger</p>
+                </div>
 
-          <div class="columns">
-            <div class="column col-12">
-              <label class="form-switch">
-                <input type="checkbox" name="include-digital" v-model="config.includeDigital">
-                <i class="form-icon" /> Show Digital Printings
-              </label>
-            </div>
+                <div
+                    id="input-errors"
+                    class="toast toast-error"
+                    v-show="errors.length > 0"
+                >
+                    <button
+                        class="btn btn-clear float-right"
+                        alt="Dismiss Errors"
+                        @click="errors = []"
+                    />
+                    <div>Some cards could not be identified.</div>
+                    <ul>
+                        <li v-for="(error, index) in errors" :key="index">
+                            {{ error }}
+                        </li>
+                    </ul>
+                </div>
 
-            <div class="column col-12">
-              <label class="form-switch">
-                <input type="checkbox" name="include-promo" v-model="config.includePromo">
-                <i class="form-icon" /> Show Promo Printings
-              </label>
-            </div>
+                <div class="cards columns">
+                    <div
+                        v-for="(card, cardIndex) in cards"
+                        :key="cardIndex"
+                        class="card-select column col-3 col-sm-6 mt-2"
+                        v-show="shouldShowCard(card)"
+                    >
+                        <div class="p-relative">
+                            <ImageLoader
+                                class="card-image img-responsive"
+                                :src="resolveCardImage(card)"
+                                placeholder="./card_back_border_crop.jpg"
+                                :alt="card.name"
+                            />
+                            <span
+                                class="card-quantity bg-primary text-light docs-shape s-rounded centered"
+                                >{{ card.quantity }}x</span
+                            >
+                            <select
+                                class="form-select select-sm mt-2"
+                                name="selected-option"
+                                v-model="card.selectedOption"
+                                @change="
+                                    updateSessionSet(
+                                        card.name,
+                                        card.selectedOption,
+                                    )
+                                "
+                            >
+                                <option
+                                    v-for="(set, setIndex) in card.setOptions"
+                                    :value="set"
+                                    :key="setIndex"
+                                    v-show="shouldShowSetOption(card, set)"
+                                >
+                                    {{ set.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="column col-12">
-              <label class="form-switch">
-                <input type="checkbox" name="include-basics" v-model="config.includeBasics">
-                <i class="form-icon" /> Include Basic Lands
-              </label>
+                <ArnoldsApproval id="arnold" :cards="cards" />
             </div>
-
-            <div class="column col-12">
-              <label class="form-switch">
-                <input type="checkbox" name="show-cut-lines" v-model="config.showCutLines">
-                <i class="form-icon" /> Show Cut Lines
-              </label>
-            </div>
-          </div>
-          <div class="column col-12 divider" />
-          <div class="columns">
-            <div class="column col-12">
-              <label class="form-label">
-                <span class="tooltip tooltip-right" data-tooltip="Style of source images to use."><i class="form-icon" /> Image Type <span class="icon-info" /></span>
-                <select class="form-select select" name="image-type" v-model="config.imageType" style="width:100%;">
-                  <option value="normal">Normal</option>
-                  <option value="border_crop">Border Crop</option>
-                </select>
-              </label>
-            </div>
-
-            <div class="column col-12">
-              <label class="form-label">
-                <span class="tooltip tooltip-right" data-tooltip="Smaller sizes will be easier to fit in sleeves."><i class="form-icon" /> Print Scale <span class="icon-info" /></span>
-                <select class="form-select select" name="scale" v-model="config.scale" style="width:100%;">
-                  <option value="small">Small (-2%)</option>
-                  <option value="normal">Regular (60mm x 85mm)</option>
-                  <option value="large">Large (+2%)</option>
-                  <option value="actual">Actual (63mm x 88mm)</option>
-                </select>
-              </label>
-            </div>
-
-            <div class="column col-12">
-              <label class="form-label">
-                <i class="form-icon" /> Card Backs
-                <select class="form-select select" name="card-backs" v-model="config.cardBacks" style="width:100%;">
-                  <option value="none">None</option>
-                  <option value="dfc">Double Faced Cards</option>
-                  <option value="all">All</option>
-                </select>
-              </label>
-            </div>
-          </div>
-          <div class="column col-12 divider" />
-          <div class="columns">
-            <div class="column col-12">
-              <button class="btn p-centered" @click="$refs.helpModal.show()">
-                Help?
-              </button>
-            </div>
-          </div>
-          <div class="column col-12 divider" />
         </div>
-      </div>
-
-      <div class="column col-9 col-sm-12">
-        <div class="empty" v-show="cards.length === 0 && errors.length === 0">
-          <div class="empty-icon">
-            <i class="icon icon-3x icon-search" />
-          </div>
-          <p class="empty-title h5" style="max-width: 25rem;">
-            "I welcome and seek your ideas, but do not bring me small ideas; bring me big ideas to match our future."
-          </p>
-          <p class="empty-subtitle">
-            - Arnold Schwarzenegger
-          </p>
-        </div>
-
-        <div id="input-errors" class="toast toast-error" v-show="errors.length > 0">
-          <button class="btn btn-clear float-right" alt="Dismiss Errors" @click="errors = []" />
-          <div>Some cards could not be identified.</div>
-          <ul>
-            <li v-for="(error, index) in errors" :key="index">
-              {{ error }}
-            </li>
-          </ul>
-        </div>
-
-        <div class="cards columns">
-          <div v-for="(card, cardIndex) in cards" :key="cardIndex" class="card-select column col-3 col-sm-6 mt-2" v-show="shouldShowCard(card)">
-            <div class="p-relative">
-              <ImageLoader class="card-image img-responsive" :src="resolveCardImage(card)" placeholder="./card_back_border_crop.jpg" :alt="card.name" />
-              <span class="card-quantity bg-primary text-light docs-shape s-rounded centered">{{ card.quantity }}x</span>
-              <select class="form-select select-sm mt-2" name="selected-option" v-model="card.selectedOption" @change="updateSessionSet(card.name, card.selectedOption)">
-                <option v-for="(set, setIndex) in card.setOptions" :value="set" :key="setIndex" v-show="shouldShowSetOption(card, set)">
-                  {{ set.name }}
-                </option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <ArnoldsApproval id="arnold" :cards="cards" />
-      </div>
     </div>
-  </div>
 
-  <div id="print-content" :class="[`scale-${config.scale}`, {'with-cut-lines': config.showCutLines}]">
-    <template v-for="(card, index) in cards" :key="index">
-      <template v-for="n in card.quantity" :key="n">
-        <img :src="resolveCardImage(card)" v-show="shouldShowCard(card)">
-        <img :src="resolveCardImage(card, 'back')" v-show="shouldShowCard(card, 'back')">
-      </template>
-    </template>
-  </div>
+    <div
+        id="print-content"
+        :class="[
+            `scale-${config.scale}`,
+            { 'with-cut-lines': config.showCutLines },
+        ]"
+    >
+        <template v-for="(card, index) in cards" :key="index">
+            <template v-for="n in card.quantity" :key="n">
+                <img
+                    :src="resolveCardImage(card)"
+                    v-show="shouldShowCard(card)"
+                />
+                <img
+                    :src="resolveCardImage(card, 'back')"
+                    v-show="shouldShowCard(card, 'back')"
+                />
+            </template>
+        </template>
+    </div>
 </template>
 
 <script>
-import { parseDecklist } from '../helpers/DecklistParser.mjs';
-import ImageLoader from '../components/ImageLoader.vue';
-import HelpModal from '../components/HelpModal.vue';
-import ArnoldsApproval from '../components/ArnoldsApproval';
+import { parseDecklist } from "../helpers/DecklistParser.mjs";
+import ImageLoader from "../components/ImageLoader.vue";
+import HelpModal from "../components/HelpModal.vue";
+import ArnoldsApproval from "../components/ArnoldsApproval";
 
 // Chunk out the card list for quasi-lazy loading. Or at least loading that doesn't block the page rendering.
-const ScryfallDatasetAsync = () => import('../../data/cards-minimized.json');
+const ScryfallDatasetAsync = () => import("../../data/cards-minimized.json");
 
 const basicLands = [
-    'wastes',
-    'forest', 'island', 'plains', 'swamp', 'mountain',
-    'snow-covered forest', 'snow-covered island',
-    'snow-covered plains', 'snow-covered swamp',
-    'snow-covered mountain',
+    "wastes",
+    "forest",
+    "island",
+    "plains",
+    "swamp",
+    "mountain",
+    "snow-covered forest",
+    "snow-covered island",
+    "snow-covered plains",
+    "snow-covered swamp",
+    "snow-covered mountain",
 ];
 
 function setImageVersion(url, version) {
     if (/scryfall/.test(url)) {
         var url = new URL(url);
-        url.searchParams.set('version', version);
+        url.searchParams.set("version", version);
         return url.href;
     } else {
         return url;
@@ -188,7 +316,7 @@ function setImageVersion(url, version) {
 }
 
 export default {
-    name: 'ProxyPage',
+    name: "ProxyPage",
     components: {
         ImageLoader,
         HelpModal,
@@ -201,31 +329,36 @@ export default {
                 includePromo: false,
                 includeBasics: false,
                 showCutLines: false,
-                imageType: 'border_crop',
-                scale: 'normal',
-                cardBacks: 'dfc',
-                decklist: '',
+                imageType: "border_crop",
+                scale: "normal",
+                cardBacks: "dfc",
+                decklist: "",
             },
             sets: {},
             cards: [],
             errors: [],
             sessionSetSelections: {},
-        }
+        };
     },
     computed: {
         cardCountWhenPrinting() {
             const count = this.cards.reduce((total, c) => {
-                return total + (c.quantity * ((this.shouldShowCard(c, 'front') ? 1 : 0) + (this.shouldShowCard(c, 'back') ? 1 : 0)));
+                return (
+                    total +
+                    c.quantity *
+                        ((this.shouldShowCard(c, "front") ? 1 : 0) +
+                            (this.shouldShowCard(c, "back") ? 1 : 0))
+                );
             }, 0);
 
             const overflow = count % 9;
-            const bound = overflow == 0 ? count : count + (9 - count % 9);
+            const bound = overflow == 0 ? count : count + (9 - (count % 9));
 
             return {
                 count,
                 overflow,
                 bound,
-                percentage: Math.round(overflow / 9 * 100),
+                percentage: Math.round((overflow / 9) * 100),
             };
         },
     },
@@ -245,31 +378,43 @@ export default {
                 return true;
             }
 
-            return (this.config.includeDigital || !option.isDigital) && (this.config.includePromo || !option.isPromo);
+            return (
+                (this.config.includeDigital || !option.isDigital) &&
+                (this.config.includePromo || !option.isPromo)
+            );
         },
-        shouldShowCard(card, face = 'front') {
+        shouldShowCard(card, face = "front") {
             if (!this.config.includeBasics && card.isBasic) {
                 return false;
             }
 
-            if (face === 'back') {
-                if (this.config.cardBacks === 'all') {
+            if (face === "back") {
+                if (this.config.cardBacks === "all") {
                     return true;
                 }
 
-                if (this.config.cardBacks === 'none' || card.selectedOption.urlBack === undefined) {
+                if (
+                    this.config.cardBacks === "none" ||
+                    card.selectedOption.urlBack === undefined
+                ) {
                     return false;
                 }
             }
 
             return true;
         },
-        resolveCardImage(card, face = 'front') {
-            if (face == 'front') {
-                return setImageVersion(card.selectedOption.url, this.config.imageType);
+        resolveCardImage(card, face = "front") {
+            if (face == "front") {
+                return setImageVersion(
+                    card.selectedOption.url,
+                    this.config.imageType,
+                );
             } else {
                 if (card.selectedOption.urlBack !== undefined) {
-                    return setImageVersion(card.selectedOption.urlBack, this.config.imageType);
+                    return setImageVersion(
+                        card.selectedOption.urlBack,
+                        this.config.imageType,
+                    );
                 } else {
                     return `./card_back_${this.config.imageType}.jpg`;
                 }
@@ -288,13 +433,13 @@ export default {
             localStorage.cardBacks = this.config.cardBacks;
         },
         loadConfig() {
-            this.config.includeDigital = localStorage.includeDigital === 'true';
-            this.config.includePromo = localStorage.includePromo === 'true';
-            this.config.includeBasics = localStorage.includeBasics === 'true';
-            this.config.showCutLines = localStorage.showCutLines === 'true';
-            this.config.imageType = localStorage.imageType ?? 'border_crop';
-            this.config.scale = localStorage.scale ?? 'normal';
-            this.config.cardBacks = localStorage.cardBacks ?? 'dfc';
+            this.config.includeDigital = localStorage.includeDigital === "true";
+            this.config.includePromo = localStorage.includePromo === "true";
+            this.config.includeBasics = localStorage.includeBasics === "true";
+            this.config.showCutLines = localStorage.showCutLines === "true";
+            this.config.imageType = localStorage.imageType ?? "border_crop";
+            this.config.scale = localStorage.scale ?? "normal";
+            this.config.cardBacks = localStorage.cardBacks ?? "dfc";
         },
         printList() {
             this.storeConfig();
@@ -307,20 +452,43 @@ export default {
             const { lines, errors } = parseDecklist(this.config.decklist);
             this.errors = errors;
 
+            const lookupCards = await ScryfallDatasetAsync();
+
+            console.log(lines);
+
             for (let line of lines) {
-                const cardLookup = (await ScryfallDatasetAsync()).cards[line.name];
+                let cardLookup = lookupCards.cards[line.name];
+                if (!cardLookup && line.name.includes(" // ")) {
+                    cardLookup = lookupCards.cards[line.name.split(" // ")[0]];
+                }
 
                 if (!cardLookup) {
                     this.errors.push(line.name);
-                    console.warn(`Failed to identify card on line: ${JSON.stringify(line)}`);
+                    console.warn(
+                        `Failed to identify card on line: ${JSON.stringify(line)}`,
+                    );
                     continue;
                 }
+
+                const selectedSet =
+                    line.set && line.collectorsNumber
+                        ? `${line.set}|${line.collectorsNumber}`
+                        : undefined;
+
+                const selectedOptionIndex = cardLookup.findIndex((option) => {
+                    return (
+                        option.s === selectedSet ||
+                        (!selectedSet && !option.isDigital && !option.isPromo)
+                    );
+                });
+
+                console.log(selectedOptionIndex);
 
                 const options = {
                     quantity: line.quantity,
                     name: line.name,
-                    setOptions: cardLookup.map(option => {
-                        let [ setCode, setNumber ] = option.s.split('|');
+                    setOptions: cardLookup.map((option) => {
+                        let [setCode, setNumber] = option.s.split("|");
                         return {
                             name: `${this.sets[setCode]} (${setNumber})`,
                             url: option.f,
@@ -330,22 +498,25 @@ export default {
                         };
                     }),
                     isBasic: basicLands.includes(line.name.toLowerCase()),
-                    selectedUrl: '',
+                    selectedUrl: "",
                     selectedOption: this.sessionSetSelections[line.name],
                 };
 
                 if (!options.selectedOption) {
                     // Set a default selection.
-                    options.selectedOption = options.setOptions.filter(option => {
-                        return !option.isDigital && !option.isPromo;
-                    })?.[0] ?? options.setOptions[0];
+                    options.selectedOption =
+                        selectedOptionIndex !== -1
+                            ? options.setOptions[selectedOptionIndex]
+                            : options.setOptions.filter((option) => {
+                                  return !option.isDigital && !option.isPromo;
+                              })?.[0] ?? options.setOptions[0];
                 }
 
                 this.cards.push(options);
             }
         },
     },
-}
+};
 </script>
 
 <style lang="scss">
@@ -431,13 +602,15 @@ html.dark-theme {
         all: initial;
     }
 
-    html, html * {
+    html,
+    html * {
         all: unset;
         font-size: 0 !important;
         line-height: 0 !important;
     }
 
-    .section, header {
+    .section,
+    header {
         display: none !important;
     }
 
