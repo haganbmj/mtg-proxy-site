@@ -192,7 +192,7 @@ assert.deepStrictEqual(
             "isDigital": undefined,
             "isPromo": undefined,
             "urlFront": "https://api.scryfall.com/cards/khm/154?format=image&face=front",
-            "urlBack": "https://api.scryfall.com/cards/khm/154?format=image&face=back"
+            "urlBack": "https://api.scryfall.com/cards/khm/154?format=image&face=back",
           },
           {
             "setCode": "pkhm",
@@ -200,7 +200,7 @@ assert.deepStrictEqual(
             "isDigital": undefined,
             "isPromo": true,
             "urlFront": "https://api.scryfall.com/cards/pkhm/154s?format=image&face=front",
-            "urlBack": "https://api.scryfall.com/cards/pkhm/154s?format=image&face=back"
+            "urlBack": "https://api.scryfall.com/cards/pkhm/154s?format=image&face=back",
           },
           {
             "setCode": "khm",
@@ -208,7 +208,7 @@ assert.deepStrictEqual(
             "isDigital": undefined,
             "isPromo": true,
             "urlFront": "https://api.scryfall.com/cards/khm/313?format=image&face=front",
-            "urlBack": "https://api.scryfall.com/cards/khm/313?format=image&face=back"
+            "urlBack": "https://api.scryfall.com/cards/khm/313?format=image&face=back",
           },
           {
             "setCode": "prm",
@@ -216,7 +216,7 @@ assert.deepStrictEqual(
             "isDigital": true,
             "isPromo": true,
             "urlFront": "https://api.scryfall.com/cards/prm/88302?format=image&face=front",
-            "urlBack": "https://api.scryfall.com/cards/prm/88302?format=image&face=back"
+            "urlBack": "https://api.scryfall.com/cards/prm/88302?format=image&face=back",
           },
     ],
 );
