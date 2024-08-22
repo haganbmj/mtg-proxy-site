@@ -22,4 +22,4 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-data/default-cards.json
+/data

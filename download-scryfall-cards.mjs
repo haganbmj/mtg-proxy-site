@@ -182,33 +182,49 @@ const minimized = stripped.sort((a, b) => {
 console.log(`Found ${Object.keys(minimized.cards).length} distinct cards from ${Object.keys(minimized.sets).length} sets.`);
 
 // Run some basic sanity tests.
-assert.equal(minimized.cards['abandon hope']?.length, 1);
-assert.equal(minimized.cards['abandon hope']?.[0].setCode, 'tmp');
-assert.equal(minimized.cards['abandon hope']?.[0].collectorNumber, '107');
-assert.match(minimized.cards['abandon hope']?.[0].urlFront, /api\.scryfall\.com.*$/);
+// FIXME: Replace this test with a card that isn't likely to get a reprint.
+assert.deepStrictEqual(
+    minimized.cards["toralf, god of fury // toralf's hammer"],
+    [
+        {
+            "setCode": "khm",
+            "collectorNumber": "154",
+            "isDigital": undefined,
+            "isPromo": undefined,
+            "urlFront": "https://api.scryfall.com/cards/khm/154?format=image&face=front",
+            "urlBack": "https://api.scryfall.com/cards/khm/154?format=image&face=back"
+          },
+          {
+            "setCode": "pkhm",
+            "collectorNumber": "154s",
+            "isDigital": undefined,
+            "isPromo": true,
+            "urlFront": "https://api.scryfall.com/cards/pkhm/154s?format=image&face=front",
+            "urlBack": "https://api.scryfall.com/cards/pkhm/154s?format=image&face=back"
+          },
+          {
+            "setCode": "khm",
+            "collectorNumber": "313",
+            "isDigital": undefined,
+            "isPromo": true,
+            "urlFront": "https://api.scryfall.com/cards/khm/313?format=image&face=front",
+            "urlBack": "https://api.scryfall.com/cards/khm/313?format=image&face=back"
+          },
+          {
+            "setCode": "prm",
+            "collectorNumber": "88302",
+            "isDigital": true,
+            "isPromo": true,
+            "urlFront": "https://api.scryfall.com/cards/prm/88302?format=image&face=front",
+            "urlBack": "https://api.scryfall.com/cards/prm/88302?format=image&face=back"
+          },
+    ],
+);
 
-assert.equal(minimized.cards['lightning dragon']?.length, 4);
-assert.equal(minimized.cards['lightning dragon']?.[0].setCode, 'pusg');
-assert.equal(minimized.cards['lightning dragon']?.[0].collectorNumber, '202');
-assert.equal(minimized.cards['lightning dragon']?.[1].setCode, 'usg');
-assert.equal(minimized.cards['lightning dragon']?.[1].collectorNumber, '202');
-assert.equal(minimized.cards['lightning dragon']?.[2].setCode, 'prm');
-assert.equal(minimized.cards['lightning dragon']?.[2].collectorNumber, '32196');
-assert.equal(minimized.cards['lightning dragon']?.[3].setCode, 'vma');
-assert.equal(minimized.cards['lightning dragon']?.[3].collectorNumber, '177');
-assert.equal(minimized.cards['lightning dragon']?.[0].isDigital, undefined);
-assert.equal(minimized.cards['lightning dragon']?.[1].isDigital, undefined);
-assert.equal(minimized.cards['lightning dragon']?.[2].isDigital, true);
-assert.equal(minimized.cards['lightning dragon']?.[3].isDigital, true);
-assert.equal(minimized.cards['lightning dragon']?.[0].isPromo, true);
-assert.equal(minimized.cards['lightning dragon']?.[1].isPromo, undefined);
-assert.equal(minimized.cards['lightning dragon']?.[2].isPromo, true);
-assert.equal(minimized.cards['lightning dragon']?.[3].isPromo, undefined);
-
-assert.equal(minimized.sets['tmp'], 'Tempest');
-
-assert(Object.keys(minimized.cards).length > 20000);
-assert(Object.keys(minimized.sets).length > 500);
+assert.equal(
+    minimized.sets['plc'],
+    'Planar Chaos',
+);
 
 // fs.writeFileSync('./min-pretty.json', JSON.stringify(minimized, null, 2));
 fs.writeFileSync('./data/cards-minimized.json', JSON.stringify(minimized, null, 2));

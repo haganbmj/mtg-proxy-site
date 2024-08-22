@@ -28,6 +28,7 @@ jobs:
             ${{ runner.os }}-node-
       - run: echo "VUE_APP_BUILD_SHA=$GITHUB_SHA" >> $GITHUB_ENV
       - run: npm ci
+      - run: npm run cards:update
       - run: npm run build
       - run: npm run lint
       - run: npm run test
