@@ -5,18 +5,14 @@ import { normalizeCardName } from './src/helpers/CardNames.mjs';
 
 if (!fs.existsSync('./data/default-cards.json') || process.argv[2] == "--update") {
     console.log('Downloading fresh card data.');
-    const bulkResp = await axios.get('https://api.scryfall.com/bulk-data');
-
-    const defaultCardsBulk = bulkResp.data.data.find(bulkObject => {
-        return bulkObject.type === 'default_cards';
-    });
-
-    console.log(`Download uri: ${defaultCardsBulk.download_uri}`);
 
     const dataResp = await axios({
-        url: `${defaultCardsBulk.download_uri}`,
+        url: `https://api.scryfall.com/bulk-data/default-cards?format=file`,
         method: 'GET',
         responseType: 'stream',
+        headers: {
+            'User-Agent': 'Griselbrand/0.1.0',
+        },
     });
 
     const write = fs.createWriteStream('./data/default-cards.json');
