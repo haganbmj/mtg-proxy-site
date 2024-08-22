@@ -21,6 +21,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci
+      - run: mv ./data/default-cards-ci.json ./data/default-cards.json
       - run: npm run cards
       - run: npm run build
       - run: npm run lint
