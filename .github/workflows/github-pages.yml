@@ -35,7 +35,7 @@ jobs:
       - run: echo "VUE_APP_BUILD_SHA=$GITHUB_SHA" >> $GITHUB_ENV
       - run: npm ci
       - run: |
-          if [[ ${{ github.event_name == 'schedule' }} ]]; then
+          if [[ ${{ github.event_name }} == 'schedule' || ${{ github.event_name }} == 'workflow_dispatch' ]]; then
             npm run cards:update
           else
             npm run cards
