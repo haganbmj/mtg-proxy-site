@@ -12,7 +12,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "core-js": "^3.38.0",
+    "core-js": "^3.38.1",
     "spectre.css": "^0.5.9",
     "vue": "^3.4.38"
   },
