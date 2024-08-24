@@ -5,20 +5,17 @@
 ### Developer Notes
 
 - This project is intended to be deployed statically and uses a minimal list of cards bundled with the distributables.
-- Use `npm run cards` to build the card list using locally stored data, or `npm run cards:update` to force fetching an updated list from Scryfall. 
+- Use `npm run cards` to build the card list using locally stored data, or `npm run cards:update` to force fetching an updated list from Scryfall.
+- Develop locally with `npm run serve`.
+- The UI components here make use of [Spectre.css](https://picturepan2.github.io/spectre/index.html), see the linked docs for usage information.
 
 ### Known Issues
 
-- Search is fairly specific due to exact matching.
 - Excluding basic lands and creating a list with _only_ basics is permit, but I'm pretty sure that's a stupid edge case I don't want to deal with.
 - Better mutation handling for the textarea. ie. Keep existing selections when adding additional cards.
 - Need to verify @media print behavior across multiple browsers.
 - Probably also need to document print to pdf process and options.
 - Manually adjusting print margins restores the hidden default print page header/footer. Unclear if there's a way to actually remove those or not.
-
-### Future Thoughts
-
-- Relying on Scryfall's fuzzy match search would provide a means of doing card name lookup with minimal effort, but would add the only (non-image) network call to this thing.
 
 ### Decent Test Data Set
 
