@@ -466,6 +466,8 @@ export default {
             const { lines, errors } = parseDecklist(this.config.decklist);
             this.errors = errors;
 
+            const _cards = [];
+
             for (let line of lines) {
                 let cardLookup = (await ScryfallDatasetAsync()).cards[line.name];
 
@@ -513,8 +515,10 @@ export default {
                     }
                 }
 
-                this.cards.push(options);
+                _cards.push(options);
             }
+
+            this.cards = _cards;
         },
     },
 };
