@@ -20,8 +20,13 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+      - name: Cache Card List
+        uses: actions/cache@v4.0.2
+        with:
+          path: data/default-cards.json
+          key: default-cards.json
+
       - run: npm ci
-      - run: mv ./data/default-cards-ci.json ./data/default-cards.json
       - run: npm run cards
       - run: npm run build
       - run: npm run lint

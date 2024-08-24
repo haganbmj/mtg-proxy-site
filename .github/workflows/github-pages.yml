@@ -30,12 +30,12 @@ jobs:
         uses: actions/cache@v4.0.2
         with:
           path: data/default-cards.json
-          key: default-cards.json-${{ hashFiles('data/default-cards.json') }}
+          key: default-cards.json
 
       - run: echo "VUE_APP_BUILD_SHA=$GITHUB_SHA" >> $GITHUB_ENV
       - run: npm ci
       - run: |
-          if [[ ${{ github.event_name }} == 'schedule' ]]; then
+          if [[ ${{ github.event_name == 'schedule' }} ]]; then
             npm run cards:update
           else
             npm run cards
