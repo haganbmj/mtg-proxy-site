@@ -27,7 +27,13 @@ export default {
                 return acc;
             }, {});
 
-            if (this.cards.find(card => card.name === 'griselbrand')) {
+            if (this.cards.length > 500) {
+                return {
+                    header: `Damn. That's a lot of cards.`,
+                    quote: `"It's Turbo Man. My son wants one too."`,
+                    attribution: `Howard Langston (Jingle All The Way)`,
+                };
+            } else if (this.cards.find(card => card.name === 'griselbrand')) {
                 return {
                     header: `Your list contains Griselbrand. How disappointing.`,
                     quote: `"What is the point of being on this Earth if you are going to be like everyone else?"`,
@@ -55,6 +61,17 @@ export default {
                 return {
                     header: `I'm starting to UN-derstand what's going on here.`,
                     quote: `"You're a funny guy, Sully, I like you. That's why I'm going to kill you last."`,
+                    attribution: `John Matrix (Commando)`,
+                }
+            } else if (this.cards.find(card => [
+                'kird ape', 'loam lion', 'wild nacatl',
+                'savannah lions', 'isamaru, hound of konda',
+                'watchwolf', 'tarmogoyf', 'knight of the reliquary',
+                'tribal flames', 'steppe lynx', 'figure of destiny',
+            ].includes(card.name))) {
+                return {
+                    header: `I sure hope you're playing Zoo.`,
+                    quote: `"Not many people understand what a pump is. It must be experienced to be understood. It is the greatest feeling that I get. I search for this pump because it means that my muscles will grow when I get it. I get a pump when the blood is running into my muscles. They become really tight with blood."`,
                     attribution: `John Matrix (Commando)`,
                 }
             } else {
