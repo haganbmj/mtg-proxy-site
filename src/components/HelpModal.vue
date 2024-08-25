@@ -63,10 +63,10 @@ export default {
             this.$emit('close');
         },
         getBuildTimestamp() {
-            return document.documentElement.dataset.buildTimestamp;
+            return import.meta.env.VITE_BUILD_TIMESTAMP;
         },
         getBuildSha() {
-            return document.documentElement.dataset.buildSha || 'local';
+            return import.meta.env.VITE_BUILD_SHA || 'local';
         },
     },
 }

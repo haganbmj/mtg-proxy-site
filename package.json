@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "vite",
+    "build": "vite build",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "cards": "node download-scryfall-cards.mjs",
@@ -12,26 +12,18 @@
     "test": "vitest"
   },
   "dependencies": {
-    "core-js": "^3.38.1",
     "spectre.css": "^0.5.9",
     "vue": "^3.4.38"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin-js": "^2.6.4",
-    "@vue/cli-plugin-babel": "~5.0.0",
-    "@vue/cli-service": "~5.0.8",
-    "@vue/compiler-sfc": "^3.4.38",
+    "@vitejs/plugin-vue": "5.1.2",
     "axios": "^1.7.5",
     "eslint": "^9.9.0",
     "eslint-plugin-vue": "^9.27.0",
     "sass": "^1.77.8",
-    "sass-loader": "^16.0.1",
     "vitest": "^2.0.5",
+    "vite": "5.4.2",
     "vue-loader": "^17.4.2"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+  }
 }

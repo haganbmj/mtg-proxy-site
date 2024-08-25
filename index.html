@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
-    data-build-timestamp="<%= new Date().toISOString() %>"
-    data-build-sha="<%= process.env.VUE_APP_BUILD_SHA %>"
+    data-build-timestamp="%VITE_BUILD_TIMESTAMP%"
+    data-build-sha="%VITE_BUILD_SHA%"
 >
   <head>
     <title>MTG Proxy Print</title>
@@ -21,8 +21,9 @@
   </head>
   <body>
     <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong>We're sorry but Griselbrand doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
   </body>
 </html>

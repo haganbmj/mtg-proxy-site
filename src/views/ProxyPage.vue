@@ -296,7 +296,7 @@
 import { parseDecklist } from "../helpers/DecklistParser.mjs";
 import ImageLoader from "../components/ImageLoader.vue";
 import HelpModal from "../components/HelpModal.vue";
-import ArnoldsApproval from "../components/ArnoldsApproval";
+import ArnoldsApproval from "../components/ArnoldsApproval.vue";
 
 // Chunk out the card list for quasi-lazy loading. Or at least loading that doesn't block the page rendering.
 const ScryfallDatasetAsync = () => import("../../data/cards-minimized.json");
