@@ -1,6 +1,8 @@
 <template>
   <div class="columns col-9 col-sm-12 col-mx-auto" v-if="approvalContent !== undefined">
-    <div class="h6 p-centered"><i>{{ approvalContent.header }}</i></div>
+    <div class="h6 p-centered">
+      <i>{{ approvalContent.header }}</i>
+    </div>
     <blockquote class="col-12">
       <p>{{ approvalContent.quote }}</p>
       <cite>- {{ approvalContent.attribution }}</cite>
