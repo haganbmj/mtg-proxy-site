@@ -13,7 +13,7 @@ const i18n = createI18n({
     messages: {
         'en': en,
         'pt-BR': ptBR,
-    }
+    },
 });
 
 createApp(App)

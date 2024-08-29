@@ -173,7 +173,7 @@
                 class="btn p-centered"
                 @click="$refs.helpModal.show()"
               >
-              {{ $t('configuration.help.label') }}
+                {{ $t('configuration.help.label') }}
               </button>
             </div>
           </div>

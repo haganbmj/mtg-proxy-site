@@ -1,9 +1,11 @@
 <template>
-    <div class="locale-changer">
-        <select v-model="locale" class="form-select">
-        <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">{{ locale }}</option>
-        </select>
-    </div>
+  <div class="locale-changer">
+    <select v-model="selectedLocale" class="form-select">
+      <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">
+        {{ locale }}
+      </option>
+    </select>
+  </div>
 </template>
 
 <script>
@@ -12,11 +14,11 @@ export default {
     components: {},
     data() {
         return {
-            locale: undefined,
+            selectedLocale: undefined,
         }
     },
     watch: {
-        locale(newValue) {
+        selectedLocale(newValue) {
             // Set the vue-i18n locale at the root scope.
             this.$root.$i18n.locale = newValue;
 
@@ -24,8 +26,9 @@ export default {
             const resolvedLocale = this.$t('locale');
 
             // If the return differs from what we set, then it either isn't supported or cascades to a different definition.
-            if (this.locale != resolvedLocale) {
-                this.locale = resolvedLocale;
+            if (this.selectedLocale != resolvedLocale) {
+                // Which means we should circle back, set a value we _do_ support, and try again.
+                this.selectedLocale = resolvedLocale;
             } else {
                 localStorage.locale = newValue;
             }
@@ -33,10 +36,10 @@ export default {
     },
     mounted() {
         if (localStorage.locale === undefined) {
-            this.locale = navigator.language ?? navigator.userLanguage;
+            this.selectedLocale = navigator.language ?? navigator.userLanguage;
         } else {
-            this.locale = localStorage.locale ?? undefined;
+            this.selectedLocale = localStorage.locale;
         }
-    }
+    },
 }
 </script>
