@@ -28,7 +28,7 @@
         },
         "cardBacks": {
             "label": null,
-            "none": null,
+            "none": "Nenhuma",
             "dfcs": null,
             "all": null
         },
