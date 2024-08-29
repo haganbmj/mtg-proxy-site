@@ -9,7 +9,7 @@ const i18n = createI18n({
     fallbackLocale: 'en',
     messages: {
         'en': await import('./locales/en.json'),
-        'pt-BR': await import('./locales/pr-BR.json'),
+        'pt-BR': await import('./locales/pt-BR.json'),
     }
 });
 
