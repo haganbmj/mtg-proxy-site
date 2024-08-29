@@ -1,0 +1,43 @@
+{
+    "locale": "pt-BR",
+    "buttons": {
+        "submit": "Submit",
+        "update": "Atualização",
+        "print": "Imprimir"
+    },
+    "configuration": {
+        "label": "Configurações",
+        "showDigitalPrintings": null,
+        "showPromoPrintings": null,
+        "matchInputEditions": null,
+        "includeBasicLands": null,
+        "showCutLines": null,
+        "imageType": {
+            "label": null,
+            "tooltip": null,
+            "normal": null,
+            "borderCrop": null
+        },
+        "printScale": {
+            "label": null,
+            "tooltip": null,
+            "small": null,
+            "regular": null,
+            "large": null,
+            "actual": null
+        },
+        "cardBacks": {
+            "label": null,
+            "none": null,
+            "dfcs": null,
+            "all": null
+        },
+        "help": {
+            "label": "Ajuda?"
+        }
+    },
+    "errors": {
+        "unableToIdentifyCards": null
+    },
+    "consumedSlots": null
+}

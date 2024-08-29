@@ -22,16 +22,16 @@
               class="btn btn-primary"
               @click="loadCardList()"
             >
-              {{ cards.length ? "Update" : "Submit" }}
+              {{ cards.length ? $t('buttons.update') : $t('buttons.submit') }}
             </button>
             <button
               id="print"
               class="btn btn-block tooltip"
               @click="printList"
               :disabled="cards.length == 0"
-              :data-tooltip="`${cardCountWhenPrinting.count} of ${cardCountWhenPrinting.bound} slots consumed.\nAssuming an 8.5x11 paper size.`"
+              :data-tooltip="$t('consumedSlots', { count: cardCountWhenPrinting.count, bound: cardCountWhenPrinting.bound})"
             >
-              <span class="icon-print" /> Print
+              <span class="icon-print" /> {{ $t('buttons.print') }}
             </button>
           </div>
 
@@ -49,7 +49,7 @@
           <div class="spacer" style="height: 0.4rem" />
           <div
             class="divider text-center"
-            data-content="CONFIGURATION"
+            :data-content="$t('configuration.label').toUpperCase()"
           />
 
           <div class="columns">
@@ -60,7 +60,7 @@
                   name="include-digital"
                   v-model="config.includeDigital"
                 >
-                <i class="form-icon" /> Show Digital Printings
+                <i class="form-icon" /> {{ $t('configuration.showDigitalPrintings') }}
               </label>
             </div>
 
@@ -71,7 +71,7 @@
                   name="include-promo"
                   v-model="config.includePromo"
                 >
-                <i class="form-icon" /> Show Promo Printings
+                <i class="form-icon" /> {{ $t('configuration.showPromoPrintings') }}
               </label>
             </div>
 
@@ -82,7 +82,7 @@
                   name="match-editions"
                   v-model="config.matchEditions"
                 >
-                <i class="form-icon" /> Match Input Editions
+                <i class="form-icon" /> {{ $t('configuration.matchInputEditions') }}
               </label>
             </div>
 
@@ -93,7 +93,7 @@
                   name="include-basics"
                   v-model="config.includeBasics"
                 >
-                <i class="form-icon" /> Include Basic Lands
+                <i class="form-icon" /> {{ $t('configuration.includeBasicLands') }}
               </label>
             </div>
 
@@ -104,7 +104,7 @@
                   name="show-cut-lines"
                   v-model="config.showCutLines"
                 >
-                <i class="form-icon" /> Show Cut Lines
+                <i class="form-icon" /> {{ $t('configuration.showCutLines') }}
               </label>
             </div>
           </div>
@@ -114,8 +114,8 @@
               <label class="form-label">
                 <span
                   class="tooltip tooltip-right"
-                  data-tooltip="Style of source images to use."
-                ><i class="form-icon" /> Image Type
+                  :data-tooltip="$t('configuration.imageType.tooltip')"
+                ><i class="form-icon" /> {{ $t('configuration.imageType.label') }}
                   <span class="icon-info" /></span>
                 <select
                   class="form-select select"
@@ -123,10 +123,8 @@
                   v-model="config.imageType"
                   style="width: 100%"
                 >
-                  <option value="normal">Normal</option>
-                  <option value="border_crop">
-                    Border Crop
-                  </option>
+                  <option value="normal">{{ $t('configuration.imageType.normal') }}</option>
+                  <option value="border_crop">{{ $t('configuration.imageType.borderCrop') }}</option>
                 </select>
               </label>
             </div>
@@ -135,8 +133,8 @@
               <label class="form-label">
                 <span
                   class="tooltip tooltip-right"
-                  data-tooltip="Smaller sizes will be easier to fit in sleeves."
-                ><i class="form-icon" /> Print Scale
+                  :data-tooltip="$t('configuration.printScale.tooltip')"
+                ><i class="form-icon" /> {{ $t('configuration.printScale.label') }}
                   <span class="icon-info" /></span>
                 <select
                   class="form-select select"
@@ -144,32 +142,26 @@
                   v-model="config.scale"
                   style="width: 100%"
                 >
-                  <option value="small">Small (-2%)</option>
-                  <option value="normal">
-                    Regular (60mm x 85mm)
-                  </option>
-                  <option value="large">Large (+2%)</option>
-                  <option value="actual">
-                    Actual (63mm x 88mm)
-                  </option>
+                  <option value="small">{{ $t('configuration.printScale.small') }} (-2%)</option>
+                  <option value="normal">{{ $t('configuration.printScale.regular') }} (60mm x 85mm)</option>
+                  <option value="large">{{ $t('configuration.printScale.large') }} (+2%)</option>
+                  <option value="actual">{{ $t('configuration.printScale.actual') }} (63mm x 88mm)</option>
                 </select>
               </label>
             </div>
 
             <div class="column col-12">
               <label class="form-label">
-                <i class="form-icon" /> Card Backs
+                <i class="form-icon" /> {{ $t('configuration.cardBacks.label') }}
                 <select
                   class="form-select select"
                   name="card-backs"
                   v-model="config.cardBacks"
                   style="width: 100%"
                 >
-                  <option value="none">None</option>
-                  <option value="dfc">
-                    Double Faced Cards
-                  </option>
-                  <option value="all">All</option>
+                  <option value="none">{{ $t('configuration.cardBacks.none') }}</option>
+                  <option value="dfc">{{ $t('configuration.cardBacks.dfcs') }}</option>
+                  <option value="all">{{ $t('configuration.cardBacks.all') }}</option>
                 </select>
               </label>
             </div>
@@ -181,7 +173,7 @@
                 class="btn p-centered"
                 @click="$refs.helpModal.show()"
               >
-                Help?
+              {{ $t('configuration.help.label') }}
               </button>
             </div>
           </div>
@@ -216,7 +208,7 @@
             alt="Dismiss Errors"
             @click="errors = []"
           />
-          <div>Some cards could not be identified.</div>
+          <div>{{ $t('errors.unableToIdentifyCards') }}</div>
           <ul>
             <li v-for="(error, index) in errors" :key="index">
               {{ error }}

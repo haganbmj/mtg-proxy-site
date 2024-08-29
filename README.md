@@ -8,6 +8,7 @@
 - Use `npm run cards` to build the card list using locally stored data, or `npm run cards:update` to force fetching an updated list from Scryfall.
 - Develop locally with `npm run dev`, `npm run test`, and `npm run lint`.
 - The UI components are built with [Spectre.css](https://picturepan2.github.io/spectre/index.html), see the linked docs for usage information.
+- Internationalization uses [Vue I18n](https://vue-i18n.intlify.dev).
 
 ### Decent Test Data Set
 
