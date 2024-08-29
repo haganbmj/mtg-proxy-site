@@ -13,24 +13,24 @@
         "includeBasicLands": null,
         "showCutLines": null,
         "imageType": {
-            "label": null,
+            "label": "Tipo de Imagem",
             "tooltip": null,
-            "normal": null,
+            "normal": "Normal",
             "borderCrop": null
         },
         "printScale": {
-            "label": null,
+            "label": "Escala Imprimir",
             "tooltip": null,
-            "small": null,
-            "regular": null,
-            "large": null,
-            "actual": null
+            "small": "Pequeno",
+            "regular": "Regulares",
+            "large": "Grande",
+            "actual": "Real"
         },
         "cardBacks": {
-            "label": null,
+            "label": "Versos de Cartas",
             "none": "Nenhuma",
-            "dfcs": null,
-            "all": null
+            "dfcs": "Cartas Dupla Face",
+            "all": "Todas"
         },
         "help": {
             "label": "Ajuda?"
