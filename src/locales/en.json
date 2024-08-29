@@ -1,0 +1,43 @@
+{
+    "locale": "en",
+    "buttons": {
+        "submit": "Submit",
+        "update": "Update",
+        "print": "Print"
+    },
+    "configuration": {
+        "label": "Configuration",
+        "showDigitalPrintings": "Show Digital Printings",
+        "showPromoPrintings": "Show Promo Printings",
+        "matchInputEditions": "Match Input Editions",
+        "includeBasicLands": "Include Basic Lands",
+        "showCutLines": "Show Cut Lines",
+        "imageType": {
+            "label": "Image Type",
+            "tooltip": "Style of source images to use.",
+            "normal": "Normal",
+            "borderCrop": "Border Crop"
+        },
+        "printScale": {
+            "label": "Print Scale",
+            "tooltip": "Smaller sizes will be easier to fit in sleeves.",
+            "small": "Small",
+            "regular": "Regular",
+            "large": "Large",
+            "actual": "Actual"
+        },
+        "cardBacks": {
+            "label": "Card Backs",
+            "none": "None",
+            "dfcs": "Double Faced Cards",
+            "all": "All"
+        },
+        "help": {
+            "label": "Help?"
+        }
+    },
+    "errors": {
+        "unableToIdentifyCards": "Some cards could not be identified."
+    },
+    "consumedSlots": "{count} of {bound} slots consumed\nAssuming an 8.5x11 paper size."
+}

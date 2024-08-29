@@ -9,7 +9,8 @@
 
     <section class="navbar-section">
       <a title="Change Theme" class="btn btn-action btn-primary s-circle" @click="changeTheme()"><span class="icon-brightness-contrast" /></a>
-      <span class="px-1 hide-sm" />
+      <LocalePicker class="ml-1" />
+      <span class="px-2 hide-sm" />
       <a href="https://twitter.com/haganbmj" target="_blank" class="btn ml-1 hide-sm">Twitter</a>
       <a href="https://github.com/haganbmj/mtg-proxy-site" target="_blank" class="btn btn-primary ml-1 hide-sm">GitHub</a>
     </section>
@@ -20,11 +21,13 @@
 </template>
 
 <script>
+import LocalePicker from './components/LocalePicker.vue';
 import ProxyPage from './views/ProxyPage.vue'
 
 export default {
   name: 'App',
   components: {
+    LocalePicker,
     ProxyPage,
   },
   data() {

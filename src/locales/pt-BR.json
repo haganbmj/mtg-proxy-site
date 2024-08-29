@@ -1,0 +1,43 @@
+{
+    "locale": "pt-BR",
+    "buttons": {
+        "submit": "Submit",
+        "update": "Atualização",
+        "print": "Imprimir"
+    },
+    "configuration": {
+        "label": "Configurações",
+        "showDigitalPrintings": null,
+        "showPromoPrintings": null,
+        "matchInputEditions": null,
+        "includeBasicLands": null,
+        "showCutLines": null,
+        "imageType": {
+            "label": "Tipo de Imagem",
+            "tooltip": null,
+            "normal": "Normal",
+            "borderCrop": null
+        },
+        "printScale": {
+            "label": "Escala Imprimir",
+            "tooltip": null,
+            "small": "Pequeno",
+            "regular": "Regulares",
+            "large": "Grande",
+            "actual": "Real"
+        },
+        "cardBacks": {
+            "label": "Versos de Cartas",
+            "none": "Nenhuma",
+            "dfcs": "Cartas Dupla Face",
+            "all": "Todas"
+        },
+        "help": {
+            "label": "Ajuda?"
+        }
+    },
+    "errors": {
+        "unableToIdentifyCards": null
+    },
+    "consumedSlots": null
+}
