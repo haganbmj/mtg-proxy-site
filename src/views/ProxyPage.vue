@@ -300,6 +300,7 @@ const basicLands = [
     "plains",
     "swamp",
     "mountain",
+    "snow-covered wastes",
     "snow-covered forest",
     "snow-covered island",
     "snow-covered plains",
