@@ -373,7 +373,9 @@ export default {
     },
     methods: {
         async loadSetList() {
-            this.sets = (await ScryfallDatasetAsync()).sets;
+            const dataset = (await ScryfallDatasetAsync());
+            this.sets = dataset.sets;
+            console.log(`Loaded ${Object.keys(dataset.cards).length} distinct cards from ${Object.keys(dataset.sets).length} sets.`)
         },
         shouldShowSetOption(card, option) {
             // FIXME: Need a better filter method to detect promo-only garbage.
