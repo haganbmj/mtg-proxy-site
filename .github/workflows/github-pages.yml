@@ -30,20 +30,15 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Cache Card List
-        uses: actions/cache@v4.0.2
+      - name: Restore Cached Card List
+        uses: actions/cache/restore@v4.0.2
         with:
           path: data/default-cards.json
           key: default-cards.json
 
       - run: echo "VITE_BUILD_SHA=$GITHUB_SHA" >> $GITHUB_ENV
       - run: npm ci
-      - run: |
-          if [[ ${{ github.event_name }} == 'schedule' || ${{ github.event_name }} == 'workflow_dispatch' ]]; then
-            npm run cards:update
-          else
-            npm run cards
-          fi
+      - run: npm run cards
       - run: VITE_BUILD_SHA=$GITHUB_SHA npm run build
       - run: npm run lint
       - run: npm run test
@@ -52,6 +47,13 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
+
+      - name: Save Cached Card List
+        uses: actions/cache/save@v4.0.2
+        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+        with:
+          path: data/default-cards.json
+          key: default-cards.json
 
   deploy:
     needs: build
