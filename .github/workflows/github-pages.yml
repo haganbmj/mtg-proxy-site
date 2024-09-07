@@ -32,9 +32,12 @@ jobs:
             ${{ runner.os }}-node-
       - name: Restore Cached Card List
         uses: actions/cache/restore@v4.0.2
+        if: ${{ github.event_name != 'schedule' && github.event_name != 'workflow_dispatch' }}
         with:
           path: data/default-cards.json
-          key: default-cards.json
+          key: default-cards.json-{{ github.run_id }}
+          restore-keys: |
+            default-cards.json-
 
       - run: echo "VITE_BUILD_SHA=$GITHUB_SHA" >> $GITHUB_ENV
       - run: npm ci
@@ -53,7 +56,7 @@ jobs:
         if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         with:
           path: data/default-cards.json
-          key: default-cards.json
+          key: default-cards.json-{{ github.run_id }}
 
   deploy:
     needs: build
