@@ -382,6 +382,7 @@ export default {
             this.config.includeDigital = bindStorage('includeDigital', (v) => v === "true");
             this.config.includePromo = bindStorage('includePromo', (v) => v === "true");
             this.config.matchEditions = bindStorage('matchEditions', (v) => v === "true");
+            this.config.includeBasics = bindStorage('includeBasics', (v) => v === "true");
             this.config.showCutLines = bindStorage('showCutLines', (v) => v === "true");
             this.config.imageType = bindStorage('imageType', (v) => v ?? "border_crop");
             this.config.scale = bindStorage('scale', (v) => v ?? "normal");
