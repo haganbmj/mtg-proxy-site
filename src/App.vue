@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { bindStorage } from "./helpers/VueLocalStorage.mjs";
 import LocalePicker from './components/LocalePicker.vue';
 import ProxyPage from './views/ProxyPage.vue'
 
@@ -36,33 +37,30 @@ export default {
     }
   },
   watch: {
-    darkTheme(newValue) {
-        localStorage.darkTheme = this.darkTheme;
+    darkTheme() {
+        this.applyTheme();
     },
   },
   mounted() {
-    // Detect theme on first visit, then persist it for subsequent use.
-    if (localStorage.darkTheme === undefined) {
-        const browserPreference = window.matchMedia("(prefers-color-scheme: dark)");
-        if (browserPreference.matches) {
-            this.darkTheme = true;
+    // Detect theme using browser preferences if no value has been set.
+    this.darkTheme = bindStorage('darkTheme', (v) => {
+        if (v === undefined || v === null) {
+            return window.matchMedia("(prefers-color-scheme: dark)").matches ?? false;
+        } else {
+            return v === 'true';
         }
-    } else {
-        this.darkTheme = localStorage.darkTheme === 'true';
-    }
-    this.updateTheme();
+    });
   },
   methods: {
     changeTheme() {
         this.darkTheme = !this.darkTheme;
-        this.updateTheme();
     },
-    updateTheme() {
+    applyTheme() {
         const elem = document.querySelector('html');
-        if (!this.darkTheme && elem.classList.contains('dark-theme')) {
-            elem.classList.remove('dark-theme');
-        } else {
+        if (this.darkTheme) {
             elem.classList.add('dark-theme');
+        } else {
+            elem.classList.remove('dark-theme');
         }
     },
   },

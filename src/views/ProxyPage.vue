@@ -286,6 +286,7 @@
 
 <script>
 import { parseDecklist } from "../helpers/DecklistParser.mjs";
+import { bindStorage } from "../helpers/VueLocalStorage.mjs";
 import ImageLoader from "../components/ImageLoader.vue";
 import HelpModal from "../components/HelpModal.vue";
 import ArnoldsApproval from "../components/ArnoldsApproval.vue";
@@ -369,13 +370,23 @@ export default {
     mounted() {
         // Trigger an immediate load of the card list + set names.
         this.loadSetList();
-        this.loadConfig();
+        this.initConfig();
     },
     methods: {
         async loadSetList() {
             const dataset = (await ScryfallDatasetAsync());
             this.sets = dataset.sets;
             console.log(`Loaded ${Object.keys(dataset.cards).length} distinct cards from ${Object.keys(dataset.sets).length} sets.`)
+        },
+        initConfig() {
+            this.config.includeDigital = bindStorage('includeDigital', (v) => v === "true");
+            this.config.includePromo = bindStorage('includePromo', (v) => v === "true");
+            this.config.matchEditions = bindStorage('matchEditions', (v) => v === "true");
+            this.config.includeBasics = bindStorage('includeBasics', (v) => v === "true");
+            this.config.showCutLines = bindStorage('showCutLines', (v) => v === "true");
+            this.config.imageType = bindStorage('imageType', (v) => v ?? "border_crop");
+            this.config.scale = bindStorage('scale', (v) => v ?? "normal");
+            this.config.cardBacks = bindStorage('cardBacks', (v) => v ?? "dfc");
         },
         shouldShowSetOption(card, option) {
             // FIXME: Need a better filter method to detect promo-only garbage.
@@ -429,29 +440,7 @@ export default {
         updateSessionSet(cardName, setOption) {
             this.sessionSetSelections[cardName] = setOption;
         },
-        storeConfig() {
-            localStorage.includeDigital = this.config.includeDigital;
-            localStorage.includePromo = this.config.includePromo;
-            localStorage.matchEditions = this.config.matchEditions;
-            localStorage.includeBasics = this.config.includeBasics;
-            localStorage.showCutLines = this.config.showCutLines;
-            localStorage.imageType = this.config.imageType;
-            localStorage.scale = this.config.scale;
-            localStorage.cardBacks = this.config.cardBacks;
-        },
-        loadConfig() {
-            this.config.includeDigital = localStorage.includeDigital === "true";
-            this.config.includePromo = localStorage.includePromo === "true";
-            this.config.matchEditions = localStorage.matchEditions === "true";
-            this.config.includeBasics = localStorage.includeBasics === "true";
-            this.config.showCutLines = localStorage.showCutLines === "true";
-            this.config.imageType = localStorage.imageType ?? "border_crop";
-            this.config.scale = localStorage.scale ?? "normal";
-            this.config.cardBacks = localStorage.cardBacks ?? "dfc";
-        },
         printList() {
-            // FIXME: Should probably use watched properties for triggering this storeConfig call.
-            this.storeConfig();
             window.print();
         },
         async loadCardList() {
