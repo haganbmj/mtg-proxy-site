@@ -35,6 +35,8 @@ export default {
         },
     },
     mounted() {
+        // This isn't using the LocalStorage function because it does some circular application.
+        // It might be worth adjusting that (or using some internal property to do the loopback).
         if (localStorage.locale === undefined) {
             this.selectedLocale = navigator.language ?? navigator.userLanguage;
         } else {
