@@ -7,6 +7,7 @@ const wrapper = mount(ProxyPage, {
         $t: () => {},
     },
 });
+await new Promise(r => setTimeout(r, 2000));
 
 describe('Core Rendering', async () => {
     test('Renders', () => {
