@@ -1,13 +1,19 @@
 import { mount } from '@vue/test-utils';
 import ProxyPage from './ProxyPage.vue';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, beforeAll } from 'vitest';
 
 const wrapper = mount(ProxyPage, {
     mocks: {
         $t: () => {},
     },
 });
-await new Promise(r => setTimeout(r, 2000));
+
+beforeAll(async () => {
+    // Wait for the Async mounted functions to run and initialize the card dataset.
+    while(Object.keys(wrapper.getCurrentComponent().data.sets).length === 0) {
+        await new Promise(r => setTimeout(r, 50));
+    }
+}, 10000);
 
 describe('Core Rendering', async () => {
     test('Renders', () => {
