@@ -4,15 +4,13 @@ import { describe, expect, test } from 'vitest';
 
 const wrapper = mount(ProxyPage, {
     mocks: {
-        $t: () => {}
-    }
+        $t: () => {},
+    },
 });
 
-describe('Mounted', () => {
-    describe('Layout', () => {
-        test('Renders', async () => {
-            expect(wrapper.find('#deck-input').exists()).toBe(true);
-        });
+describe('Core Rendering', async () => {
+    test('Renders', () => {
+        expect(wrapper.find('#deck-input').exists()).toBe(true);
     });
 });
 
@@ -52,12 +50,40 @@ describe('shouldShowSetOption()', async () => {
         ],
         selectedOption: options.standard,
     };
+
     test('No Promos, No Digital', () => {
-        wrapper.find('input[name="include-digital"]').setValue = false;
-        wrapper.find('input[name="include-promo"]').setValue = false;
+        wrapper.find('input[name="include-digital"]').setValue(false);
+        wrapper.find('input[name="include-promo"]').setValue(false);
         expect(wrapper.getCurrentComponent().ctx.shouldShowSetOption(card, options.standard)).toBe(true);
         expect(wrapper.getCurrentComponent().ctx.shouldShowSetOption(card, options.digital)).toBe(false);
         expect(wrapper.getCurrentComponent().ctx.shouldShowSetOption(card, options.promo)).toBe(false);
         expect(wrapper.getCurrentComponent().ctx.shouldShowSetOption(card, options.digitalPromo)).toBe(false);
+    });
+
+    test('No Promos, Yes Digital', () => {
+        wrapper.find('input[name="include-digital"]').setValue(true);
+        wrapper.find('input[name="include-promo"]').setValue(false);
+        expect(wrapper.getCurrentComponent().ctx.shouldShowSetOption(card, options.standard)).toBe(true);
+        expect(wrapper.getCurrentComponent().ctx.shouldShowSetOption(card, options.digital)).toBe(true);
+        expect(wrapper.getCurrentComponent().ctx.shouldShowSetOption(card, options.promo)).toBe(false);
+        expect(wrapper.getCurrentComponent().ctx.shouldShowSetOption(card, options.digitalPromo)).toBe(false);
+    });
+
+    test('Yes Promos, No Digital', () => {
+        wrapper.find('input[name="include-digital"]').setValue(false);
+        wrapper.find('input[name="include-promo"]').setValue(true);
+        expect(wrapper.getCurrentComponent().ctx.shouldShowSetOption(card, options.standard)).toBe(true);
+        expect(wrapper.getCurrentComponent().ctx.shouldShowSetOption(card, options.digital)).toBe(false);
+        expect(wrapper.getCurrentComponent().ctx.shouldShowSetOption(card, options.promo)).toBe(true);
+        expect(wrapper.getCurrentComponent().ctx.shouldShowSetOption(card, options.digitalPromo)).toBe(false);
+    });
+
+    test('Yes Promos, Yes Digital', () => {
+        wrapper.find('input[name="include-digital"]').setValue(true);
+        wrapper.find('input[name="include-promo"]').setValue(true);
+        expect(wrapper.getCurrentComponent().ctx.shouldShowSetOption(card, options.standard)).toBe(true);
+        expect(wrapper.getCurrentComponent().ctx.shouldShowSetOption(card, options.digital)).toBe(true);
+        expect(wrapper.getCurrentComponent().ctx.shouldShowSetOption(card, options.promo)).toBe(true);
+        expect(wrapper.getCurrentComponent().ctx.shouldShowSetOption(card, options.digitalPromo)).toBe(true);
     });
 });
