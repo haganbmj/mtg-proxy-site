@@ -241,6 +241,7 @@
                   updateSessionSet(
                     card.name,
                     card.selectedOption,
+                    cardIndex,
                   )
                 "
               >
@@ -437,8 +438,10 @@ export default {
                 }
             }
         },
-        updateSessionSet(cardName, setOption) {
-            this.sessionSetSelections[cardName] = setOption;
+        updateSessionSet(cardName, setOption, cardIndex) {
+            const deckIndex = this.cards.filter((v, i) => { return v.name === cardName && i <= cardIndex; }).length - 1;
+            this.sessionSetSelections[cardName] = this.sessionSetSelections[cardName] ?? {};
+            this.sessionSetSelections[cardName][deckIndex] = setOption;
         },
         printList() {
             window.print();
@@ -463,6 +466,8 @@ export default {
                     continue;
                 }
 
+                const cardIndex = _cards.filter((v) => { return v.name === line.name }).length;
+
                 const options = {
                     quantity: line.quantity,
                     name: line.name,
@@ -479,7 +484,7 @@ export default {
                         };
                     }),
                     isBasic: basicLands.includes(line.name.toLowerCase()),
-                    selectedOption: this.sessionSetSelections[line.name],
+                    selectedOption: this.sessionSetSelections[line.name]?.[cardIndex],
                 };
 
                 if (!options.selectedOption) {
