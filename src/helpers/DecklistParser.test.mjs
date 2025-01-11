@@ -162,12 +162,17 @@ describe("parseDecklist()", () => {
                     2x Abandon Hope
                     // Another comment
                     fire // ice
+                    # comment
+                    #comment
+                    ## Comment
+                    Experiment #9
                     `,
                 ),
             ).toStrictEqual({
                 lines: [
                     { name: "abandon hope", quantity: 2 },
                     { name: "fire // ice", quantity: 1 },
+                    { name: "experiment #9", quantity: 1 },
                 ],
                 errors: [],
             });

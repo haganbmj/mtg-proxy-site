@@ -6,6 +6,12 @@ export default defineConfig({
     build: {
         sourcemap: true,
     },
+    test: {
+        environment: 'happy-dom',
+        setupFiles: [
+            './vitest.setup.mjs',
+        ],
+    },
     // Replacement values. These are set at build time.
     define: {
         'import.meta.env.VITE_BUILD_TIMESTAMP': JSON.stringify(new Date().toISOString()),
