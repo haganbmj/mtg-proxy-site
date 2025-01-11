@@ -11,11 +11,13 @@ export function parseDecklist(decklist) {
 
         // Different sites have different sideboard formats.
         // Look for the word "sideboard" or lines that start with a double slash and skip them.
+        // CubeCobra uses # to represent a comment line.
         // MTGA uses Sideboard and Deck as section headers.
         if (
             /^Sideboard:?$/i.test(line) ||
             /^Deck:?$/i.test(line) ||
             /^\/\//.test(line) ||
+            /^#/.test(line) ||
             line === ""
         ) {
             continue;
