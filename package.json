@@ -18,7 +18,7 @@
     "vue-i18n": "^11.0.1"
   },
   "devDependencies": {
-    "@stylistic/eslint-plugin-js": "^2.13.0",
+    "@stylistic/eslint-plugin-js": "^3.0.1",
     "@vitejs/plugin-vue": "5.2.1",
     "@vue/test-utils": "^2.4.6",
     "axios": "^1.7.9",
