@@ -202,20 +202,20 @@ assert.deepStrictEqual(
             "urlBack": "https://api.scryfall.com/cards/khm/154?format=image&face=back",
           },
           {
-            "setCode": "pkhm",
-            "collectorNumber": "154s",
-            "isDigital": undefined,
-            "isPromo": true,
-            "urlFront": "https://api.scryfall.com/cards/pkhm/154s?format=image&face=front",
-            "urlBack": "https://api.scryfall.com/cards/pkhm/154s?format=image&face=back",
-          },
-          {
             "setCode": "khm",
             "collectorNumber": "313",
             "isDigital": undefined,
             "isPromo": true,
             "urlFront": "https://api.scryfall.com/cards/khm/313?format=image&face=front",
             "urlBack": "https://api.scryfall.com/cards/khm/313?format=image&face=back",
+          },
+          {
+            "setCode": "pkhm",
+            "collectorNumber": "154s",
+            "isDigital": undefined,
+            "isPromo": true,
+            "urlFront": "https://api.scryfall.com/cards/pkhm/154s?format=image&face=front",
+            "urlBack": "https://api.scryfall.com/cards/pkhm/154s?format=image&face=back",
           },
           {
             "setCode": "prm",
