@@ -22,7 +22,7 @@
     "@vitejs/plugin-vue": "5.2.1",
     "@vue/test-utils": "^2.4.6",
     "axios": "^1.7.9",
-    "eslint": "^9.18.0",
+    "eslint": "^9.19.0",
     "eslint-plugin-vue": "^9.32.0",
     "happy-dom": "^16.8.1",
     "sass": "^1.83.4",
