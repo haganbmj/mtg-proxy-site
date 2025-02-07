@@ -24,7 +24,7 @@
     "axios": "^1.7.9",
     "eslint": "^9.19.0",
     "eslint-plugin-vue": "^9.32.0",
-    "happy-dom": "^16.8.1",
+    "happy-dom": "^17.0.0",
     "sass": "^1.83.4",
     "vite": "6.0.11",
     "vitest": "^3.0.4",
