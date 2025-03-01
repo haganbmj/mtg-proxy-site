@@ -58,7 +58,6 @@ const excludedSets = [
     '4bb',
     'rin',
     'ren',
-    'plst',
 ];
 
 const excludedSetTypes = [
@@ -151,9 +150,10 @@ const minimized = stripped.sort((a, b) => {
     // Collector Numbers aren't actually numeric, becuase we can have A/B/C variants.
     // So we have to strip the non-numeric characters, compare those, then fallback to the alpha comparisons.
     // Without this we get into situations where 218a < 60 can happen with alt arts and such.
+    // But this doesn't handle The List, which uses a reference back to the original printing (eg. PLST MM2-42), so the split+pop is to account for that.
     if (Date.parse(a.releaseDate) === Date.parse(b.releaseDate)) {
-        const aInt = parseInt(a.collectorNumber.replace(/[^0-9]/, ''));
-        const bInt = parseInt(b.collectorNumber.replace(/[^0-9]/, ''));
+        const aInt = parseInt(a.collectorNumber.split('-').pop().replace(/[^0-9]/, ''));
+        const bInt = parseInt(b.collectorNumber.split('-').pop().replace(/[^0-9]/, ''));
 
         if (aInt == bInt) {
             return a.collectorNumber <= b.collectorNumber ? -1 : 1;
