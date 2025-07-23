@@ -57,6 +57,7 @@ describe('normalizeCardNames()', () => {
             { input: `T.A.P.P.E.R.`, expected: `t.a.p.p.e.r.` },
             { input: `+2 Mace`, expected: `+2 mace` },
             { input: `Erase (Not the Urza‛s Legacy One)`, expected: `erase (not the urza's legacy one)`},
+            { input: `SP//dr, Piloted by Peni`, expected: `sp//dr, piloted by peni` },
         ].map((t) => {
             test(t.input, () => {
                 expect(normalizeCardName(t.input)).toBe(t.expected);
