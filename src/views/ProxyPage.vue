@@ -481,6 +481,7 @@ export default {
                             urlBack: option.urlBack,
                             isDigital: option.isDigital,
                             isPromo: option.isPromo,
+                            isToken: option.isToken,
                         };
                     }),
                     isBasic: basicLands.includes(line.name.toLowerCase()),
@@ -499,7 +500,7 @@ export default {
                     // If we failed there, then we can set a default based on characteristics.
                     if (!options.selectedOption) {
                         options.selectedOption = options.setOptions.filter(option => {
-                            return !option.isDigital && !option.isPromo;
+                            return !option.isDigital && !option.isPromo && !option.isToken;
                         })?.[0] ?? options.setOptions[0];
                     }
                 }

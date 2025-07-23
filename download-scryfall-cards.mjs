@@ -61,12 +61,10 @@ const excludedSets = [
 ];
 
 const excludedSetTypes = [
-    'token',
+
 ];
 
 const excludedLayouts = [
-    'token',
-    'double_faced_token',
     'art_series',
 ];
 
@@ -109,6 +107,7 @@ const stripped = cards.filter(card => {
         collectorNumber: card.overridden_collector_number ?? card.collector_number,
         isDigital: card.digital,
         isPromo: !customNotPromoSets.includes(card.set) && (card.promo || card.promo_types || customPromoSetTypes.includes(card.set_type) || customPromoSets.includes(card.set)),
+        isToken: card.layout === 'token' || card.layout === 'double_faced_token',
         imageUris: {
             front: `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&face=${card.reversible_face ?? 'front'}`,
             back: cardBackUri,
@@ -173,6 +172,7 @@ const minimized = stripped.sort((a, b) => {
             collectorNumber: card.collectorNumber,
             isDigital: card.isDigital ? true : undefined,
             isPromo: card.isPromo ? true : undefined,
+            isToken: card.isToken ? true : undefined,
 
             urlFront: card.imageUris.front,
             urlBack: card.imageUris.back,
@@ -199,6 +199,7 @@ assert.deepStrictEqual(
             "collectorNumber": "154",
             "isDigital": undefined,
             "isPromo": undefined,
+            "isToken": undefined,
             "urlFront": "https://api.scryfall.com/cards/khm/154?format=image&face=front",
             "urlBack": "https://api.scryfall.com/cards/khm/154?format=image&face=back",
           },
@@ -207,6 +208,7 @@ assert.deepStrictEqual(
             "collectorNumber": "154s",
             "isDigital": undefined,
             "isPromo": true,
+            "isToken": undefined,
             "urlFront": "https://api.scryfall.com/cards/pkhm/154s?format=image&face=front",
             "urlBack": "https://api.scryfall.com/cards/pkhm/154s?format=image&face=back",
           },
@@ -215,6 +217,7 @@ assert.deepStrictEqual(
             "collectorNumber": "313",
             "isDigital": undefined,
             "isPromo": true,
+            "isToken": undefined,
             "urlFront": "https://api.scryfall.com/cards/khm/313?format=image&face=front",
             "urlBack": "https://api.scryfall.com/cards/khm/313?format=image&face=back",
           },
@@ -223,6 +226,7 @@ assert.deepStrictEqual(
             "collectorNumber": "88302",
             "isDigital": true,
             "isPromo": true,
+            "isToken": undefined,
             "urlFront": "https://api.scryfall.com/cards/prm/88302?format=image&face=front",
             "urlBack": "https://api.scryfall.com/cards/prm/88302?format=image&face=back",
           },
