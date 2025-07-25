@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "spectre.css": "^0.5.9",
-    "vue": "^3.5.17",
+    "vue": "^3.5.18",
     "vue-i18n": "^11.1.10"
   },
   "devDependencies": {
