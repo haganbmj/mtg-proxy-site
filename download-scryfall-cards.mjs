@@ -53,6 +53,11 @@ const includedSets = [
     'sunf', // Unfinity Sticker Sheets.
 ];
 
+const includedOversizeLayouts = [
+    'planar',
+    'scheme',
+];
+
 const excludedSets = [
     'fbb',
     '4bb',
@@ -71,7 +76,7 @@ const excludedLayouts = [
 const stripped = cards.filter(card => {
     // Process the exclusions.
     return includedSets.includes(card.set) ||
-        ((!card.oversized || card.layout === 'planar')
+        ((!card.oversized || includedOversizeLayouts.includes(card.layout))
         && !excludedSetTypes.includes(card.set_type)
         && !excludedLayouts.includes(card.layout)
         && !excludedSets.includes(card.set));
