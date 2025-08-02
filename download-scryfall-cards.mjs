@@ -56,6 +56,7 @@ const includedSets = [
 const includedOversizeLayouts = [
     'planar',
     'scheme',
+    'vanguard',
 ];
 
 const excludedSets = [
