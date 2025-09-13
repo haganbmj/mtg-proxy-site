@@ -11,7 +11,7 @@
       <a title="Change Theme" class="btn btn-action btn-primary s-circle" @click="changeTheme()"><span class="icon-brightness-contrast" /></a>
       <LocalePicker class="ml-1" />
       <span class="px-2 hide-sm" />
-      <a href="https://twitter.com/haganbmj" target="_blank" class="btn ml-1 hide-sm">Twitter</a>
+      <a href="https://bsky.app/profile/griselbrand.com" target="_blank" class="btn ml-1 hide-sm">Bsky</a>
       <a href="https://github.com/haganbmj/mtg-proxy-site" target="_blank" class="btn btn-primary ml-1 hide-sm">GitHub</a>
     </section>
   </header>
