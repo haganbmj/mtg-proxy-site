@@ -23,7 +23,7 @@
     "@vue/test-utils": "^2.4.6",
     "axios": "^1.12.2",
     "eslint": "^9.36.0",
-    "eslint-plugin-vue": "^10.4.0",
+    "eslint-plugin-vue": "^10.5.0",
     "happy-dom": "^18.0.1",
     "sass": "^1.92.1",
     "vite": "7.1.6",
