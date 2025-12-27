@@ -49,6 +49,10 @@ const customNotPromoSets = [
     'phpr',
 ];
 
+const notPromoTypes = [
+    'universesbeyond',
+];
+
 const includedSets = [
     'sunf', // Unfinity Sticker Sheets.
 ];
@@ -100,6 +104,8 @@ const stripped = cards.filter(card => {
         cardBackUri = `https://backs.scryfall.io/large/${card.card_back_id.charAt(0)}/${card.card_back_id.charAt(1)}/${card.card_back_id}.jpg`;
     }
 
+    const applicablePromoTypes = (card.promo_types || []).filter(pt => !notPromoTypes.includes(pt));
+
     return {
         id: card.id,
         oracleId: card.oracle_id,
@@ -112,7 +118,7 @@ const stripped = cards.filter(card => {
         },
         collectorNumber: card.overridden_collector_number ?? card.collector_number,
         isDigital: card.digital,
-        isPromo: !customNotPromoSets.includes(card.set) && (card.promo || card.promo_types || customPromoSetTypes.includes(card.set_type) || customPromoSets.includes(card.set)),
+        isPromo: !customNotPromoSets.includes(card.set) && (card.promo || applicablePromoTypes.length > 0 || customPromoSetTypes.includes(card.set_type) || customPromoSets.includes(card.set)),
         isToken: card.layout === 'token' || card.layout === 'double_faced_token',
         imageUris: {
             front: `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&face=${card.reversible_face ?? 'front'}`,
