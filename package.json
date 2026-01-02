@@ -21,7 +21,7 @@
     "@stylistic/eslint-plugin-js": "^4.4.1",
     "@vitejs/plugin-vue": "6.0.1",
     "@vue/test-utils": "^2.4.6",
-    "axios": "^1.12.2",
+    "axios": "^1.13.2",
     "eslint": "^9.39.2",
     "eslint-plugin-vue": "^10.6.2",
     "happy-dom": "^20.0.11",
