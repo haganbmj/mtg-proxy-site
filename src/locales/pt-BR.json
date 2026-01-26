@@ -30,7 +30,8 @@
             "label": "Versos de Cartas",
             "none": "Nenhuma",
             "dfcs": "Cartas Dupla Face",
-            "all": "Todas"
+            "all": "Todas",
+            "allPages": "Todas (frente depois verso)"
         },
         "help": {
             "label": "Ajuda?"

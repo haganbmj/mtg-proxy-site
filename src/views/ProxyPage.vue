@@ -162,6 +162,7 @@
                   <option value="none">{{ $t('configuration.cardBacks.none') }}</option>
                   <option value="dfc">{{ $t('configuration.cardBacks.dfcs') }}</option>
                   <option value="all">{{ $t('configuration.cardBacks.all') }}</option>
+                  <option value="all-pages">{{ $t('configuration.cardBacks.allPages') }}</option>
                 </select>
               </label>
             </div>
@@ -270,17 +271,18 @@
       { 'with-cut-lines': config.showCutLines },
     ]"
   >
-    <template v-for="(card, index) in cards" :key="index">
-      <template v-for="n in card.quantity" :key="n">
-        <img
-          :src="resolveCardImage(card)"
-          v-show="shouldShowCard(card)"
-        >
-        <img
-          :src="resolveCardImage(card, 'back')"
-          v-show="shouldShowCard(card, 'back')"
-        >
-      </template>
+    <template v-for="(page, pageIndex) in printPages" :key="`page-${pageIndex}`">
+      <div class="print-page">
+        <div class="print-grid">
+          <template v-for="(slot, slotIndex) in page.slots" :key="`page-${pageIndex}-${slotIndex}`">
+            <img
+              v-if="slot"
+              :src="resolveCardImage(slot.card, slot.face)"
+            >
+            <div v-else class="print-slot" />
+          </template>
+        </div>
+      </div>
     </template>
   </div>
 </template>
@@ -320,6 +322,31 @@ function setImageVersion(url, version) {
     }
 }
 
+function chunkAndPad(items, size) {
+    if (items.length === 0) {
+        return [];
+    }
+
+    const pages = [];
+    for (let i = 0; i < items.length; i += size) {
+        const page = items.slice(i, i + size);
+        while (page.length < size) {
+            page.push(null);
+        }
+        pages.push(page);
+    }
+
+    return pages;
+}
+
+function mirrorPageByRow(page, columns) {
+    const mirrored = [];
+    for (let i = 0; i < page.length; i += columns) {
+        mirrored.push(...page.slice(i, i + columns).reverse());
+    }
+    return mirrored;
+}
+
 export default {
     name: "ProxyPage",
     components: {
@@ -348,13 +375,8 @@ export default {
     },
     computed: {
         cardCountWhenPrinting() {
-            const count = this.cards.reduce((total, c) => {
-                return (
-                    total +
-                    c.quantity *
-                        ((this.shouldShowCard(c, "front") ? 1 : 0) +
-                            (this.shouldShowCard(c, "back") ? 1 : 0))
-                );
+            const count = this.printPages.reduce((total, page) => {
+                return total + page.slots.filter(Boolean).length;
             }, 0);
 
             const overflow = count % 9;
@@ -366,6 +388,72 @@ export default {
                 bound,
                 percentage: Math.round((overflow / 9) * 100),
             };
+        },
+        printSlotsFront() {
+            const slots = [];
+
+            for (const card of this.cards) {
+                if (!this.shouldShowCard(card, "front")) {
+                    continue;
+                }
+
+                for (let i = 0; i < card.quantity; i += 1) {
+                    slots.push(card);
+                }
+            }
+
+            return slots;
+        },
+        printPages() {
+            const pageSize = 9;
+            const columns = 3;
+
+            if (this.config.cardBacks === "none") {
+                const slots = this.printSlotsFront.map((card) => {
+                    return { card, face: "front" };
+                });
+
+                return chunkAndPad(slots, pageSize).map((page) => {
+                    return { slots: page, isBack: false };
+                });
+            }
+
+            if (this.config.cardBacks === "all-pages") {
+                const frontSlots = this.printSlotsFront.map((card) => {
+                    return { card, face: "front" };
+                });
+                const backSlots = this.printSlotsFront.map((card) => {
+                    return { card, face: "back" };
+                });
+
+                const frontPages = chunkAndPad(frontSlots, pageSize).map((page) => {
+                    return { slots: page, isBack: false };
+                });
+                const backPages = chunkAndPad(backSlots, pageSize).map((page) => {
+                    return { slots: mirrorPageByRow(page, columns), isBack: true };
+                });
+
+                return [...frontPages, ...backPages];
+            }
+
+            const slots = [];
+            for (const card of this.cards) {
+                if (!this.shouldShowCard(card, "front")) {
+                    continue;
+                }
+
+                for (let i = 0; i < card.quantity; i += 1) {
+                    slots.push({ card, face: "front" });
+
+                    if (this.shouldShowCard(card, "back")) {
+                        slots.push({ card, face: "back" });
+                    }
+                }
+            }
+
+            return chunkAndPad(slots, pageSize).map((page) => {
+                return { slots: page, isBack: false };
+            });
         },
     },
     mounted() {
@@ -407,7 +495,7 @@ export default {
             }
 
             if (face === "back") {
-                if (this.config.cardBacks === "all") {
+                if (this.config.cardBacks === "all" || this.config.cardBacks === "all-pages") {
                     return true;
                 }
 
@@ -579,17 +667,24 @@ html.dark-theme {
 
 #print-content {
     display: none;
-}
-
-#print-content {
     line-height: 0;
+    --card-width: 60mm;
+    --card-height: 85mm;
 }
 
-#print-content img {
-    width: 60mm;
-    height: 85mm;
+#print-content img,
+#print-content .print-slot {
+    width: var(--card-width);
+    height: var(--card-height);
     margin: 0;
     padding: 0;
+}
+
+#print-content .print-grid {
+    display: grid;
+    grid-template-columns: repeat(3, var(--card-width));
+    grid-auto-rows: var(--card-height);
+    gap: 0;
 }
 
 @media print {
@@ -631,34 +726,34 @@ html.dark-theme {
         line-height: 0;
     }
 
-    #print-content img {
-        width: 60mm;
-        height: 85mm;
-        margin: 0;
-        padding: 0;
+    #print-content.scale-large {
+        --card-width: calc(60mm * 1.02);
+        --card-height: calc(85mm * 1.02);
     }
 
-    #print-content.with-cut-lines img {
-        margin: 0 1px 1px 0;
+    #print-content.scale-small {
+        --card-width: calc(60mm * 0.98);
+        --card-height: calc(85mm * 0.98);
     }
 
-    #print-content.scale-large img {
-        width: calc(60mm * 1.02);
-        height: calc(85mm * 1.02);
+    #print-content.scale-actual {
+        --card-width: 63mm;
+        --card-height: 88mm;
     }
 
-    #print-content.scale-small img {
-        width: calc(60mm * 0.98);
-        height: calc(85mm * 0.98);
+    #print-content.with-cut-lines .print-grid {
+        gap: 1px;
     }
 
-    #print-content.scale-actual img {
-        width: 63mm;
-        height: 88mm;
+    .print-page {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        break-after: page;
     }
 
-    img {
-        break-inside: avoid;
+    .print-page:last-child {
+        break-after: auto;
     }
 }
 </style>
