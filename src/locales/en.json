@@ -30,7 +30,8 @@
             "label": "Card Backs",
             "none": "None",
             "dfcs": "Double Faced Cards",
-            "all": "All"
+            "all": "All",
+            "allPages": "All (front pages then back pages)"
         },
         "help": {
             "label": "Help?"
