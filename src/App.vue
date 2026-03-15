@@ -1,10 +1,14 @@
 <template>
   <header class="navbar bg-gray">
     <section class="navbar-section">
-      <a href="https://griselbrand.com">
-        <img class="navbar-icon" alt="Site Icon" src="https://griselbrand.com/android-chrome-192x192.png">
-      </a>
-      <a href="https://griselbrand.com" class="btn btn-link">Griselbrand</a>
+      <ul class="breadcrumb" style="margin: 0; padding: 0;">
+        <li class="breadcrumb-item">
+          <a href="https://griselbrand.com" class="text-bold">griselbrand.com&nbsp;</a>
+        </li>
+        <li class="breadcrumb-item">
+          <span>Proxy Print</span>
+        </li>
+      </ul>
     </section>
 
     <section class="navbar-section">
