@@ -129,10 +129,11 @@ describe('Print layout', async () => {
         const backSlots = pages[1].slots.slice(0, 3).map((slot) => slot.card.name);
 
         expect(frontSlots).toEqual(['alpha', 'bravo', 'charlie']);
-        expect(backSlots).toEqual(['charlie', 'bravo', 'alpha']);
+        // Back slots are in the same order; row-mirroring is handled via CSS direction: rtl
+        expect(backSlots).toEqual(['alpha', 'bravo', 'charlie']);
     });
 
-    test('All pages mode doubles page count and pads', () => {
+    test('All pages mode produces front and back page groups', () => {
         const data = wrapper.getCurrentComponent().data;
         const ctx = wrapper.getCurrentComponent().ctx;
 
@@ -147,12 +148,10 @@ describe('Print layout', async () => {
         });
 
         const pages = ctx.printPages;
-        expect(pages.length).toBe(4);
-        expect(pages[0].slots.length).toBe(9);
-        expect(pages[1].slots.length).toBe(9);
-        expect(pages[2].slots.length).toBe(9);
-        expect(pages[3].slots.length).toBe(9);
-        expect(pages[1].slots.filter(Boolean).length).toBe(1);
-        expect(pages[3].slots.filter(Boolean).length).toBe(1);
+        expect(pages.length).toBe(2);
+        expect(pages[0].slots.length).toBe(10);
+        expect(pages[1].slots.length).toBe(10);
+        expect(pages[0].isBack).toBe(false);
+        expect(pages[1].isBack).toBe(true);
     });
 });

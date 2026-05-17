@@ -273,7 +273,7 @@
   >
     <template v-for="(page, pageIndex) in printPages" :key="`page-${pageIndex}`">
       <div class="print-page">
-        <div class="print-grid">
+        <div class="print-grid" :class="{ 'print-grid-backs': page.isBack }">
           <template v-for="(slot, slotIndex) in page.slots" :key="`page-${pageIndex}-${slotIndex}`">
             <img
               v-if="slot"
@@ -320,31 +320,6 @@ function setImageVersion(url, version) {
     } else {
         return url;
     }
-}
-
-function chunkAndPad(items, size) {
-    if (items.length === 0) {
-        return [];
-    }
-
-    const pages = [];
-    for (let i = 0; i < items.length; i += size) {
-        const page = items.slice(i, i + size);
-        while (page.length < size) {
-            page.push(null);
-        }
-        pages.push(page);
-    }
-
-    return pages;
-}
-
-function mirrorPageByRow(page, columns) {
-    const mirrored = [];
-    for (let i = 0; i < page.length; i += columns) {
-        mirrored.push(...page.slice(i, i + columns).reverse());
-    }
-    return mirrored;
 }
 
 export default {
@@ -405,17 +380,12 @@ export default {
             return slots;
         },
         printPages() {
-            const pageSize = 9;
-            const columns = 3;
-
             if (this.config.cardBacks === "none") {
                 const slots = this.printSlotsFront.map((card) => {
                     return { card, face: "front" };
                 });
 
-                return chunkAndPad(slots, pageSize).map((page) => {
-                    return { slots: page, isBack: false };
-                });
+                return [{ slots, isBack: false }];
             }
 
             if (this.config.cardBacks === "all-pages") {
@@ -426,14 +396,10 @@ export default {
                     return { card, face: "back" };
                 });
 
-                const frontPages = chunkAndPad(frontSlots, pageSize).map((page) => {
-                    return { slots: page, isBack: false };
-                });
-                const backPages = chunkAndPad(backSlots, pageSize).map((page) => {
-                    return { slots: mirrorPageByRow(page, columns), isBack: true };
-                });
-
-                return [...frontPages, ...backPages];
+                return [
+                    { slots: frontSlots, isBack: false },
+                    { slots: backSlots, isBack: true },
+                ];
             }
 
             const slots = [];
@@ -451,9 +417,7 @@ export default {
                 }
             }
 
-            return chunkAndPad(slots, pageSize).map((page) => {
-                return { slots: page, isBack: false };
-            });
+            return [{ slots, isBack: false }];
         },
     },
     mounted() {
@@ -681,10 +645,13 @@ html.dark-theme {
 }
 
 #print-content .print-grid {
-    display: grid;
-    grid-template-columns: repeat(3, var(--card-width));
-    grid-auto-rows: var(--card-height);
+    display: flex;
+    flex-wrap: wrap;
     gap: 0;
+}
+
+#print-content .print-grid-backs {
+    direction: rtl;
 }
 
 @media print {
@@ -749,11 +716,10 @@ html.dark-theme {
         width: 100%;
         display: flex;
         justify-content: center;
-        break-after: page;
     }
 
-    .print-page:last-child {
-        break-after: auto;
+    .print-page + .print-page {
+        break-before: page;
     }
 }
 </style>
