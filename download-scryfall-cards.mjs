@@ -129,7 +129,7 @@ const stripped = cards.filter(card => {
         isPromo: !customNotPromoSets.includes(card.set) && (card.promo || applicablePromoTypes.length > 0 || customPromoSetTypes.includes(card.set_type) || customPromoSets.includes(card.set)),
         isToken: card.layout === 'token' || card.layout === 'double_faced_token',
         imageUris: {
-            front: `https://cards.scryfall.io/large/front/${card.id.charAt(0)}/${card.id.charAt(1)}/${card.id}.jpg`,
+            front: `https://cards.scryfall.io/large/${card.reversible_face || 'front'}/${card.id.charAt(0)}/${card.id.charAt(1)}/${card.id}.jpg`,
             back: cardBackUri,
         },
     };
