@@ -19,6 +19,7 @@ Deck
 0 griselbrand
 3 Bruna, the Fading Light
 1x Karn, the Great Creator (SLD) 501
+Adrix and Nev, Twincasters (SLD) 1544b
 1 Teferi's Protection
 1 Delver of Secrets // Insectile Aberration
 1x Nezumi Graverobber // Nighteyes the Desecrator
