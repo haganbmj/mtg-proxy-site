@@ -1,6 +1,8 @@
 import fs from 'fs';
+import { createReadStream } from 'fs';
 import axios from 'axios';
 import { strict as assert } from 'assert';
+import { withParserAsStream } from 'stream-json/streamers/stream-array.js';
 import { normalizeCardName } from './src/helpers/CardNames.mjs';
 
 if (!fs.existsSync('./data/default-cards.json') || process.argv[2] == "--update") {
@@ -27,7 +29,13 @@ if (!fs.existsSync('./data/default-cards.json') || process.argv[2] == "--update"
     console.log('Using existing card data.');
 }
 
-const cards = JSON.parse(fs.readFileSync('./data/default-cards.json'));
+// Stream-parse the large JSON array to avoid V8's string length limit.
+const cards = [];
+const pipeline = createReadStream('./data/default-cards.json')
+    .pipe(withParserAsStream());
+for await (const { value } of pipeline) {
+    cards.push(value);
+}
 
 const customPromoSetTypes = [
     'from_the_vault',
