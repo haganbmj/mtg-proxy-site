@@ -45,7 +45,7 @@ This app processes MTG card decklists into printable proxy sheets:
 
 **Lazy Loading:** Import card data async: `const ScryfallDatasetAsync = () => import("../../data/cards-minimized.json")`
 
-**Print Logic:** `chunkAndPad()` creates 9-slot pages, `mirrorPageByRow()` handles DFC backs for duplex printing
+**Print Logic:** The `printPages` computed property builds flat slot arrays per page (each slot has `{ card, face }`). CSS flexbox wraps slots into 3×3 grids automatically. Card-back modes: `"none"` (fronts only), `"dfc"`/`"all"` (fronts+backs interspersed), `"all-pages"` (separate front/back pages for duplex). Duplex row mirroring uses CSS `direction: rtl` on `.print-grid-backs` — no JS reordering needed.
 
 **i18n:** Manual locale management in [LocalePicker.vue](src/components/LocalePicker.vue) - validates/falls back to browser default
 
