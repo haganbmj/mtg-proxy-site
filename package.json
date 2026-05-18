@@ -10,7 +10,8 @@
     "lint:fix": "eslint --fix",
     "cards": "node download-scryfall-cards.mjs",
     "cards:update": "node download-scryfall-cards.mjs --update",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest watch"
   },
   "dependencies": {
     "spectre.css": "^0.5.9",
