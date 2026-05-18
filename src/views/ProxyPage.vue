@@ -107,6 +107,16 @@
                 <i class="form-icon" /> {{ $t('configuration.showCutLines') }}
               </label>
             </div>
+            <div class="column col-12">
+              <label class="form-switch">
+                <input
+                  type="checkbox"
+                  name="fixed-page-size"
+                  v-model="config.fixedPageSize"
+                >
+                <i class="form-icon" /> Fixed page size (3×3)
+              </label>
+            </div>
           </div>
           <div class="column col-12 divider" />
           <div class="columns">
@@ -339,6 +349,7 @@ export default {
                 matchEditions: false,
                 includeBasics: false,
                 showCutLines: false,
+                fixedPageSize: false,
                 imageType: "border_crop",
                 scale: "normal",
                 cardBacks: "dfc",
@@ -382,12 +393,27 @@ export default {
             return slots;
         },
         printPages() {
+            const toPages = (slots, isBack) => {
+                if (this.config.fixedPageSize) {
+                    const pages = [];
+                    for (let i = 0; i < slots.length; i += 9) {
+                        const page = slots.slice(i, i + 9);
+                        while (page.length < 9) {
+                            page.push(null);
+                        }
+                        pages.push({ slots: page, isBack });
+                    }
+                    return pages.length ? pages : [];
+                }
+                return [{ slots, isBack }];
+            };
+
             if (this.config.cardBacks === "none") {
                 const slots = this.printSlotsFront.map((card) => {
                     return { card, face: "front" };
                 });
 
-                return [{ slots, isBack: false }];
+                return toPages(slots, false);
             }
 
             if (this.config.cardBacks === "all-pages") {
@@ -399,8 +425,8 @@ export default {
                 });
 
                 return [
-                    { slots: frontSlots, isBack: false },
-                    { slots: backSlots, isBack: true },
+                    ...toPages(frontSlots, false),
+                    ...toPages(backSlots, true),
                 ];
             }
 
@@ -419,7 +445,7 @@ export default {
                 }
             }
 
-            return [{ slots, isBack: false }];
+            return toPages(slots, false);
         },
     },
     mounted() {
@@ -439,6 +465,7 @@ export default {
             this.config.matchEditions = bindStorage('matchEditions', (v) => v === "true");
             this.config.includeBasics = bindStorage('includeBasics', (v) => v === "true");
             this.config.showCutLines = bindStorage('showCutLines', (v) => v === "true");
+            this.config.fixedPageSize = bindStorage('fixedPageSize', (v) => v === "true");
             this.config.imageType = bindStorage('imageType', (v) => v ?? "border_crop");
             this.config.scale = bindStorage('scale', (v) => v ?? "normal");
             this.config.cardBacks = bindStorage('cardBacks', (v) => v ?? "dfc");
