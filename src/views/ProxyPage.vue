@@ -313,10 +313,12 @@ const basicLands = [
 ];
 
 function setImageVersion(url, version) {
-    if (/scryfall/.test(url)) {
-        var url = new URL(url);
-        url.searchParams.set("version", version);
-        return url.href;
+    if (/cards\.scryfall\.io/.test(url)) {
+        return url.replace(/\/(border_crop|normal|large|small|art_crop|png)\//, `/${version}/`);
+    } else if (/api\.scryfall\.com/.test(url)) {
+        var parsedUrl = new URL(url);
+        parsedUrl.searchParams.set("version", version);
+        return parsedUrl.href;
     } else {
         return url;
     }
