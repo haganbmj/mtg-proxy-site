@@ -644,6 +644,7 @@ html.dark-theme {
     height: var(--card-height);
     margin: 0;
     padding: 0;
+    break-inside: avoid;
 }
 
 #print-content .print-grid {
