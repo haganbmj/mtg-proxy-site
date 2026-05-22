@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@stylistic/eslint-plugin-js": "^4.4.1",
-    "@vitejs/plugin-vue": "6.0.5",
+    "@vitejs/plugin-vue": "6.0.7",
     "@vue/test-utils": "^2.4.6",
     "axios": "^1.13.2",
     "eslint": "^10.1.0",
