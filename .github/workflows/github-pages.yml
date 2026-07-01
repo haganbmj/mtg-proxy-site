@@ -34,10 +34,10 @@ jobs:
         uses: actions/cache/restore@v5.0.5
         if: ${{ github.event_name != 'schedule' && github.event_name != 'workflow_dispatch' }}
         with:
-          path: data/default-cards.json
-          key: default-cards.json-${{ github.run_id }}
+          path: data/default-cards.jsonl
+          key: default-cards.jsonl-${{ github.run_id }}
           restore-keys: |
-            default-cards.json-
+            default-cards.jsonl-
 
       - run: echo "VITE_BUILD_SHA=$GITHUB_SHA" >> $GITHUB_ENV
       - run: npm ci
@@ -55,8 +55,8 @@ jobs:
         uses: actions/cache/save@v5.0.5
         if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         with:
-          path: data/default-cards.json
-          key: default-cards.json-${{ github.run_id }}
+          path: data/default-cards.jsonl
+          key: default-cards.jsonl-${{ github.run_id }}
 
   deploy:
     needs: build
