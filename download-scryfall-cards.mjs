@@ -1,15 +1,26 @@
 import fs from 'fs';
-import { createReadStream } from 'fs';
+import { createInterface } from 'readline';
+import { createGunzip } from 'zlib';
 import axios from 'axios';
 import { strict as assert } from 'assert';
-import { withParserAsStream } from 'stream-json/streamers/stream-array.js';
 import { normalizeCardName } from './src/helpers/CardNames.mjs';
 
-if (!fs.existsSync('./data/default-cards.json') || process.argv[2] == "--update") {
+if (!fs.existsSync('./data/default-cards.jsonl') || process.argv[2] == "--update") {
     console.log('Downloading fresh card data.');
 
+    // Fetch the bulk data metadata to get the JSONL download URI.
+    const bulkDataResp = await axios({
+        url: 'https://api.scryfall.com/bulk-data/default-cards',
+        method: 'GET',
+        headers: {
+            'User-Agent': 'Griselbrand/0.1.0',
+        },
+    });
+    const jsonlDownloadUri = bulkDataResp.data.jsonl_download_uri;
+    console.log(`Downloading from ${jsonlDownloadUri}`);
+
     const dataResp = await axios({
-        url: `https://api.scryfall.com/bulk-data/default-cards?format=file`,
+        url: jsonlDownloadUri,
         method: 'GET',
         responseType: 'stream',
         headers: {
@@ -17,8 +28,9 @@ if (!fs.existsSync('./data/default-cards.json') || process.argv[2] == "--update"
         },
     });
 
-    const write = fs.createWriteStream('./data/default-cards.json');
-    dataResp.data.pipe(write);
+    // Download the .jsonl.gz and decompress directly to .jsonl on disk.
+    const write = fs.createWriteStream('./data/default-cards.jsonl');
+    dataResp.data.pipe(createGunzip()).pipe(write);
     await new Promise((res, rej) => {
         write.on('finish', res);
         write.on('error', rej);
@@ -29,12 +41,11 @@ if (!fs.existsSync('./data/default-cards.json') || process.argv[2] == "--update"
     console.log('Using existing card data.');
 }
 
-// Stream-parse the large JSON array to avoid V8's string length limit.
+// Parse JSONL: each line is a standalone JSON object, no streaming JSON parser needed.
 const cards = [];
-const pipeline = createReadStream('./data/default-cards.json')
-    .pipe(withParserAsStream());
-for await (const { value } of pipeline) {
-    cards.push(value);
+const rl = createInterface({ input: fs.createReadStream('./data/default-cards.jsonl') });
+for await (const line of rl) {
+    if (line.trim()) cards.push(JSON.parse(line));
 }
 
 const customPromoSetTypes = [

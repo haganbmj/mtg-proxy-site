@@ -23,10 +23,10 @@ jobs:
       - name: Restore Cache Card List
         uses: actions/cache/restore@v5.0.5
         with:
-          path: data/default-cards.json
-          key: default-cards.json-${{ github.run_id }}
+          path: data/default-cards.jsonl
+          key: default-cards.jsonl-${{ github.run_id }}
           restore-keys: |
-            default-cards.json-
+            default-cards.jsonl-
 
       - run: npm ci
       - run: npm run cards
