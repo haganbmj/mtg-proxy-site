@@ -1,15 +1,15 @@
 import pluginVue from 'eslint-plugin-vue';
-import stylisticJs from '@stylistic/eslint-plugin-js'
+import stylistic from '@stylistic/eslint-plugin'
 
 export default [
     ...pluginVue.configs['flat/strongly-recommended'],
     {
         plugins: {
-            '@stylistic/js': stylisticJs,
+            '@stylistic': stylistic,
         },
         rules: {
             "vue/max-attributes-per-line": "off",
-            "@stylistic/js/comma-dangle": ["error", {
+            "@stylistic/comma-dangle": ["error", {
                 "arrays": "always-multiline",
                 "objects": "always-multiline",
                 "functions": "always-multiline",
