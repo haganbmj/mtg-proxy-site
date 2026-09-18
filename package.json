@@ -26,7 +26,7 @@
     "eslint": "^10.10.0",
     "eslint-plugin-vue": "^10.11.0",
     "happy-dom": "^20.14.3",
-    "sass": "^1.104.0",
+    "sass": "^1.104.1",
     "vite": "8.3.0",
     "vitest": "^4.1.11",
     "vue-loader": "^17.4.2"
