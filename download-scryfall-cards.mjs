@@ -118,9 +118,10 @@ const stripped = cards.filter(card => {
     // Then set the high level data necessary to organize the remaining cards.
     var cardBackUri = undefined;
     if (card.card_faces?.[1]?.image_uris) {
-        cardBackUri = `https://api.scryfall.com/cards/${card.set}/${card.collector_number}?format=image&face=back`;
+        cardBackUri = `https://cards.scryfall.io/crop/back/${card.id.charAt(0)}/${card.id.charAt(1)}/${card.id}.webp`;
     } else if (card.layout == 'meld') {
-        cardBackUri = `https://backs.scryfall.io/large/${card.card_back_id.charAt(0)}/${card.card_back_id.charAt(1)}/${card.card_back_id}.jpg`;
+        // backs.scryfall.io has no WebP yet; `normal` is the only JPEG size Scryfall is keeping.
+        cardBackUri = `https://backs.scryfall.io/normal/${card.card_back_id.charAt(0)}/${card.card_back_id.charAt(1)}/${card.card_back_id}.jpg`;
     }
 
     const applicablePromoTypes = (card.promo_types || []).filter(pt => !notPromoTypes.includes(pt));
@@ -140,7 +141,7 @@ const stripped = cards.filter(card => {
         isPromo: !customNotPromoSets.includes(card.set) && (card.promo || applicablePromoTypes.length > 0 || customPromoSetTypes.includes(card.set_type) || customPromoSets.includes(card.set)),
         isToken: card.layout === 'token' || card.layout === 'double_faced_token',
         imageUris: {
-            front: `https://cards.scryfall.io/border_crop/${card.reversible_face || 'front'}/${card.id.charAt(0)}/${card.id.charAt(1)}/${card.id}.jpg`,
+            front: `https://cards.scryfall.io/crop/${card.reversible_face || 'front'}/${card.id.charAt(0)}/${card.id.charAt(1)}/${card.id}.webp`,
             back: cardBackUri,
         },
     };
@@ -231,8 +232,8 @@ assert.deepStrictEqual(
             "isDigital": undefined,
             "isPromo": undefined,
             "isToken": undefined,
-            "urlFront": "https://cards.scryfall.io/border_crop/front/2/2/22a6a5f1-1405-4efb-af3e-e1f58d664e99.jpg",
-            "urlBack": "https://api.scryfall.com/cards/khm/154?format=image&face=back",
+            "urlFront": "https://cards.scryfall.io/crop/front/2/2/22a6a5f1-1405-4efb-af3e-e1f58d664e99.webp",
+            "urlBack": "https://cards.scryfall.io/crop/back/2/2/22a6a5f1-1405-4efb-af3e-e1f58d664e99.webp",
           },
           {
             "setCode": "pkhm",
@@ -240,8 +241,8 @@ assert.deepStrictEqual(
             "isDigital": undefined,
             "isPromo": true,
             "isToken": undefined,
-            "urlFront": "https://cards.scryfall.io/border_crop/front/5/6/56169747-9603-431e-bd88-bfa6982f029c.jpg",
-            "urlBack": "https://api.scryfall.com/cards/pkhm/154s?format=image&face=back",
+            "urlFront": "https://cards.scryfall.io/crop/front/5/6/56169747-9603-431e-bd88-bfa6982f029c.webp",
+            "urlBack": "https://cards.scryfall.io/crop/back/5/6/56169747-9603-431e-bd88-bfa6982f029c.webp",
           },
           {
             "setCode": "khm",
@@ -249,8 +250,8 @@ assert.deepStrictEqual(
             "isDigital": undefined,
             "isPromo": true,
             "isToken": undefined,
-            "urlFront": "https://cards.scryfall.io/border_crop/front/5/a/5af80f3b-229d-43f8-976e-50bee70b32e7.jpg",
-            "urlBack": "https://api.scryfall.com/cards/khm/313?format=image&face=back",
+            "urlFront": "https://cards.scryfall.io/crop/front/5/a/5af80f3b-229d-43f8-976e-50bee70b32e7.webp",
+            "urlBack": "https://cards.scryfall.io/crop/back/5/a/5af80f3b-229d-43f8-976e-50bee70b32e7.webp",
           },
           {
             "setCode": "prm",
@@ -258,8 +259,8 @@ assert.deepStrictEqual(
             "isDigital": true,
             "isPromo": true,
             "isToken": undefined,
-            "urlFront": "https://cards.scryfall.io/border_crop/front/e/7/e71fdafd-7548-4be6-a6a6-146c4d4ca0b3.jpg",
-            "urlBack": "https://api.scryfall.com/cards/prm/88302?format=image&face=back",
+            "urlFront": "https://cards.scryfall.io/crop/front/e/7/e71fdafd-7548-4be6-a6a6-146c4d4ca0b3.webp",
+            "urlBack": "https://cards.scryfall.io/crop/back/e/7/e71fdafd-7548-4be6-a6a6-146c4d4ca0b3.webp",
           },
     ],
 );

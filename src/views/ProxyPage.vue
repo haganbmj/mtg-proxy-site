@@ -322,13 +322,15 @@ const basicLands = [
     "snow-covered mountain",
 ];
 
+// Config values predate Scryfall's WebP rename, so map them to the WebP equivalents.
+const webpVersions = {
+    normal: "grid",
+    border_crop: "crop",
+};
+
 function setImageVersion(url, version) {
     if (/cards\.scryfall\.io/.test(url)) {
-        return url.replace(/\/(border_crop|normal|large|small|art_crop|png)\//, `/${version}/`);
-    } else if (/api\.scryfall\.com/.test(url)) {
-        var parsedUrl = new URL(url);
-        parsedUrl.searchParams.set("version", version);
-        return parsedUrl.href;
+        return url.replace(/\/(crop|grid)\//, `/${webpVersions[version] ?? "crop"}/`);
     } else {
         return url;
     }
